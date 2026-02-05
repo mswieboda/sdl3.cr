@@ -7,7 +7,10 @@ end
 
 require "./sdl3/init"
 require "./sdl3/video"
+require "./sdl3/pixels"
 require "./sdl3/rect"
+require "./sdl3/surface"
+require "./sdl3/texture"
 require "./sdl3/render"
 require "./sdl3/events"
 require "./sdl3/keycode"

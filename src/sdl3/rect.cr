@@ -10,4 +10,11 @@ lib LibSDL3
     w : Float32
     h : Float32
   end
+
+  struct Rect
+    x : Int32
+    y : Int32
+    w : Int32
+    h : Int32
+  end
 end

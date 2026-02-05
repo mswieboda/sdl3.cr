@@ -86,4 +86,8 @@ module SDL3
   def self.map_rgb(format : LibSDL3::PixelFormatDetails*, r : UInt8, g : UInt8, b : UInt8)
     LibSDL3.map_rgb(format, Pointer(LibSDL3::Palette).null, r, g, b)
   end
+
+  def self.color(r : UInt8, g : UInt8, b : UInt8, a : UInt8) : LibSDL3::Color
+    LibSDL3::Color.new(r: r, g: g, b: b, a: a)
+  end
 end

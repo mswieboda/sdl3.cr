@@ -450,10 +450,15 @@ lib LibSDL3
   end
 
   fun poll_event = SDL_PollEvent(event : Event*) : Bool
+  fun push_event = SDL_PushEvent(event : Event*) : Bool
 end
 
 module SDL3
   def self.poll_event(event : LibSDL3::Event*)
     LibSDL3.poll_event(event)
+  end
+
+  def self.push_event(event : LibSDL3::Event*)
+    LibSDL3.push_event(event)
   end
 end

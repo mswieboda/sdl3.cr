@@ -21,3 +21,5 @@ require "./sdl3/events"
 require "./sdl3/keycode"
 require "./sdl3/scancode"
 require "./sdl3/keyboard"
+require "./sdl3/mouse"
+

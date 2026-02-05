@@ -4,6 +4,7 @@ SDL3.init(LibSDL3::SDL_INIT_VIDEO)
 
 window = SDL3::Window.new("Texture Test", 640, 480, 0)
 renderer = SDL3::Renderer.new(window)
+renderer.set_vsync(1)
 
 # Create a surface
 surface = SDL3::Surface.new(100, 100, LibSDL3::PixelFormat::RGBA8888)

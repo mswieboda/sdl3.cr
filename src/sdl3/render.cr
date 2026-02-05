@@ -21,6 +21,10 @@ lib LibSDL3
   fun render_texture = SDL_RenderTexture(renderer : Renderer*, texture : Texture*, srcrect : FRect*, dstrect : FRect*) : Bool
   fun render_texture_rotated = SDL_RenderTextureRotated(renderer : Renderer*, texture : Texture*, srcrect : FRect*, dstrect : FRect*, angle : Float64, center : FPoint*, flip : Int32) : Bool
   fun render_debug_text = SDL_RenderDebugText(renderer : Renderer*, x : Float32, y : Float32, text : UInt8*) : Bool
+  fun set_render_vsync = SDL_SetRenderVSync(renderer : Renderer*, vsync : Int32) : Bool
+
+  SDL_RENDERER_VSYNC_DISABLED = 0
+  SDL_RENDERER_VSYNC_ADAPTIVE = -1
 end
   
 module SDL3
@@ -102,6 +106,10 @@ module SDL3
 
     def render_debug_text(x : Float32, y : Float32, text : String)
       LibSDL3.render_debug_text(@ptr, x, y, text.to_unsafe)
+    end
+
+    def set_vsync(vsync : Int32)
+      LibSDL3.set_render_vsync(@ptr, vsync)
     end
   end
 end

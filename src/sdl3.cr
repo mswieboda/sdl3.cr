@@ -7,6 +7,7 @@ end
 
 require "./sdl3/init"
 require "./sdl3/error"
+require "./sdl3/timer"
 require "./sdl3/video"
 require "./sdl3/pixels"
 require "./sdl3/rect"

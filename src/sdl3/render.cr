@@ -7,6 +7,14 @@ lib LibSDL3
   fun set_render_draw_color = SDL_SetRenderDrawColor(renderer : Renderer*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : Bool
   fun render_clear = SDL_RenderClear(renderer : Renderer*) : Bool
   fun render_present = SDL_RenderPresent(renderer : Renderer*) : Bool
+  fun render_point = SDL_RenderPoint(renderer : Renderer*, x : Float32, y : Float32) : Bool
+  fun render_points = SDL_RenderPoints(renderer : Renderer*, points : FPoint*, count : Int32) : Bool
+  fun render_line = SDL_RenderLine(renderer : Renderer*, x1 : Float32, y1 : Float32, x2 : Float32, y2 : Float32) : Bool
+  fun render_lines = SDL_RenderLines(renderer : Renderer*, points : FPoint*, count : Int32) : Bool
+  fun render_rect = SDL_RenderRect(renderer : Renderer*, rect : FRect*) : Bool
+  fun render_rects = SDL_RenderRects(renderer : Renderer*, rects : FRect*, count : Int32) : Bool
+  fun render_fill_rect = SDL_RenderFillRect(renderer : Renderer*, rect : FRect*) : Bool
+  fun render_fill_rects = SDL_RenderFillRects(renderer : Renderer*, rects : FRect*, count : Int32) : Bool
 end
 
 module SDL3
@@ -38,6 +46,40 @@ module SDL3
 
     def present
       LibSDL3.render_present(@ptr)
+    end
+
+    def draw_point(x : Float32, y : Float32)
+      LibSDL3.render_point(@ptr, x, y)
+    end
+
+    def draw_points(points : Slice(LibSDL3::FPoint))
+      LibSDL3.render_points(@ptr, points.to_unsafe, points.size)
+    end
+
+    def draw_line(x1 : Float32, y1 : Float32, x2 : Float32, y2 : Float32)
+      LibSDL3.render_line(@ptr, x1, y1, x2, y2)
+    end
+
+    def draw_lines(points : Slice(LibSDL3::FPoint))
+      LibSDL3.render_lines(@ptr, points.to_unsafe, points.size)
+    end
+
+    def draw_rect(rect : LibSDL3::FRect*)
+      LibSDL3.render_rect(@ptr, rect)
+    end
+
+
+
+    def draw_rects(rects : Slice(LibSDL3::FRect))
+      LibSDL3.render_rects(@ptr, rects.to_unsafe, rects.size)
+    end
+
+    def fill_rect(rect : LibSDL3::FRect*)
+      LibSDL3.render_fill_rect(@ptr, rect)
+    end
+
+    def fill_rects(rects : Slice(LibSDL3::FRect))
+      LibSDL3.render_fill_rects(@ptr, rects.to_unsafe, rects.size)
     end
   end
 end

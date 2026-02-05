@@ -8,7 +8,7 @@ renderer = SDL3::Renderer.new(window)
 running = true
 while running
   event = uninitialized LibSDL3::Event
-while SDL3.poll_event(pointerof(event))
+  while SDL3.poll_event(pointerof(event))
     case event.type
     when LibSDL3::SDL_EVENT_QUIT, LibSDL3::SDL_EVENT_WINDOW_CLOSE_REQUESTED
       running = false

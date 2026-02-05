@@ -1,10 +1,20 @@
-# sdl3
+# SDL3
 
-TODO: Write a description here
+SDL3 bindings for crystal
 
 ## Installation
 
-1. Add the dependency to your `shard.yml`:
+1. Install SDL3 and other external libs SDL3_tty, SDL3_image
+
+(You can see the exact versions in the `shard.yml` file in this repo)
+
+On a Mac:
+
+```
+brew install sdl3 sdl3_image sdl3_ttf
+```
+
+2. Add the dependency to your `shard.yml`:
 
    ```yaml
    dependencies:
@@ -20,11 +30,11 @@ TODO: Write a description here
 require "sdl3"
 ```
 
-TODO: Write usage instructions here
+## NOTE
 
-## Development
+These bindings are work in progress, and not all complete yet.
 
-TODO: Write development instructions here
+But it should always be in working order, so the latest can be used in crystal to access SDL3
 
 ## Contributing
 
@@ -36,4 +46,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [Matt Swieboda](https://github.com/your-github-user) - creator and maintainer
+- [Matt Swieboda](https://github.com/mswieboda) - creator and maintainer

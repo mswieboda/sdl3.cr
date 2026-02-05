@@ -9,6 +9,8 @@ require "./sdl3/error_spec"
 require "./sdl3/timer_spec"
 require "./sdl3/log_spec"
 require "./sdl3/ttf_spec"
+require "./sdl3/image_spec"
+
 
 
 

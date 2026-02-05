@@ -22,6 +22,8 @@ lib LibSDL3
   fun render_texture_rotated = SDL_RenderTextureRotated(renderer : Renderer*, texture : Texture*, srcrect : FRect*, dstrect : FRect*, angle : Float64, center : FPoint*, flip : Int32) : Bool
   fun render_debug_text = SDL_RenderDebugText(renderer : Renderer*, x : Float32, y : Float32, text : UInt8*) : Bool
   fun set_render_vsync = SDL_SetRenderVSync(renderer : Renderer*, vsync : Int32) : Bool
+  fun get_texture_size = SDL_GetTextureSize(texture : Texture*, w : Float32*, h : Float32*) : Bool
+
 
   SDL_RENDERER_VSYNC_DISABLED = 0
   SDL_RENDERER_VSYNC_ADAPTIVE = -1

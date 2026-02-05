@@ -21,5 +21,12 @@ module SDL3
     def to_unsafe
       @ptr
     end
+
+    def size : Tuple(Float32, Float32)
+      w = 0.0_f32
+      h = 0.0_f32
+      LibSDL3.get_texture_size(@ptr, pointerof(w), pointerof(h))
+      {w, h}
+    end
   end
 end

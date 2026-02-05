@@ -36,6 +36,7 @@ examples:
 	@$(MAKE) run EXAMPLE=geometry
 	@$(MAKE) run EXAMPLE=texture
 	@$(MAKE) run EXAMPLE=text
+	@$(MAKE) run EXAMPLE=image
 
 spec:
 	@echo "Running specs..."

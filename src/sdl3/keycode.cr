@@ -1,0 +1,57 @@
+lib LibSDL3
+  alias Keycode = UInt32
+
+  enum Keymod : UInt16
+    NONE   = 0x0000
+    LSHIFT = 0x0001
+    RSHIFT = 0x0002
+    LEVEL5 = 0x0004
+    LCTRL  = 0x0040
+    RCTRL  = 0x0080
+    LALT   = 0x0100
+    RALT   = 0x0200
+    LGUI   = 0x0400
+    RGUI   = 0x0800
+    NUM    = 0x1000
+    CAPS   = 0x2000
+    MODE   = 0x4000
+    SCROLL = 0x8000
+    CTRL   = 0x00C0
+    SHIFT  = 0x0003
+    ALT    = 0x0300
+    GUI    = 0x0C00
+  end
+
+  UNKNOWN = 0x00000000_u32
+  RETURN = 0x0000000d_u32
+  ESCAPE = 0x0000001b_u32
+  BACKSPACE = 0x00000008_u32
+  TAB = 0x00000009_u32
+  SPACE = 0x00000020_u32
+  A = 0x00000061_u32
+  B = 0x00000062_u32
+  C = 0x00000063_u32
+  D = 0x00000064_u32
+  E = 0x00000065_u32
+  F = 0x00000066_u32
+  G = 0x00000067_u32
+  H = 0x00000068_u32
+  I = 0x00000069_u32
+  J = 0x0000006a_u32
+  K = 0x0000006b_u32
+  L = 0x0000006c_u32
+  M = 0x0000006d_u32
+  N = 0x0000006e_u32
+  O = 0x0000006f_u32
+  P = 0x00000070_u32
+  Q = 0x00000071_u32
+  R = 0x00000072_u32
+  S = 0x00000073_u32
+  T = 0x00000074_u32
+  U = 0x00000075_u32
+  V = 0x00000076_u32
+  W = 0x00000077_u32
+  X = 0x00000078_u32
+  Y = 0x00000079_u32
+  Z = 0x0000007a_u32
+end

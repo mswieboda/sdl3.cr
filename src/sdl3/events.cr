@@ -2,9 +2,6 @@ lib LibSDL3
   # SDL_events.h
   alias EventType = UInt32
   alias JoystickID = Int32
-  alias Keycode = Int32
-  alias Keymod = UInt16
-  alias Scancode = Int32
   alias MouseID = UInt32
   alias MouseButtonFlags = UInt32
   alias TouchID = Int64
@@ -12,6 +9,7 @@ lib LibSDL3
 
   SDL_EVENT_QUIT = 0x100_u32
   SDL_EVENT_WINDOW_CLOSE_REQUESTED = 0x20B_u32
+  SDL_EVENT_KEY_DOWN = 0x300_u32
 
   struct CommonEvent
     type : EventType

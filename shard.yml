@@ -1,0 +1,17 @@
+name: sdl3
+version: 0.1.0
+
+authors:
+  - Matt Swieboda <mswieboda@users.noreply.github.com>
+
+description: |
+  Simple DirectMedia Layer bindings (SDL3)
+
+crystal: '>= 1.19.1, < 2.0.0'
+
+license: MIT
+
+libraries:
+  libSDL3: ~> 3.4.0
+  libSDL3_image: ~> 3.4.0
+  libSDL3_ttf: ~> 3.2.2

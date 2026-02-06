@@ -129,9 +129,9 @@ module SDL3
       dest_rect = SDL3::FRect.new(x: x, y: y, w: w, h: h)
 
       if rect = source_rect
-        render_texture(texture: texture, source_rect: source_rect, dest_rect: dest_rect, angle, center, flip)
+        render_texture_rotated(texture: texture, source_rect: source_rect, dest_rect: dest_rect, angle: angle, center: center, flip: flip)
       else
-        render_texture(texture: texture, dest_rect: dest_rect, angle, center, flip)
+        render_texture_rotated(texture: texture, dest_rect: dest_rect, angle: angle, center: center, flip: flip)
       end
     end
 

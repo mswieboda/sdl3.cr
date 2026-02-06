@@ -3,6 +3,7 @@ lib LibSDL3
   alias InitFlags = UInt32
 
   SDL_INIT_VIDEO = 0x00000020_u32
+  SDL_INIT_AUDIO = 0x00000010_u32
 
   fun init = SDL_Init(flags : InitFlags) : Bool
   fun quit = SDL_Quit

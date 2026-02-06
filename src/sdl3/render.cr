@@ -105,7 +105,7 @@ module SDL3
       LibSDL3.render_texture(@ptr, texture.to_unsafe, Pointer(LibSDL3::FRect).null, pointerof(dest_rect))
     end
 
-    def render_texture(texture : Texture, x : Float32, y : Float32, source_rect : LibSDL3::FRect?)
+    def render_texture(texture : Texture, x : Float32, y : Float32, source_rect : LibSDL3::FRect? = nil)
       w, h = texture.size
       dest_rect = SDL3::FRect.new(x: x, y: y, w: w, h: h)
 

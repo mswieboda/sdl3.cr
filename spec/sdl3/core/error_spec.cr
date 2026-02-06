@@ -1,5 +1,3 @@
-require "../spec_helper"
-
 describe "SDL3 error" do
   it "sets and gets an error" do
     SDL3.clear_error

@@ -1,5 +1,3 @@
-require "../spec_helper"
-
 describe "SDL3 video" do
   before_each do
     SDL3.init(LibSDL3::SDL_INIT_VIDEO)

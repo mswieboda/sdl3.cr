@@ -1,5 +1,3 @@
-require "../spec_helper"
-
 describe "SDL3 init" do
   it "initializes and quits SDL video subsystem" do
     SDL3.init(LibSDL3::SDL_INIT_VIDEO)

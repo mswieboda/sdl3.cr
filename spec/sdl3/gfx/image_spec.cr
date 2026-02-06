@@ -1,5 +1,3 @@
-require "../spec_helper"
-
 describe "SDL3 Image" do
   before_each do
     SDL3.init(0)

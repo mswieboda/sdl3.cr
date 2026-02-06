@@ -44,7 +44,7 @@ examples:
 
 spec:
 	@echo "Running specs..."
-	$(CRYSTAL_COMPILER) spec --no-color
+	$(CRYSTAL_COMPILER) spec --no-color -I .
 
 run:
 	@echo "Building and running example: $(EXAMPLE)"

@@ -1,5 +1,3 @@
-require "../spec_helper"
-
 describe "SDL3 timer" do
   it "gets ticks and delays" do
     SDL3.init(0)

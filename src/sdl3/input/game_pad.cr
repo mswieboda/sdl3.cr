@@ -164,7 +164,7 @@ module SDL3
         String.new(LibSDL3.get_gamepad_name(@ptr))
       end
 
-      def type : GamepadType
+      def type : LibSDL3::GamepadType
         LibSDL3.get_gamepad_type(@ptr)
       end
 
@@ -184,11 +184,11 @@ module SDL3
         LibSDL3.get_gamepad_product_version(@ptr)
       end
 
-      def axis(axis_type : GamepadAxis) : Int16
+      def axis(axis_type : LibSDL3::GamepadAxis) : Int16
         LibSDL3.get_gamepad_axis(@ptr, axis_type)
       end
 
-      def button(button_type : GamepadButton) : Bool
+      def button(button_type : LibSDL3::GamepadButton) : Bool
         LibSDL3.get_gamepad_button(@ptr, button_type)
       end
 

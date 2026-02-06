@@ -1,8 +1,6 @@
 # Crystal bindings for SDL3_audio
 # Docs: https://wiki.libsdl.org/SDL3/CategoryAudio
 
-require "./error"
-
 lib LibSDL3
   alias AudioDeviceID = UInt32
   alias AudioFormat = UInt16

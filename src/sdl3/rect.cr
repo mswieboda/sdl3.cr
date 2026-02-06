@@ -18,3 +18,9 @@ lib LibSDL3
     h : Int32
   end
 end
+
+module SDL3
+  alias Rect = LibSDL3::Rect
+  alias FRect = LibSDL3::FRect
+  alias FPoint = LibSDL3::FPoint
+end

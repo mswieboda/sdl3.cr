@@ -16,7 +16,7 @@ module SDL3
 
     def init
       unless LibSDL3TTF.init
-        raise "Failed to initialize SDL_ttf"
+        raise "Failed to initialize SDL3_ttf"
       end
     end
 
@@ -26,6 +26,11 @@ module SDL3
 
     def was_init
       LibSDL3TTF.was_init
+    end
+
+    # TODO: test this
+    def init?
+      was_init != 1
     end
 
     class Font

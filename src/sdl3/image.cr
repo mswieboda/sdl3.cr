@@ -3,10 +3,6 @@ lib LibSDL3Image
   fun version = IMG_Version() : Int32
   fun load = IMG_Load(file : UInt8*) : LibSDL3::Surface*
   fun load_texture = IMG_LoadTexture(renderer : LibSDL3::Renderer*, file : UInt8*) : LibSDL3::Texture*
-
-  alias InitFlags = Int32
-  # According to documentation, IMG_Init and IMG_Quit are no longer necessary in SDL_image 3.0.
-  # So, no need to bind IMG_Init and IMG_Quit.
 end
 
 module SDL3

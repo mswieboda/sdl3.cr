@@ -24,7 +24,6 @@ lib LibSDL3
   fun set_render_vsync = SDL_SetRenderVSync(renderer : Renderer*, vsync : Int32) : Bool
   fun get_texture_size = SDL_GetTextureSize(texture : Texture*, w : Float32*, h : Float32*) : Bool
 
-
   SDL_RENDERER_VSYNC_DISABLED = 0
   SDL_RENDERER_VSYNC_ADAPTIVE = -1
 end

@@ -11,6 +11,7 @@ require "./sdl3/log_spec"
 require "./sdl3/mouse_spec"
 require "./sdl3/ttf_spec"
 require "./sdl3/image_spec"
+require "./sdl3/game_pad_spec"
 
 
 

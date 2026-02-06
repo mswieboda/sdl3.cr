@@ -23,5 +23,6 @@ require "./sdl3/input/keycode"
 require "./sdl3/input/scancode"
 require "./sdl3/input/keyboard"
 require "./sdl3/input/mouse"
+require "./sdl3/input/game_pad"
 require "./sdl3/audio/audio"
 

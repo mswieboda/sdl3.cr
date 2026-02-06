@@ -22,5 +22,5 @@ require "./sdl3/keycode"
 require "./sdl3/scancode"
 require "./sdl3/keyboard"
 require "./sdl3/mouse"
-require "./sdl3/sound"
+require "./sdl3/audio"
 

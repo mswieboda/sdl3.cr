@@ -45,6 +45,15 @@ lib LibSDL3
 end
 
 module SDL3
+  @[Flags]
+  enum MouseState
+    Left   = 1
+    Middle = 2
+    Right  = 4
+    X1     = 8
+    X2     = 16
+  end
+
   module Mouse
     extend self
 
@@ -52,21 +61,21 @@ module SDL3
       x = 0.0_f32
       y = 0.0_f32
       state = LibSDL3.get_mouse_state(pointerof(x), pointerof(y))
-      {state, x, y}
+      {MouseState.new(state.to_i32), x, y}
     end
 
     def get_global_state
       x = 0.0_f32
       y = 0.0_f32
       state = LibSDL3.get_global_mouse_state(pointerof(x), pointerof(y))
-      {state, x, y}
+      {MouseState.new(state.to_i32), x, y}
     end
 
     def get_relative_state
       x = 0.0_f32
       y = 0.0_f32
       state = LibSDL3.get_relative_mouse_state(pointerof(x), pointerof(y))
-      {state, x, y}
+      {MouseState.new(state.to_i32), x, y}
     end
 
     def warp_in_window(window : Window, x : Float32, y : Float32)

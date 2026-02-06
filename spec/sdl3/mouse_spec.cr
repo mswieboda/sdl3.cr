@@ -11,7 +11,7 @@ describe "SDL3 Mouse" do
 
   it "gets mouse state" do
     state, x, y = SDL3::Mouse.get_state
-    state.should be_a(UInt32)
+    state.should be_a(SDL3::MouseState)
     x.should be_a(Float32)
     y.should be_a(Float32)
   end

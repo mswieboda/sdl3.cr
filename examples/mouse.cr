@@ -80,7 +80,7 @@ while running
 
   # Draw Button 1
   renderer.draw_color = {100_u8, 100_u8, 100_u8, 255_u8}
-  renderer.fill_rect(pointerof(button1_rect))
+  renderer.fill_rect(button1_rect)
   renderer.draw_color = {200_u8, 200_u8, 200_u8, 255_u8}
   text_surface1 = font.render_text_blended(button1_text_state, SDL3.color(255, 255, 255, 255))
   text_texture1 = SDL3::Texture.from_surface(renderer, text_surface1)
@@ -88,13 +88,13 @@ while running
   text_x1 = button1_rect.x + (button1_rect.w - text_w1) / 2
   text_y1 = button1_rect.y + (button1_rect.h - text_h1) / 2
   text_dstrect1 = LibSDL3::FRect.new(x: text_x1, y: text_y1, w: text_w1, h: text_h1)
-  renderer.render_texture(text_texture1, Pointer(LibSDL3::FRect).null, pointerof(text_dstrect1))
+  renderer.render_texture(text_texture1, text_dstrect1)
   text_texture1.destroy
   text_surface1.destroy
 
   # Draw Button 2
   renderer.draw_color = {100_u8, 100_u8, 100_u8, 255_u8}
-  renderer.fill_rect(pointerof(button2_rect))
+  renderer.fill_rect(button2_rect)
   renderer.draw_color = {200_u8, 200_u8, 200_u8, 255_u8}
   text_surface2 = font.render_text_blended(button2_text_state, SDL3.color(255, 255, 255, 255))
   text_texture2 = SDL3::Texture.from_surface(renderer, text_surface2)
@@ -102,7 +102,7 @@ while running
   text_x2 = button2_rect.x + (button2_rect.w - text_w2) / 2
   text_y2 = button2_rect.y + (button2_rect.h - text_h2) / 2
   text_dstrect2 = LibSDL3::FRect.new(x: text_x2, y: text_y2, w: text_w2, h: text_h2)
-  renderer.render_texture(text_texture2, Pointer(LibSDL3::FRect).null, pointerof(text_dstrect2))
+  renderer.render_texture(text_texture2, text_dstrect2)
   text_texture2.destroy
   text_surface2.destroy
 

@@ -38,7 +38,7 @@ examples:
 	@$(MAKE) run EXAMPLE=text
 	@$(MAKE) run EXAMPLE=image
 	@$(MAKE) run EXAMPLE=mouse
-	@$(MAKE) run EXAMPLE=sound
+	@$(MAKE) run EXAMPLE=audio
 
 spec:
 	@echo "Running specs..."

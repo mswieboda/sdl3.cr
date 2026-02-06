@@ -3,7 +3,7 @@ require "../src/sdl3"
 SDL3.init(LibSDL3::SDL_INIT_VIDEO | LibSDL3::SDL_INIT_AUDIO)
 SDL3::TTF.init
 
-window = SDL3::Window.new("Sound Example", 640, 480, 0)
+window = SDL3::Window.new("Audio Example", 640, 480, 0)
 renderer = SDL3::Renderer.new(window)
 renderer.set_vsync(1)
 

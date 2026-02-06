@@ -83,8 +83,8 @@ module SDL3
       LibSDL3.render_rects(@ptr, rects.to_unsafe, rects.size)
     end
 
-    def fill_rect(rect : LibSDL3::FRect*)
-      LibSDL3.render_fill_rect(@ptr, rect)
+    def fill_rect(rect : LibSDL3::FRect)
+      LibSDL3.render_fill_rect(@ptr, pointerof(rect))
     end
 
     def fill_rects(rects : Slice(LibSDL3::FRect))

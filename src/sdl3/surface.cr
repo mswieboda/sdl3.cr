@@ -41,8 +41,12 @@ module SDL3
       @ptr
     end
 
-    def fill_rect(rect : LibSDL3::Rect*, color : UInt32)
-      LibSDL3.fill_surface_rect(@ptr, rect, color)
+    def fill_rect(rect : LibSDL3::Rect, color : UInt32)
+      LibSDL3.fill_surface_rect(@ptr, pointerof(rect), color)
+    end
+
+    def fill_rect(color : UInt32)
+      LibSDL3.fill_surface_rect(@ptr, Pointer(LibSDL3::Rect).null, color)
     end
   end
 end

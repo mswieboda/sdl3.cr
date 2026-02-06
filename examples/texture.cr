@@ -12,7 +12,7 @@ surface = SDL3::Surface.new(100, 100, LibSDL3::PixelFormat::RGBA8888)
 # Fill the surface with a color
 details = LibSDL3.get_pixel_format_details(surface.to_unsafe.value.format)
 color = SDL3.map_rgb(details, 255_u8, 0_u8, 0_u8)
-surface.fill_rect(Pointer(LibSDL3::Rect).null, color)
+surface.fill_rect(color)
 
 # Create a texture from the surface
 texture = SDL3::Texture.from_surface(renderer, surface)
@@ -36,7 +36,7 @@ while running
 
   # Render the texture
   dstrect = LibSDL3::FRect.new(x: 100.0, y: 100.0, w: 100.0, h: 100.0)
-  renderer.render_texture(texture, Pointer(LibSDL3::FRect).null, pointerof(dstrect))
+  renderer.render_texture(texture, dstrect)
 
   renderer.present
 end

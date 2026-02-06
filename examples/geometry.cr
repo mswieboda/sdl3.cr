@@ -25,12 +25,12 @@ while running
   # Draw a red rectangle
   renderer.draw_color = {255_u8, 0_u8, 0_u8, 255_u8}
   rect = LibSDL3::FRect.new(x: 100.0, y: 100.0, w: 200.0, h: 150.0)
-  renderer.draw_rect(pointerof(rect))
+  renderer.draw_rect(rect)
 
   # Draw a green filled rectangle
   renderer.draw_color = {0_u8, 255_u8, 0_u8, 255_u8}
   filled_rect = LibSDL3::FRect.new(x: 350.0, y: 100.0, w: 200.0, h: 150.0)
-  renderer.fill_rect(pointerof(filled_rect))
+  renderer.fill_rect(filled_rect)
 
   # Draw a blue line
   renderer.draw_color = {0_u8, 0_u8, 255_u8, 255_u8}

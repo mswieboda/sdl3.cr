@@ -97,12 +97,20 @@ module SDL3
       Texture.new(ptr)
     end
 
-    def render_texture(texture : Texture, srcrect : LibSDL3::FRect*, dstrect : LibSDL3::FRect*)
-      LibSDL3.render_texture(@ptr, texture.to_unsafe, srcrect, dstrect)
+    def render_texture(texture : Texture, source_rect : LibSDL3::FRect, dest_rect : LibSDL3::FRect)
+      LibSDL3.render_texture(@ptr, texture.to_unsafe, pointerof(source_rect), pointerof(dest_rect))
     end
 
-    def render_texture_rotated(texture : Texture, srcrect : LibSDL3::FRect*, dstrect : FRect*, angle : Float64, center : FPoint*, flip : Int32)
-      LibSDL3.render_texture_rotated(@ptr, texture.to_unsafe, srcrect, dstrect, angle, center, flip)
+    def render_texture(texture : Texture, dest_rect : LibSDL3::FRect)
+      LibSDL3.render_texture(@ptr, texture.to_unsafe, Pointer(LibSDL3::FRect).null, pointerof(dest_rect))
+    end
+
+    def render_texture_rotated(texture : Texture, source_rect : LibSDL3::FRect, dest_rect : FRect, angle : Float64, center : FPoint*, flip : Int32)
+      LibSDL3.render_texture_rotated(@ptr, texture.to_unsafe, pointerof(source_rect), pointerof(dest_rect), angle, center, flip)
+    end
+
+    def render_texture_rotated(texture : Texture, dest_rect : FRect, angle : Float64, center : FPoint*, flip : Int32)
+      LibSDL3.render_texture_rotated(@ptr, texture.to_unsafe, Pointer(LibSDL3::FRect).null, pointerof(dest_rect), angle, center, flip)
     end
 
     def render_debug_text(x : Float32, y : Float32, text : String)

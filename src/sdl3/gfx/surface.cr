@@ -1,4 +1,9 @@
 lib LibSDL3
+  enum ScaleMode : Int32
+    None = 0
+    Linear = 1
+    Best = 2
+  end
   struct Surface
     flags : UInt32
     format : LibSDL3::PixelFormat

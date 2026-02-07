@@ -44,6 +44,7 @@ examples:
 	@$(MAKE) run EXAMPLE=pixels
 	@$(MAKE) run EXAMPLE=misc
 	@$(MAKE) run EXAMPLE=blendmode
+	@$(MAKE) run EXAMPLE=logical_presentation
 
 spec:
 	@echo "Running specs..."

@@ -71,6 +71,13 @@ lib LibSDL3
     a : UInt8
   end
 
+  struct FColor
+    r : Float32
+    g : Float32
+    b : Float32
+    a : Float32
+  end
+
   struct Palette
     ncolors : Int32
     colors : Color*

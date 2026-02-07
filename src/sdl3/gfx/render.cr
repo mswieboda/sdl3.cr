@@ -1,6 +1,26 @@
 lib LibSDL3
   # SDL_render.h
   alias Renderer = Void
+
+  struct Vertex
+    position : LibSDL3::FPoint
+    color : LibSDL3::FColor
+    tex_coord : LibSDL3::FPoint
+  end
+
+  enum TextureAccess : Int32
+    Static = 0
+    Streaming = 1
+    Target = 2
+  end
+
+  enum RendererLogicalPresentation : Int32
+    Disabled = 0
+    Stretch = 1
+    Letterbox = 2
+    Overscan = 3
+    IntegerScale = 4
+  end
   
   fun create_renderer = SDL_CreateRenderer(window : Window*, name : UInt8*) : Renderer*
   fun destroy_renderer = SDL_DestroyRenderer(renderer : Renderer*)
@@ -25,6 +45,10 @@ lib LibSDL3
   fun get_texture_size = SDL_GetTextureSize(texture : Texture*, w : Float32*, h : Float32*) : Bool
   fun set_render_draw_blend_mode = SDL_SetRenderDrawBlendMode(renderer : Renderer*, blendMode : BlendMode) : Bool
   fun get_render_draw_blend_mode = SDL_GetRenderDrawBlendMode(renderer : Renderer*, blendMode : BlendMode*) : Bool
+  fun set_render_logical_presentation = SDL_SetRenderLogicalPresentation(renderer : Renderer*, w : Int32, h : Int32, mode : RendererLogicalPresentation) : Bool
+  fun get_render_logical_presentation = SDL_GetRenderLogicalPresentation(renderer : Renderer*, w : Int32*, h : Int32*, mode : RendererLogicalPresentation*) : Bool
+  fun set_render_target = SDL_SetRenderTarget(renderer : Renderer*, texture : Texture*) : Bool
+  fun get_render_target = SDL_GetRenderTarget(renderer : Renderer*) : Texture*
 
   SDL_RENDERER_VSYNC_DISABLED = 0
   SDL_RENDERER_VSYNC_ADAPTIVE = -1
@@ -153,6 +177,27 @@ module SDL3
       blend_mode_ptr = uninitialized LibSDL3::BlendMode
       LibSDL3.get_render_draw_blend_mode(@ptr, pointerof(blend_mode_ptr))
       blend_mode_ptr
+    end
+
+    def set_render_target(texture : Texture?) : Bool
+      LibSDL3.set_render_target(@ptr, texture.try(&.to_unsafe))
+    end
+
+    def get_render_target : Texture?
+      ptr = LibSDL3.get_render_target(@ptr)
+      if ptr.null?
+        nil
+      else
+        Texture.new(ptr)
+      end
+    end
+
+    def set_logical_presentation(w : Int32, h : Int32, mode : LibSDL3::RendererLogicalPresentation)
+      LibSDL3.set_render_logical_presentation(@ptr, w, h, mode)
+    end
+
+    def get_logical_presentation(w : Int32, h : Int32, mode : LibSDL3::RendererLogicalPresentation)
+      ptr = LibSDL3.get_render_logical_presentation(@ptr, pointerof(w), pointerof(h), pointerof(mode))
     end
   end
 end

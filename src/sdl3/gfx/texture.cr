@@ -1,5 +1,9 @@
 lib LibSDL3
   alias Texture = Void
+
+  fun get_texture_size = SDL_GetTextureSize(texture : Texture*, w : Float32*, h : Float32*) : Bool
+  fun set_texture_blend_mode = SDL_SetTextureBlendMode(texture : Texture*, blendMode : BlendMode) : Bool
+  fun get_texture_blend_mode = SDL_GetTextureBlendMode(texture : Texture*, blendMode : BlendMode*) : Bool
 end
 
 module SDL3
@@ -27,6 +31,16 @@ module SDL3
       h = 0.0_f32
       LibSDL3.get_texture_size(@ptr, pointerof(w), pointerof(h))
       {w, h}
+    end
+
+    def set_blend_mode(blend_mode : LibSDL3::BlendMode) : Bool
+      LibSDL3.set_texture_blend_mode(@ptr, blend_mode)
+    end
+
+    def get_blend_mode : LibSDL3::BlendMode
+      blend_mode_ptr = uninitialized LibSDL3::BlendMode
+      LibSDL3.get_texture_blend_mode(@ptr, pointerof(blend_mode_ptr))
+      blend_mode_ptr
     end
   end
 end

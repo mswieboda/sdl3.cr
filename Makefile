@@ -43,6 +43,7 @@ examples:
 	@$(MAKE) run EXAMPLE=platform
 	@$(MAKE) run EXAMPLE=pixels
 	@$(MAKE) run EXAMPLE=misc
+	@$(MAKE) run EXAMPLE=blendmode
 
 spec:
 	@echo "Running specs..."

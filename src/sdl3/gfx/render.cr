@@ -23,6 +23,8 @@ lib LibSDL3
   fun render_debug_text = SDL_RenderDebugText(renderer : Renderer*, x : Float32, y : Float32, text : UInt8*) : Bool
   fun set_render_vsync = SDL_SetRenderVSync(renderer : Renderer*, vsync : Int32) : Bool
   fun get_texture_size = SDL_GetTextureSize(texture : Texture*, w : Float32*, h : Float32*) : Bool
+  fun set_render_draw_blend_mode = SDL_SetRenderDrawBlendMode(renderer : Renderer*, blendMode : BlendMode) : Bool
+  fun get_render_draw_blend_mode = SDL_GetRenderDrawBlendMode(renderer : Renderer*, blendMode : BlendMode*) : Bool
 
   SDL_RENDERER_VSYNC_DISABLED = 0
   SDL_RENDERER_VSYNC_ADAPTIVE = -1
@@ -141,6 +143,16 @@ module SDL3
 
     def set_vsync(vsync : Int32)
       LibSDL3.set_render_vsync(@ptr, vsync)
+    end
+
+    def set_render_draw_blend_mode(blend_mode : LibSDL3::BlendMode) : Bool
+      LibSDL3.set_render_draw_blend_mode(@ptr, blend_mode)
+    end
+
+    def get_render_draw_blend_mode : LibSDL3::BlendMode
+      blend_mode_ptr = uninitialized LibSDL3::BlendMode
+      LibSDL3.get_render_draw_blend_mode(@ptr, pointerof(blend_mode_ptr))
+      blend_mode_ptr
     end
   end
 end

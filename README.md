@@ -32,7 +32,7 @@ require "sdl3"
 
 ## NOTE
 
-These bindings are work in progress, and not all complete yet.
+These bindings are work in progress, but mostly complete, definitely enough to use.
 
 But it should always be in working order, so the latest can be used in crystal to access SDL3
 

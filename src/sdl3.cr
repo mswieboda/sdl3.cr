@@ -3,6 +3,15 @@ lib LibSDL3
 end
 
 module SDL3
+  def self.render_text(renderer : Renderer, font : TTF::Font, text : String, x : Int32, y : Int32)
+    text_surface = font.render_text_blended(text, SDL3.color(255, 255, 255, 255))
+    text_texture = SDL3::Texture.from_surface(renderer, text_surface)
+    text_w, text_h = text_texture.size
+    text_dstrect = LibSDL3::FRect.new(x: x.to_f32, y: y.to_f32, w: text_w, h: text_h)
+    renderer.render_texture(text_texture, text_dstrect)
+    text_texture.destroy
+    text_surface.destroy
+  end
 end
 
 require "./sdl3/core/init"

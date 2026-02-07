@@ -78,6 +78,10 @@ lib LibSDL3
     refcount : Int32
   end
 
+  fun create_palette = SDL_CreatePalette(ncolors : LibC::Int) : Palette*
+  # fun set_palette_colors = SDL_SetPaletteColors(palette : Palette*, colors : Color*, firstcolor : LibC::Int, ncolors : LibC::Int) : Bool
+  fun destroy_palette = SDL_DestroyPalette(palette : Palette*)
+
   fun get_pixel_format_details = SDL_GetPixelFormatDetails(format : PixelFormat) : PixelFormatDetails*
   fun map_rgb = SDL_MapRGB(format : PixelFormatDetails*, palette : Palette*, r : UInt8, g : UInt8, b : UInt8) : UInt32
 end
@@ -89,5 +93,26 @@ module SDL3
 
   def self.color(r : UInt8, g : UInt8, b : UInt8, a : UInt8) : LibSDL3::Color
     LibSDL3::Color.new(r: r, g: g, b: b, a: a)
+  end
+
+  module Pixels
+    extend self
+
+    def get_format_name(format : LibSDL3::PixelFormat) : String
+      String.new(LibSDL3.get_pixel_format_name(format))
+    end
+
+    def get_rgba(pixelvalue : UInt32, format : LibSDL3::PixelFormatDetails*, palette : LibSDL3::Palette? = nil) : LibSDL3::Color
+      r = uninitialized UInt8
+      g = uninitialized UInt8
+      b = uninitialized UInt8
+      a = uninitialized UInt8
+      LibSDL3.get_rgba(pixelvalue, format, palette, pointerof(r), pointerof(g), pointerof(b), pointerof(a))
+      LibSDL3::Color.new(r, g, b, a)
+    end
+
+    def map_rgba(format : LibSDL3::PixelFormatDetails*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : UInt32
+      LibSDL3.map_rgba(format, Pointer(LibSDL3::Palette).null, r, g, b, a)
+    end
   end
 end

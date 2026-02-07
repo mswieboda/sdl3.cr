@@ -41,6 +41,7 @@ examples:
 	@$(MAKE) run EXAMPLE=audio
 	@$(MAKE) run EXAMPLE=game_pad
 	@$(MAKE) run EXAMPLE=platform
+	@$(MAKE) run EXAMPLE=pixels
 
 spec:
 	@echo "Running specs..."

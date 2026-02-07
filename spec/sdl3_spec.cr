@@ -15,7 +15,3 @@ require "./sdl3/gfx/pixels_spec"
 require "./sdl3/input/game_pad_spec"
 require "./sdl3/audio/audio_spec"
 require "./sdl3/core/platform_spec"
-
-
-
-

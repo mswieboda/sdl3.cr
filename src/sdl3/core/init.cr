@@ -12,7 +12,17 @@ lib LibSDL3
 end
 
 module SDL3
+  module InitFlags
+    Video = LibSDL3::SDL_INIT_VIDEO
+    Audio = LibSDL3::SDL_INIT_AUDIO
+    GamePad = LibSDL3::SDL_INIT_GAMEPAD
+  end
+
   extend self
+
+  def init
+    init(InitFlags::Video | InitFlags::Audio | InitFlags::GamePad)
+  end
 
   def init(flags : LibSDL3::InitFlags)
     unless LibSDL3.init(flags)
@@ -21,10 +31,19 @@ module SDL3
   end
 
   def quit
+    if init?
+      Mixer.quit
+      TTF.quit
+    end
+
     LibSDL3.quit
   end
 
-  def was_init(flags : LibSDL3::InitFlags)
+  def init?
+    init?(InitFlags::Video | InitFlags::Audio | InitFlags::GamePad)
+  end
+
+  def init?(flags : LibSDL3::InitFlags)
     LibSDL3.was_init(flags)
   end
 end

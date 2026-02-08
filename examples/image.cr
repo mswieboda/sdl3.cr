@@ -29,7 +29,7 @@ while running
 
   # Render the texture
   dstrect = LibSDL3::FRect.new(x: 100.0, y: 100.0, w: w, h: h)
-  renderer.render_texture(texture, Pointer(LibSDL3::FRect).null, pointerof(dstrect))
+  renderer.render_texture(texture, dstrect)
 
   renderer.present
 end

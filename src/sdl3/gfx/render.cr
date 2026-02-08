@@ -53,7 +53,7 @@ lib LibSDL3
   SDL_RENDERER_VSYNC_DISABLED = 0
   SDL_RENDERER_VSYNC_ADAPTIVE = -1
 end
-  
+
 module SDL3
   class Renderer
     @ptr : LibSDL3::Renderer*
@@ -101,8 +101,8 @@ module SDL3
       LibSDL3.render_lines(@ptr, points.to_unsafe, points.size)
     end
 
-    def draw_rect(rect : LibSDL3::FRect*)
-      LibSDL3.render_rect(@ptr, rect)
+    def draw_rect(rect : LibSDL3::FRect)
+      LibSDL3.render_rect(@ptr, pointerof(rect))
     end
 
     def draw_rects(rects : Slice(LibSDL3::FRect))

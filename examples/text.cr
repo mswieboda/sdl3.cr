@@ -38,7 +38,7 @@ while running
 
   # Render the text texture
   dstrect = LibSDL3::FRect.new(x: 10.0, y: 10.0, w: text_surface.to_unsafe.value.w.to_f, h: text_surface.to_unsafe.value.h.to_f)
-  renderer.render_texture(text_texture, Pointer(LibSDL3::FRect).null, pointerof(dstrect))
+  renderer.render_texture(text_texture, dstrect)
 
   renderer.present
 

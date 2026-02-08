@@ -2,8 +2,9 @@ CRYSTAL_COMPILER := crystal
 SOURCE_DIR := src
 BUILD_DIR := bin
 LIB_DIR := lib
-SDL3_IMAGE_LIB_PATH := /opt/homebrew/Cellar/sdl3_image/3.4.0/lib
-SDL3_TTF_LIB_PATH := /opt/homebrew/Cellar/sdl3_ttf/3.2.2/lib
+LINKFLAGS := -L/Users/matt/ext_libs/sdl3_mixer/lib -Wl,-rpath,/Users/matt/ext_libs/sdl3_mixer/lib
+# SDL3_IMAGE_LIB_PATH := /opt/homebrew/Cellar/sdl3_image/3.4.0/lib
+# SDL3_TTF_LIB_PATH := /opt/homebrew/Cellar/sdl3_ttf/3.2.2/lib
 LIB_NAME := libsdl3.a
 RM_CMD := rm -rf
 MKDIR_CMD := mkdir -p
@@ -48,16 +49,16 @@ examples:
 
 spec:
 	@echo "Running specs..."
-	$(CRYSTAL_COMPILER) spec --no-color -I .
+	$(CRYSTAL_COMPILER) spec --no-color --link-flags "$(LINKFLAGS)"
 
 run:
 	@echo "Building and running example: $(EXAMPLE)"
 	$(MKDIR_CMD) $(BUILD_DIR)
-	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE)
+	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE) --link-flags "$(LINKFLAGS)" --no-debug
 	./$(BUILD_DIR)/$(EXAMPLE)
 
 debug:
 	@echo "Building and running example in debug mode: $(EXAMPLE)"
 	$(MKDIR_CMD) $(BUILD_DIR)
-	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE)_debug --no-debug --error-trace
+	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE)_debug --link-flags "$(LINKFLAGS)" --error-trace
 	./$(BUILD_DIR)/$(EXAMPLE)_debug

@@ -24,7 +24,7 @@ module SDL3
   class Surface
     @ptr : LibSDL3::Surface*
 
-    def initialize(width : Int32, height : Int32, format : LibSDL3::PixelFormat)
+    def initialize(width : Int32, height : Int32, format : LibSDL3::PixelFormat = LibSDL3::PixelFormat::RGBA8888)
       ptr = LibSDL3.create_surface(width, height, format)
       raise "Failed to create surface" if ptr.null?
       @ptr = ptr
@@ -46,12 +46,12 @@ module SDL3
       @ptr
     end
 
-    def fill_rect(rect : LibSDL3::Rect, color : UInt32)
-      LibSDL3.fill_surface_rect(@ptr, pointerof(rect), color)
+    def fill_rect(rect : LibSDL3::Rect, color : Color)
+      LibSDL3.fill_surface_rect(@ptr, pointerof(rect), SDL3.color_to_u32(color))
     end
 
-    def fill_rect(color : UInt32)
-      LibSDL3.fill_surface_rect(@ptr, Pointer(LibSDL3::Rect).null, color)
+    def fill_rect(color : Color)
+      LibSDL3.fill_surface_rect(@ptr, Pointer(LibSDL3::Rect).null, SDL3.color_to_u32(color))
     end
   end
 end

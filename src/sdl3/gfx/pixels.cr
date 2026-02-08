@@ -105,6 +105,10 @@ module SDL3
     Color.new(r: r, g: g, b: b, a: a)
   end
 
+  def self.color_to_u32(color : Color)
+    (color.r.to_u32 << 24) | (color.g.to_u32 << 16) | (color.b.to_u32 << 8) | color.a.to_u32
+  end
+
   module Pixels
     extend self
 

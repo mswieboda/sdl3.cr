@@ -55,6 +55,8 @@ lib LibSDL3
 end
 
 module SDL3
+  alias LogicalPresentation = LibSDL3::RendererLogicalPresentation
+
   class Renderer
     @ptr : LibSDL3::Renderer*
 

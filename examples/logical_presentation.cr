@@ -45,11 +45,11 @@ background_texture = SDL3::Texture.from_surface(renderer, SDL3::Surface.new(back
 
 # Logical Presentation Modes
 presentation_modes = [
-  LibSDL3::RendererLogicalPresentation::Disabled,
-  LibSDL3::RendererLogicalPresentation::Stretch,
-  LibSDL3::RendererLogicalPresentation::Letterbox,
-  LibSDL3::RendererLogicalPresentation::Overscan,
-  LibSDL3::RendererLogicalPresentation::IntegerScale,
+  SDL3::LogicalPresentation::Disabled,
+  SDL3::LogicalPresentation::Stretch,
+  SDL3::LogicalPresentation::Letterbox,
+  SDL3::LogicalPresentation::Overscan,
+  SDL3::LogicalPresentation::IntegerScale,
 ]
 presentation_mode_names = [
   "DISABLED",

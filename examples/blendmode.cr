@@ -12,7 +12,7 @@ font = SDL3::TTF::Font.open("./assets/fonts/PressStart2P.ttf", 16.0)
 # Create a checkerboard background surface
 bg_width = 300
 bg_height = 300
-background_surface = LibSDL3.create_surface(bg_width, bg_height, LibSDL3::PixelFormat::RGBA8888)
+background_surface = SDL3::Surface.new(bg_width, bg_height)
 unless background_surface
   puts "Failed to create checkerboard surface: #{SDL3.get_error}"
   exit(1)
@@ -20,44 +20,40 @@ end
 
 # Draw checkerboard pattern
 tile_size = 25
-color1_obj = SDL3.color(50, 50, 50, 255) # Dark gray
-color2_obj = SDL3.color(150, 150, 150, 255) # Light gray
-color1_u32 = (color1_obj.r.to_u32 << 24) | (color1_obj.g.to_u32 << 16) | (color1_obj.b.to_u32 << 8) | color1_obj.a.to_u32
-color2_u32 = (color2_obj.r.to_u32 << 24) | (color2_obj.g.to_u32 << 16) | (color2_obj.b.to_u32 << 8) | color2_obj.a.to_u32
+color1 = SDL3.color(50, 50, 50, 255) # Dark gray
+color2 = SDL3.color(150, 150, 150, 255) # Light gray
 
 (0...bg_height).step(tile_size) do |y|
   (0...bg_width).step(tile_size) do |x|
-    rect = LibSDL3::Rect.new(x: x, y: y, w: tile_size, h: tile_size)
+    rect = SDL3::Rect.new(x: x, y: y, w: tile_size, h: tile_size)
     if ((x / tile_size) + (y / tile_size)) % 2 == 0
-      LibSDL3.fill_surface_rect(background_surface, pointerof(rect), color1_u32)
+      background_surface.fill_rect(rect, color1)
     else
-      LibSDL3.fill_surface_rect(background_surface, pointerof(rect), color2_u32)
+      background_surface.fill_rect(rect, color2)
     end
   end
 end
-background_texture = SDL3::Texture.from_surface(renderer, SDL3::Surface.new(background_surface))
+background_texture = SDL3::Texture.from_surface(renderer, background_surface)
 
 # Create transparent red square as the first foreground element
-foreground1_surface = LibSDL3.create_surface(100, 100, LibSDL3::PixelFormat::RGBA8888)
+foreground1_surface = SDL3::Surface.new(100, 100)
 unless foreground1_surface
   puts "Failed to create foreground1 surface: #{SDL3.get_error}"
   exit(1)
 end
-color_obj_red = SDL3.color(255, 0, 0, 150) # Red with 50% alpha
-red_color_u32 = (color_obj_red.r.to_u32 << 24) | (color_obj_red.g.to_u32 << 16) | (color_obj_red.b.to_u32 << 8) | color_obj_red.a.to_u32
-LibSDL3.fill_surface_rect(foreground1_surface, Pointer(LibSDL3::Rect).null, red_color_u32)
-foreground1_texture = SDL3::Texture.from_surface(renderer, SDL3::Surface.new(foreground1_surface))
+color_red = SDL3.color(255, 0, 0, 150) # Red with 50% alpha
+foreground1_surface.fill(color_red)
+foreground1_texture = SDL3::Texture.from_surface(renderer, foreground1_surface)
 
 # Create transparent green square as the second foreground element
-foreground2_surface = LibSDL3.create_surface(100, 100, LibSDL3::PixelFormat::RGBA8888)
+foreground2_surface = SDL3::Surface.new(100, 100)
 unless foreground2_surface
   puts "Failed to create foreground2 surface: #{SDL3.get_error}"
   exit(1)
 end
-color_obj_green = SDL3.color(0, 255, 0, 150) # Green with 50% alpha
-green_color_u32 = (color_obj_green.r.to_u32 << 24) | (color_obj_green.g.to_u32 << 16) | (color_obj_green.b.to_u32 << 8) | color_obj_green.a.to_u32
-LibSDL3.fill_surface_rect(foreground2_surface, Pointer(LibSDL3::Rect).null, green_color_u32)
-foreground2_texture = SDL3::Texture.from_surface(renderer, SDL3::Surface.new(foreground2_surface))
+color_green = SDL3.color(0, 255, 0, 150) # Green with 50% alpha
+foreground2_surface.fill(color_green)
+foreground2_texture = SDL3::Texture.from_surface(renderer, foreground2_surface)
 
 blend_modes = [
   LibSDL3::SDL_BLENDMODE_NONE,
@@ -109,7 +105,7 @@ while running
   renderer.clear
 
   # Render background
-  bg_dst_rect = LibSDL3::FRect.new(x: 50.0, y: 50.0, w: 300.0, h: 300.0)
+  bg_dst_rect = SDL3::FRect.new(x: 50.0, y: 50.0, w: 300.0, h: 300.0)
   renderer.render_texture(background_texture, bg_dst_rect)
 
   # Render foregrounds with current blend mode
@@ -118,11 +114,11 @@ while running
   foreground2_texture.set_blend_mode(current_blend_mode)
 
   # First foreground element (e.g., red square)
-  fg1_dst_rect = LibSDL3::FRect.new(x: 100.0, y: 100.0, w: 100.0, h: 100.0)
+  fg1_dst_rect = SDL3::FRect.new(x: 100.0, y: 100.0, w: 100.0, h: 100.0)
   renderer.render_texture(foreground1_texture, fg1_dst_rect)
 
   # Second foreground element (e.g., green square), overlapping the first
-  fg2_dst_rect = LibSDL3::FRect.new(x: 150.0, y: 150.0, w: 100.0, h: 100.0)
+  fg2_dst_rect = SDL3::FRect.new(x: 150.0, y: 150.0, w: 100.0, h: 100.0)
   renderer.render_texture(foreground2_texture, fg2_dst_rect)
 
   # Display current blend mode name

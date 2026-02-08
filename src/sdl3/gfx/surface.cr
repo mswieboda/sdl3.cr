@@ -50,7 +50,7 @@ module SDL3
       LibSDL3.fill_surface_rect(@ptr, pointerof(rect), SDL3.color_to_u32(color))
     end
 
-    def fill_rect(color : Color)
+    def fill(color : Color)
       LibSDL3.fill_surface_rect(@ptr, Pointer(LibSDL3::Rect).null, SDL3.color_to_u32(color))
     end
   end

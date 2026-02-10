@@ -18,6 +18,10 @@ lib LibSDL3
   fun destroy_surface = SDL_DestroySurface(surface : Surface*)
   fun load_bmp = SDL_LoadBMP(file : UInt8*) : Surface*
   fun fill_surface_rect = SDL_FillSurfaceRect(surface : Surface*, rect : Rect*, color : UInt32) : Bool
+
+  fun load_surface_io = SDL_LoadSurface_IO(src : IOStream*, closeio : Bool) : Surface*
+  fun load_bmp_io = SDL_LoadBMP_IO(src : IOStream*, closeio : Bool) : Surface*
+  fun load_png_io = SDL_LoadPNG_IO(src : IOStream*, closeio : Bool) : Surface*
 end
 
 module SDL3
@@ -33,6 +37,24 @@ module SDL3
     def self.load_bmp(file : String)
       ptr = LibSDL3.load_bmp(file.to_unsafe)
       raise "Failed to load BMP" if ptr.null?
+      new(ptr)
+    end
+
+    def self.load_io(io_stream : IOStream, close_io : Bool = false)
+      ptr = LibSDL3.load_surface_io(io_stream.to_unsafe, close_io)
+      raise "Failed to load surface from IO stream" if ptr.null?
+      new(ptr)
+    end
+
+    def self.load_bmp_io(io_stream : IOStream, close_io : Bool = false)
+      ptr = LibSDL3.load_bmp_io(io_stream.to_unsafe, close_io)
+      raise "Failed to load BMP from IO stream" if ptr.null?
+      new(ptr)
+    end
+
+    def self.load_png_io(io_stream : IOStream, close_io : Bool = false)
+      ptr = LibSDL3.load_png_io(io_stream.to_unsafe, close_io)
+      raise "Failed to load PNG from IO stream" if ptr.null?
       new(ptr)
     end
 

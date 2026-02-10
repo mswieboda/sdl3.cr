@@ -46,7 +46,6 @@ lib LibSDL3
 
   # Opaque Structs
   alias AudioStream = Void
-  alias IOStream = Void
 
   # Functions
   fun get_num_audio_drivers = SDL_GetNumAudioDrivers : LibC::Int

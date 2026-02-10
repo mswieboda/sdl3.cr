@@ -7,14 +7,21 @@ renderer = SDL3::Renderer.new(window)
 renderer.set_vsync(1)
 
 # Create a surface
-surface = SDL3::Surface.new(100, 100)
+surface_color = SDL3::Surface.new(100, 100)
 
 # Fill the surface with a color
 color = SDL3.color(255, 0, 0, 255)
-surface.fill(color)
+surface_color.fill(color)
+
+# Create an IOStream from the image file
+iostream = SDL3::IOStream.from_file("./assets/img/player.png", "rb")
+
+# Create a surface from the IOStream
+surface_img = SDL3::Surface.load_png_io(iostream, true) # `true` to close the iostream when surface is destroyed
 
 # Create a texture from the surface
-texture = SDL3::Texture.from_surface(renderer, surface)
+texture_color = SDL3::Texture.from_surface(renderer, surface_color)
+texture_img = SDL3::Texture.from_surface(renderer, surface_img)
 
 running = true
 while running
@@ -35,13 +42,19 @@ while running
 
   # Render the texture
   dstrect = SDL3::FRect.new(x: 100.0, y: 100.0, w: 100.0, h: 100.0)
-  renderer.render_texture(texture, dstrect)
+  renderer.render_texture(texture_color, dstrect)
+
+  img_width, img_height = texture_img.size
+  dstrect = SDL3::FRect.new(x: 50.0, y: 300.0, w: img_width, h: img_height)
+  renderer.render_texture(texture_img, dstrect)
 
   renderer.present
 end
 
-texture.destroy
-surface.destroy
+texture_color.destroy
+texture_img.destroy
+surface_color.destroy
+surface_img.destroy
 renderer.destroy
 window.destroy
 SDL3.quit

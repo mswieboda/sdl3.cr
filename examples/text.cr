@@ -15,6 +15,19 @@ text_surface = font.render_text_blended("Hello, SDL3 TTF!", SDL3.color(255, 255,
 # Create a texture from the surface
 text_texture = SDL3::Texture.from_surface(renderer, text_surface)
 
+# Create an IOStream from the font file
+font_file_path = "./assets/fonts/PressStart2P.ttf"
+font_iostream = SDL3::IOStream.from_file(font_file_path, "rb")
+
+# Open the font from IOStream
+font_io = SDL3::TTF::Font.open_io(font_iostream, 18.0, true) # `true` to close the iostream when font is closed
+
+# Render second text to a surface
+text_io_surface = font_io.render_text_blended("Loaded via IOStream!", SDL3.color(0, 255, 0, 255))
+
+# Create a texture from the second surface
+text_io_texture = SDL3::Texture.from_surface(renderer, text_io_surface)
+
 FRAME_DELAY = (1000 // 60).to_u64
 
 running = true
@@ -40,6 +53,10 @@ while running
   dstrect = LibSDL3::FRect.new(x: 10.0, y: 10.0, w: text_surface.to_unsafe.value.w.to_f, h: text_surface.to_unsafe.value.h.to_f)
   renderer.render_texture(text_texture, dstrect)
 
+  # Render the second text texture
+  dstrect_io = LibSDL3::FRect.new(x: 10.0, y: 50.0, w: text_io_surface.to_unsafe.value.w.to_f, h: text_io_surface.to_unsafe.value.h.to_f)
+  renderer.render_texture(text_io_texture, dstrect_io)
+
   renderer.present
 
   frame_time = SDL3.get_ticks - frame_start
@@ -48,6 +65,9 @@ while running
   end
 end
 
+text_io_texture.destroy
+text_io_surface.destroy
+font_io.close
 text_texture.destroy
 text_surface.destroy
 font.close

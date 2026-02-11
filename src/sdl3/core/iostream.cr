@@ -38,7 +38,7 @@ module SDL3
       raise "Failed to create IOStream" if @ptr.null?
     end
 
-    def self.from_file(file : String, mode : String)
+    def self.from_file(file : String, mode : String = "rb")
       ptr = LibSDL3.io_from_file(file.to_unsafe, mode.to_unsafe)
       new(ptr)
     end

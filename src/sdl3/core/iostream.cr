@@ -43,6 +43,11 @@ module SDL3
       new(ptr)
     end
 
+    def self.from_memory(data : Bytes, size)
+      ptr = LibSDL3.io_from_mem(data.to_unsafe, size.to_u64)
+      new(ptr)
+    end
+
     def close
       LibSDL3.close_io(@ptr)
     end

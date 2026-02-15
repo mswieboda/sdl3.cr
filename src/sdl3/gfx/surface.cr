@@ -4,6 +4,7 @@ lib LibSDL3
     Linear = 1
     Best = 2
   end
+
   struct Surface
     flags : UInt32
     format : LibSDL3::PixelFormat
@@ -14,6 +15,7 @@ lib LibSDL3
     refcount : Int32
     reserved : Void*
   end
+
   fun create_surface = SDL_CreateSurface(width : Int32, height : Int32, format : PixelFormat) : Surface*
   fun destroy_surface = SDL_DestroySurface(surface : Surface*)
   fun load_bmp = SDL_LoadBMP(file : UInt8*) : Surface*
@@ -28,7 +30,7 @@ module SDL3
   class Surface
     @ptr : LibSDL3::Surface*
 
-    def initialize(width : Int32, height : Int32, format : LibSDL3::PixelFormat = LibSDL3::PixelFormat::RGBA8888)
+    def initialize(width : Int32 = 0, height : Int32 = 0, format : LibSDL3::PixelFormat = LibSDL3::PixelFormat::RGBA8888)
       ptr = LibSDL3.create_surface(width, height, format)
       raise "Failed to create surface" if ptr.null?
       @ptr = ptr

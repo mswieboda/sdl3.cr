@@ -248,5 +248,9 @@ module SDL3
     def get_logical_presentation(w : Int32, h : Int32, mode : LibSDL3::RendererLogicalPresentation)
       ptr = LibSDL3.get_render_logical_presentation(@ptr, pointerof(w), pointerof(h), pointerof(mode))
     end
+
+    def self.create_text_engine : TTF::TextEngine
+      TTF::TextEngine.create(Type::Renderer)
+    end
   end
 end

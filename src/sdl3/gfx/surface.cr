@@ -77,5 +77,13 @@ module SDL3
     def fill(color : Color)
       LibSDL3.fill_surface_rect(@ptr, Pointer(LibSDL3::Rect).null, SDL3.color_to_u32(color))
     end
+
+    def self.create_text_engine : TTF::TextEngine
+      TTF::TextEngine.create(Type::Surface)
+    end
+
+    def draw_text(text : TTF::Text, x : Float32, y : Float32) : Bool
+      LibSDL3TTF.draw_surface_text(text.to_unsafe, x, y, to_unsafe)
+    end
   end
 end

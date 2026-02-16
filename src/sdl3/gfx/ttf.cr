@@ -584,35 +584,6 @@ module SDL3
         Color.new(r: r, g: g, b: b, a: a)
       end
 
-      def set_position(x : Int32, y : Int32)
-        LibSDL3TTF.set_text_position(to_unsafe, x, y)
-      end
-
-      def position : Tuple(Int32, Int32)
-        x = 0
-        y = 0
-
-        LibSDL3TTF.get_text_position(to_unsafe, x, y)
-
-        {x, y}
-      end
-
-      def x=(x : Int32)
-        self.set_position(x, y)
-      end
-
-      def x
-        position[0]
-      end
-
-      def y=(y : Int32)
-        self.set_position(x, y)
-      end
-
-      def y
-        position[1]
-      end
-
       def wrap_width=(wrap_width : Int32)
         LibSDL3TTF.set_text_wrap_width(to_unsafe, wrap_width)
       end

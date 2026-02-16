@@ -277,7 +277,7 @@ module SDL3
       def copy : Font
         ptr = LibSDL3TTF.copy_font(to_unsafe)
         raise "Failed to copy font" if ptr.null?
-        new(ptr)
+        Font.new(ptr)
       end
 
       def add_fallback(font : Font)

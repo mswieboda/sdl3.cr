@@ -6,28 +6,28 @@ lib LibSDL3TTF
   alias TextData = Void
   alias TextLayout = Void
 
-  enum TTF_HorizontalAlignment : Int8
-    TTF_HORIZONTAL_ALIGN_INVALID = -1
-    TTF_HORIZONTAL_ALIGN_LEFT
-    TTF_HORIZONTAL_ALIGN_CENTER
-    TTF_HORIZONTAL_ALIGN_RIGHT
+  enum Alignment : Int8
+    Invalid = -1
+    Left
+    Center
+    Right
   end
 
   enum FontStyleFlags : UInt8
-    TTF_STYLE_NORMAL = 0x00
-    TTF_STYLE_BOLD = 0x01
-    TTF_STYLE_ITALIC = 0x02
-    TTF_STYLE_UNDERLINE = 0x04
-    TTF_STYLE_STRIKETHROUGH = 0x08
+    Normal        = 0x00
+    Bold          = 0x01
+    Italic        = 0x02
+    Underline     = 0x04
+    StrikeThrough = 0x08
   end
 
   enum HintingFlags : Int8
-    TTF_HINTING_INVALID = -1
-    TTF_HINTING_NORMAL
-    TTF_HINTING_LIGHT
-    TTF_HINTING_MONO
-    TTF_HINTING_NONE
-    TTF_HINTING_LIGHT_SUBPIXEL
+    Invalid = -1
+    Normal
+    Light
+    Mono
+    None
+    LightSubPixel
   end
 
   enum Direction : UInt8
@@ -100,8 +100,8 @@ lib LibSDL3TTF
   fun set_font_sdf = TTF_SetFontSDF(font : Font*, enabled : Bool) : Bool
   fun get_font_sdf = TTF_GetFontSDF(font : Font*) : Bool
   fun get_font_weight = TTF_GetFontWeight(font : Font*) : LibC::Int
-  fun set_font_wrap_alignment = TTF_SetFontWrapAlignment(font : Font*, align : TTF_HorizontalAlignment)
-  fun get_font_wrap_alignment = TTF_GetFontWrapAlignment(font : Font*) : TTF_HorizontalAlignment
+  fun set_font_wrap_alignment = TTF_SetFontWrapAlignment(font : Font*, align : Alignment)
+  fun get_font_wrap_alignment = TTF_GetFontWrapAlignment(font : Font*) : Alignment
   fun get_font_height = TTF_GetFontHeight(font : Font*) : LibC::Int
   fun get_font_ascent = TTF_GetFontAscent(font : Font*) : LibC::Int
   fun get_font_descent = TTF_GetFontDescent(font : Font*) : LibC::Int
@@ -203,30 +203,9 @@ module SDL3
   module TTF
     extend self
 
-    enum Alignment : Int32
-      Invalid = LibSDL3TTF::TTF_HorizontalAlignment::TTF_HORIZONTAL_ALIGN_INVALID
-      Left    = LibSDL3TTF::TTF_HorizontalAlignment::TTF_HORIZONTAL_ALIGN_LEFT
-      Center  = LibSDL3TTF::TTF_HorizontalAlignment::TTF_HORIZONTAL_ALIGN_CENTER
-      Right   = LibSDL3TTF::TTF_HorizontalAlignment::TTF_HORIZONTAL_ALIGN_RIGHT
-    end
-
-    enum Style : UInt32
-      Normal        = LibSDL3TTF::FontStyleFlags::TTF_STYLE_NORMAL
-      Bold          = LibSDL3TTF::FontStyleFlags::TTF_STYLE_BOLD
-      Italic        = LibSDL3TTF::FontStyleFlags::TTF_STYLE_ITALIC
-      Underline     = LibSDL3TTF::FontStyleFlags::TTF_STYLE_UNDERLINE
-      StrikeThrough = LibSDL3TTF::FontStyleFlags::TTF_STYLE_STRIKETHROUGH
-    end
-
-    enum HintingFlags : Int32
-      Invalid   = LibSDL3TTF::HintingFlags::TTF_HINTING_INVALID
-      Normal    = LibSDL3TTF::HintingFlags::TTF_HINTING_NORMAL
-      Light     = LibSDL3TTF::HintingFlags::TTF_HINTING_LIGHT
-      Mono      = LibSDL3TTF::HintingFlags::TTF_HINTING_MONO
-      None      = LibSDL3TTF::HintingFlags::TTF_HINTING_NONE
-      SubPixel  = LibSDL3TTF::HintingFlags::TTF_HINTING_LIGHT_SUBPIXEL
-    end
-
+    alias Align = LibSDL3TTF::Alignment
+    alias Style = LibSDL3TTF::FontStyleFlags
+    alias Hinting = LibSDL3TTF::HintingFlags
     alias Direction = LibSDL3TTF::Direction
 
     def init
@@ -348,11 +327,11 @@ module SDL3
         LibSDL3TTF.get_font_weight(to_unsafe)
       end
 
-      def wrap=(align : Alignment)
+      def align=(align : Align)
         LibSDL3TTF.set_font_wrap_alignment(to_unsafe, align)
       end
 
-      def wrap : Alignment
+      def align : Align
         LibSDL3TTF.get_font_wrap_alignment(to_unsafe)
       end
 
@@ -417,7 +396,7 @@ module SDL3
         {w, h}
       end
 
-      def text_wrapped_size(text : String, wrap_width : Int32) : Tuple{Int32, Int32}
+      def text_size_wrapped(text : String, wrap_width : Int32) : Tuple{Int32, Int32}
         w = 0
         h = 0
 
@@ -426,9 +405,9 @@ module SDL3
         {w, h}
       end
 
-      def measure(text : String, max_width : Int32) : Tuple(Int32, Int32)
+      def measure(text : String, max_width : Int32) : Tuple(Int32, UInt64)
         width = 0
-        length = 0
+        length = 0_u64
 
         LibSDL3TTF.measure_string(to_unsafe, text, text.bytesize, max_width, pointerof(width), pointerof(length))
 
@@ -570,10 +549,10 @@ module SDL3
       end
 
       def color : Color
-        r = 0
-        g = 0
-        b = 0
-        a = 0
+        r = 0_u8
+        g = 0_u8
+        b = 0_u8
+        a = 0_u8
 
         LibSDL3TTF.get_text_color(to_unsafe, pointerof(r), pointerof(g), pointerof(b), pointerof(a))
 
@@ -596,7 +575,7 @@ module SDL3
         LibSDL3TTF.set_text_wrap_whitespace_visible(to_unsafe, visible)
       end
 
-      def whitespace_visible?
+      def wrap_whitespace_visible?
         LibSDL3TTF.text_wrap_whitespace_visible(to_unsafe)
       end
 

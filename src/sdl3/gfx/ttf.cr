@@ -31,11 +31,11 @@ lib LibSDL3TTF
   end
 
   enum Direction : UInt8
-    TTF_DIRECTION_INVALID = 0
-    TTF_DIRECTION_LTR = 4
-    TTF_DIRECTION_RTL
-    TTF_DIRECTION_TTB
-    TTF_DIRECTION_BTT
+    Invalid = 0
+    LTR = 4
+    RTL
+    TTB
+    BTT
   end
 
   enum ImageType : UInt8
@@ -227,17 +227,7 @@ module SDL3
       SubPixel  = LibSDL3TTF::HintingFlags::TTF_HINTING_LIGHT_SUBPIXEL
     end
 
-    enum Direction : UInt8
-      Invalid     = LibSDL3TTF::Direction::TTF_DIRECTION_INVALID
-      LTR         = LibSDL3TTF::Direction::TTF_DIRECTION_LTR
-      LeftToRight = LibSDL3TTF::Direction::TTF_DIRECTION_LTR
-      RTL         = LibSDL3TTF::Direction::TTF_DIRECTION_RTL
-      RightToLeft = LibSDL3TTF::Direction::TTF_DIRECTION_RTL
-      TTB         = LibSDL3TTF::Direction::TTF_DIRECTION_TTB
-      TopToBottom = LibSDL3TTF::Direction::TTF_DIRECTION_TTB
-      BTT         = LibSDL3TTF::Direction::TTF_DIRECTION_BTT
-      BottomToTop = LibSDL3TTF::Direction::TTF_DIRECTION_BTT
-    end
+    alias Direction = LibSDL3TTF::Direction
 
     def init
       unless LibSDL3TTF.init
@@ -628,7 +618,7 @@ module SDL3
       end
 
       def height
-        size[0]
+        size[1]
       end
 
       def destroy

@@ -250,7 +250,7 @@ module SDL3
     end
 
     def create_text_engine : TTF::TextEngine
-      TTF.TextEngine.create(self)
+      TTF::TextEngine.create(self)
     end
   end
 end

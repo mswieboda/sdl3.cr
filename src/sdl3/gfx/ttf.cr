@@ -507,10 +507,16 @@ module SDL3
         @ptr
       end
 
-      def self.create(type : Type) : TextEngine
+      def self.create(renderer : SDL3::Renderer) : TextEngine
+        ptr = LibSDL3TTF.create_renderer_text_engine(renderer.to_unsafe)
+        raise "Failed to create renderer text engine" if ptr.null?
+        TextEngine.new(ptr, Type::Renderer)
+      end
+
+      def self.create_surface_text_engine : TextEngine
         ptr = LibSDL3TTF.create_surface_text_engine
-        raise "Failed to create #{type} text engine" if ptr.null?
-        TextEngine.new(ptr, type)
+        raise "Failed to create surface text engine" if ptr.null?
+        TextEngine.new(ptr, Type::Surface)
       end
 
       def destroy

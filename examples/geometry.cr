@@ -74,6 +74,23 @@ while running
   end
   renderer.render_geometry(circle_vertices, circle_indices)
 
+  # Draw an arc outline
+  arc_points = [] of SDL3::FPoint
+  arc_center_x = 500.0
+  arc_center_y = 250.0
+  arc_radius = 80.0
+  arc_resolution = 32 # Higher resolution for a smoother line
+
+  (arc_resolution + 1).times do |i|
+    angle = -Math::PI / 2.0 + i * (0.5 * Math::PI / arc_resolution)
+    x = arc_center_x + arc_radius * Math.cos(angle)
+    y = arc_center_y + arc_radius * Math.sin(angle)
+    arc_points << SDL3::FPoint.new(x: x.to_f32, y: y.to_f32)
+  end
+
+  renderer.draw_color = {255_u8, 0_u8, 255_u8, 255_u8} # Magenta
+  renderer.draw_lines(Slice.new(arc_points.to_unsafe, arc_points.size))
+
   renderer.present
 end
 

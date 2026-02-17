@@ -55,6 +55,20 @@ lib LibSDL3
   SDL_RENDERER_VSYNC_ADAPTIVE = -1
 end
 
+struct LibSDL3::Vertex
+  property position : LibSDL3::FPoint
+  property color : LibSDL3::FColor
+  property tex_coord : LibSDL3::FPoint
+
+  def initialize (x : Float32, y : Float32, @color : LibSDL3::FColor)
+    @position = LibSDL3::FPoint.new(x: x, y: y)
+    @tex_coord = LibSDL3::FPoint.new(x: 0_f32, y: 0_f32)
+  end
+
+  def initialize (@position : LibSDL3::FPoint, @color : LibSDL3::FColor, @tex_coord : LibSDL3::FColor)
+  end
+end
+
 module SDL3
   alias LogicalPresentation = LibSDL3::RendererLogicalPresentation
   alias Vertex = LibSDL3::Vertex
@@ -128,11 +142,11 @@ module SDL3
     end
 
     def render_geometry(texture : Texture, vertices : Array(Vertex), indices : Array(Int32))
-      LibSDL3.render_geometry(to_unsafe, texture.to_unsafe, pointerof(vertices), vertices.size, pointerof(indices), indices.size)
+      LibSDL3.render_geometry(to_unsafe, texture.to_unsafe, vertices.to_unsafe, vertices.size, indices.to_unsafe, indices.size)
     end
 
     def render_geometry(vertices : Array(Vertex), indices : Array(Int32))
-      LibSDL3.render_geometry(to_unsafe, Pointer(Texture).null, pointerof(vertices), vertices.size, pointerof(indices), indices.size)
+      LibSDL3.render_geometry(to_unsafe, Pointer(Texture).null, vertices.to_unsafe, vertices.size, indices.to_unsafe, indices.size)
     end
 
     def render_texture(texture : Texture, source_rect : LibSDL3::FRect, dest_rect : LibSDL3::FRect)

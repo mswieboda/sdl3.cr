@@ -71,11 +71,11 @@ module SDL3
     end
 
     def fill_rect(rect : LibSDL3::Rect, color : Color)
-      LibSDL3.fill_surface_rect(@ptr, pointerof(rect), SDL3.color_to_u32(color))
+      LibSDL3.fill_surface_rect(@ptr, pointerof(rect), color.to_u32)
     end
 
     def fill(color : Color)
-      LibSDL3.fill_surface_rect(@ptr, Pointer(LibSDL3::Rect).null, SDL3.color_to_u32(color))
+      LibSDL3.fill_surface_rect(@ptr, Pointer(LibSDL3::Rect).null, color.to_u32)
     end
 
     def self.create_text_engine : TTF::TextEngine

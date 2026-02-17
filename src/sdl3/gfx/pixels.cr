@@ -93,6 +93,103 @@ lib LibSDL3
   fun map_rgb = SDL_MapRGB(format : PixelFormatDetails*, palette : Palette*, r : UInt8, g : UInt8, b : UInt8) : UInt32
 end
 
+struct LibSDL3::Color
+  property r : UInt8
+  property g : UInt8
+  property b : UInt8
+  property a : UInt8
+
+  def initialize(@r : UInt8 = 0_u8, @g : UInt8 = 0_u8, @b : UInt8 = 0_u8, @a : UInt8 = 255_u8)
+  end
+
+  def to_u32
+    (r.to_u32 << 24) | (g.to_u32 << 16) | (b.to_u32 << 8) | a.to_u32
+  end
+
+  def to_fcolor
+    FColor.new(r: r / 255, g: g / 255, b: b / 255, a: a / 255)
+  end
+
+  def self.from_hex(hex : String)
+    code = hex.lchop('#').lchop("0x")
+    alpha = code[6..7].empty? ? "ff" : code[6..7]
+
+    Color.new(
+      r: code[0..1].to_u8(base: 16),
+      g: code[2..3].to_u8(base: 16),
+      b: code[4..5].to_u8(base: 16),
+      a: alpha.to_u8(base: 16)
+    )
+  end
+
+  def self.random(a : UInt8 = 255)
+    Color.new(
+      r: rand(256),
+      g: rand(256),
+      b: rand(256),
+      a: a
+    )
+  end
+
+  def self.random_chunks(size : UInt8 = 8, a : UInt8 = 255)
+    rand_max = (256 // size) + 1
+
+    Color.new(
+      r: rand(rand_max) * size,
+      g: rand(rand_max) * size,
+      b: rand(rand_max) * size,
+      a: a
+    )
+  end
+
+  def self.to_hex(color : Color, with_alpha = false)
+    hex = "#"
+    hex += color.r.to_s(base: 16, upcase: true)
+    hex += color.g.to_s(base: 16, upcase: true)
+    hex += color.b.to_s(base: 16, upcase: true)
+    hex += color.a.to_s(base: 16, upcase: true) if with_alpha
+  end
+end
+
+struct LibSDL3::FColor
+  property r : Float32
+  property g : Float32
+  property b : Float32
+  property a : Float32
+
+  def initialize(@r : Float32 = 0_f32, @g : Float32 = 0_f32, @b : Float32 = 0_f32, @a : Float32 = 1_f32)
+  end
+
+  def to_color : Color
+    Color.new(
+      r: (r * 255).to_u8,
+      g: (g * 255).to_u8,
+      b: (b * 255).to_u8,
+      a: (a * 255).to_u8
+    )
+  end
+
+  def self.random(a : UInt8 = 1_f32)
+    Color.new(
+      r: rand(1_f32),
+      g: rand(1_f32),
+      b: rand(1_f32),
+      a: a
+    )
+  end
+
+  def self.random_chunks(size : UInt8 = 8, a : UInt8 = 1_f32)
+    rand_max = (1_f32 // size) + 1
+
+    Color.new(
+      r: rand(rand_max) * size,
+      g: rand(rand_max) * size,
+      b: rand(rand_max) * size,
+      a: a
+    )
+  end
+end
+
 module SDL3
   alias Color = LibSDL3::Color
   alias FColor = LibSDL3::FColor
@@ -101,12 +198,20 @@ module SDL3
     LibSDL3.map_rgb(format, Pointer(LibSDL3::Palette).null, r, g, b)
   end
 
-  def self.color(r : UInt8, g : UInt8, b : UInt8, a : UInt8) : Color
+  def self.color(r : UInt8 = 0, g : UInt8 = 0, b : UInt8 = 0, a : UInt8 = 255) : Color
     Color.new(r: r, g: g, b: b, a: a)
   end
 
-  def self.color_to_u32(color : Color)
-    (color.r.to_u32 << 24) | (color.g.to_u32 << 16) | (color.b.to_u32 << 8) | color.a.to_u32
+  def self.color_all(value : UInt8, a : UInt8 = 255) : Color
+    color(r: value, g: value, b: value, a: a)
+  end
+
+  def self.fcolor(r : Float32 = 0_f32, g : Float32 = 0_f32, b : Float32 = 0_f32, a : Float32 = 1_f32) : Color
+    Color.new(r: r, g: g, b: b, a: a)
+  end
+
+  def self.fcolor_all(value : Float32, a : Float32 = 1_f32) : Color
+    color(r: value, g: value, b: value, a: a)
   end
 
   module Pixels
@@ -117,12 +222,14 @@ module SDL3
     end
 
     def get_rgba(pixelvalue : UInt32, format : LibSDL3::PixelFormatDetails*, palette : LibSDL3::Palette? = nil) : Color
-      r = uninitialized UInt8
-      g = uninitialized UInt8
-      b = uninitialized UInt8
-      a = uninitialized UInt8
+      r = 0_u8
+      g = 0_u8
+      b = 0_u8
+      a = 0_u8
+
       LibSDL3.get_rgba(pixelvalue, format, palette, pointerof(r), pointerof(g), pointerof(b), pointerof(a))
-      Color.new(r, g, b, a)
+
+      Color.new(r: r, g: g, b: b, a: a)
     end
 
     def map_rgba(format : LibSDL3::PixelFormatDetails*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : UInt32

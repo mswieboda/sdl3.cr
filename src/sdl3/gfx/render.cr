@@ -38,6 +38,7 @@ lib LibSDL3
   fun create_texture = SDL_CreateTexture(renderer : Renderer*, format : PixelFormat, access : Int32, w : Int32, h : Int32) : Texture*
   fun create_texture_from_surface = SDL_CreateTextureFromSurface(renderer : Renderer*, surface : Surface*) : Texture*
   fun destroy_texture = SDL_DestroyTexture(texture : Texture*)
+  fun render_geometry = SDL_RenderGeometry(renderer : Renderer*, texture : Texture*, vertices : Vertex*, num_vertices : Int32, indices : Int32*, num_indices : Int32) : Bool
   fun render_texture = SDL_RenderTexture(renderer : Renderer*, texture : Texture*, srcrect : FRect*, dstrect : FRect*) : Bool
   fun render_texture_rotated = SDL_RenderTextureRotated(renderer : Renderer*, texture : Texture*, srcrect : FRect*, dstrect : FRect*, angle : Float64, center : FPoint*, flip : Int32) : Bool
   fun render_debug_text = SDL_RenderDebugText(renderer : Renderer*, x : Float32, y : Float32, text : UInt8*) : Bool
@@ -56,6 +57,7 @@ end
 
 module SDL3
   alias LogicalPresentation = LibSDL3::RendererLogicalPresentation
+  alias Vertex = LibSDL3::Vertex
 
   class Renderer
     @ptr : LibSDL3::Renderer*
@@ -123,6 +125,14 @@ module SDL3
       ptr = LibSDL3.create_texture(@ptr, format, access, w, h)
       raise "Failed to create texture" if ptr.null?
       Texture.new(ptr)
+    end
+
+    def render_geometry(texture : Texture, vertices : Array(Vertex), indices : Array(Int32))
+      LibSDL3.render_geometry(to_unsafe, texture.to_unsafe, pointerof(vertices), vertices.size, pointerof(indices), indices.size)
+    end
+
+    def render_geometry(vertices : Array(Vertex), indices : Array(Int32))
+      LibSDL3.render_geometry(to_unsafe, Pointer(Texture).null, pointerof(vertices), vertices.size, pointerof(indices), indices.size)
     end
 
     def render_texture(texture : Texture, source_rect : LibSDL3::FRect, dest_rect : LibSDL3::FRect)

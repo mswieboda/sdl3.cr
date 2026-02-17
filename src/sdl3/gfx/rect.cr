@@ -50,8 +50,8 @@ struct LibSDL3::FRect
   end
 end
 
-struct LibSDL3::FRect
-  def initialize(@x : Int32 = 0_f32, @y : Int32 = 0_f32, @w : Int32 = 0_f32, @h : Int32 = 0_f32)
+struct LibSDL3::Rect
+  def initialize(@x : Int32 = 0, @y : Int32 = 0, @w : Int32 = 0, @h : Int32 = 0)
   end
 
   def width
@@ -71,7 +71,7 @@ struct LibSDL3::FRect
   end
 
   def to_frect
-    LibSDL3::Rect.new(x: x.to_f32, y: y.to_f32, w: w.to_f32, h: h.to_f32)
+    LibSDL3::FRect.new(x: x.to_f32, y: y.to_f32, w: w.to_f32, h: h.to_f32)
   end
 end
 

@@ -169,8 +169,8 @@ struct LibSDL3::FColor
     )
   end
 
-  def self.random(a : UInt8 = 1_f32)
-    Color.new(
+  def self.random(a : Float32 = 1_f32) : FColor
+    FColor.new(
       r: rand(1_f32),
       g: rand(1_f32),
       b: rand(1_f32),
@@ -178,10 +178,10 @@ struct LibSDL3::FColor
     )
   end
 
-  def self.random_chunks(size : UInt8 = 8, a : UInt8 = 1_f32)
+  def self.random_chunks(size : UInt8 = 8, a : Float32 = 1_f32) : FColor
     rand_max = (1_f32 // size) + 1
 
-    Color.new(
+    FColor.new(
       r: rand(rand_max) * size,
       g: rand(rand_max) * size,
       b: rand(rand_max) * size,

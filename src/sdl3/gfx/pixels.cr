@@ -110,6 +110,15 @@ struct LibSDL3::Color
     FColor.new(r: r / 255, g: g / 255, b: b / 255, a: a / 255)
   end
 
+  def to_hex(with_alpha = false)
+    hex = "#"
+    hex += r.to_s(base: 16, upcase: true)
+    hex += g.to_s(base: 16, upcase: true)
+    hex += b.to_s(base: 16, upcase: true)
+    hex += a.to_s(base: 16, upcase: true) if with_alpha
+    hex
+  end
+
   def self.from_hex(hex : String)
     code = hex.lchop('#').lchop("0x")
     alpha = code[6..7].empty? ? "ff" : code[6..7]
@@ -140,14 +149,6 @@ struct LibSDL3::Color
       b: rand(rand_max) * size,
       a: a
     )
-  end
-
-  def self.to_hex(color : Color, with_alpha = false)
-    hex = "#"
-    hex += color.r.to_s(base: 16, upcase: true)
-    hex += color.g.to_s(base: 16, upcase: true)
-    hex += color.b.to_s(base: 16, upcase: true)
-    hex += color.a.to_s(base: 16, upcase: true) if with_alpha
   end
 end
 

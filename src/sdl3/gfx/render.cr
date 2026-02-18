@@ -24,6 +24,7 @@ lib LibSDL3
   
   fun create_renderer = SDL_CreateRenderer(window : Window*, name : UInt8*) : Renderer*
   fun destroy_renderer = SDL_DestroyRenderer(renderer : Renderer*)
+  fun get_render_draw_color = SDL_GetRenderDrawColor(renderer : Renderer*, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : Bool
   fun set_render_draw_color = SDL_SetRenderDrawColor(renderer : Renderer*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : Bool
   fun render_clear = SDL_RenderClear(renderer : Renderer*) : Bool
   fun render_present = SDL_RenderPresent(renderer : Renderer*) : Bool
@@ -91,8 +92,19 @@ module SDL3
       @ptr
     end
 
+    def draw_color : Color
+      r = 0_u8
+      g = 0_u8
+      b = 0_u8
+      a = 0_u8
+
+      LibSDL3.get_render_draw_color(to_unsafe, pointerof(r), pointerof(g), pointerof(b), pointerof(a))
+
+      Color.new(r: r, g: g, b: b, a: a)
+    end
+
     def draw_color=(color : Tuple(UInt8, UInt8, UInt8, UInt8))
-      LibSDL3.set_render_draw_color(@ptr, color[0], color[1], color[2], color[3])
+      LibSDL3.set_render_draw_color(to_unsafe, color[0], color[1], color[2], color[3])
     end
 
     def clear

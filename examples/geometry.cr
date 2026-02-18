@@ -93,22 +93,62 @@ def draw_quarter_circle(renderer)
 end
 
 def draw_arc_outline(renderer)
-  # Draw an arc outline
-  arc_points = [] of SDL3::FPoint
-  arc_center_x = 500.0
-  arc_center_y = 250.0
-  arc_radius = 80.0
-  arc_resolution = 32 # Higher resolution for a smoother line
+  # --- Customizable Outlined Arc Drawing ---
+  # Parameters for the arc
+  center_x = 200
+  center_y = 150
+  radius_x = 48 # Horizontal radius for elliptical shape
+  radius_y = 24 # Vertical radius for elliptical shape
+  thickness = 8  # The width of the arc
+  start_angle = 0 # Start at 0 degrees
+  end_angle = Math::PI * 1   # End at 180 degrees (a half circle)
+  segments = 64              # Number of segments for smoothness
 
-  (arc_resolution + 1).times do |i|
-    angle = -Math::PI / 2.0 + i * (0.5 * Math::PI / arc_resolution)
-    x = arc_center_x + arc_radius * Math.cos(angle)
-    y = arc_center_y + arc_radius * Math.sin(angle)
-    arc_points << SDL3::FPoint.new(x: x.to_f32, y: y.to_f32)
+  inner_arc_points = [] of SDL3::FPoint
+  outer_arc_points = [] of SDL3::FPoint
+  angle_step = (end_angle - start_angle) / segments
+
+  # Generate points for inner and outer arcs
+  (segments + 1).times do |i|
+    angle = start_angle + i * angle_step
+
+    # Calculate points on inner and outer edges of the arc
+    inner_radius_x = radius_x
+    inner_radius_y = radius_y
+    outer_radius_x = radius_x + thickness
+    outer_radius_y = radius_y + thickness
+
+    # Inner point
+    inner_x = center_x + inner_radius_x * Math.cos(angle)
+    inner_y = center_y + inner_radius_y * Math.sin(angle)
+    inner_arc_points << SDL3::FPoint.new(x: inner_x.to_f32, y: inner_y.to_f32)
+
+    # Outer point
+    outer_x = center_x + outer_radius_x * Math.cos(angle)
+    outer_y = center_y + outer_radius_y * Math.sin(angle)
+    outer_arc_points << SDL3::FPoint.new(x: outer_x.to_f32, y: outer_y.to_f32)
   end
 
-  renderer.draw_color = {255_u8, 0_u8, 255_u8, 255_u8} # Magenta
-  renderer.draw_lines(Slice.new(arc_points.to_unsafe, arc_points.size))
+  renderer.draw_color = {255_u8, 255_u8, 0_u8, 255_u8} # Yellow for outline
+
+  # Draw inner arc
+  if inner_arc_points.size > 1
+    renderer.draw_lines(Slice.new(inner_arc_points.to_unsafe, inner_arc_points.size))
+  end
+
+  # Draw outer arc
+  if outer_arc_points.size > 1
+    renderer.draw_lines(Slice.new(outer_arc_points.to_unsafe, outer_arc_points.size))
+  end
+
+  # Draw connecting lines at start and end of the arc
+  if inner_arc_points.size > 0 && outer_arc_points.size > 0
+    # Line at start of arc
+    renderer.draw_line(inner_arc_points.first.x, inner_arc_points.first.y, outer_arc_points.first.x, outer_arc_points.first.y)
+    # Line at end of arc
+    renderer.draw_line(inner_arc_points.last.x, inner_arc_points.last.y, outer_arc_points.last.x, outer_arc_points.last.y)
+  end
+  # --- End of Outlined Arc Drawing ---
 end
 
 def draw_arc(renderer)

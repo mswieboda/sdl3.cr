@@ -52,26 +52,21 @@ module SDL3
       blend_mode_ptr
     end
 
-    def set_color_mod(r : UInt8, g : UInt8, b : UInt8) : Bool
-      LibSDL3.set_texture_color_mod(@ptr, r, g, b)
+    def color_mod=(color : Color)
+      LibSDL3.set_texture_color_mod(to_unsafe, color.r, color.g, color.b)
+      LibSDL3.set_texture_alpha_mod(to_unsafe, color.a)
     end
 
-    def get_color_mod : Tuple(UInt8, UInt8, UInt8)
-      r = uninitialized UInt8
-      g = uninitialized UInt8
-      b = uninitialized UInt8
+    def color_mod : Color
+      r = 0
+      g = 0
+      b = 0
+      a = 0
+
       LibSDL3.get_texture_color_mod(@ptr, pointerof(r), pointerof(g), pointerof(b))
-      {r, g, b}
-    end
+      LibSDL3.get_texture_alpha_mod(@ptr, pointerof(a))
 
-    def set_alpha_mod(alpha : UInt8) : Bool
-      LibSDL3.set_texture_alpha_mod(@ptr, alpha)
-    end
-
-    def get_alpha_mod : UInt8
-      alpha = uninitialized UInt8
-      LibSDL3.get_texture_alpha_mod(@ptr, pointerof(alpha))
-      alpha
+      Color.new(r: r, g: g, b: b, a: a)
     end
 
     def set_scale_mode(scale_mode : LibSDL3::ScaleMode) : Bool

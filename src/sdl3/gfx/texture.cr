@@ -52,12 +52,12 @@ module SDL3
       blend_mode_ptr
     end
 
-    def color_mod=(color : Color)
+    def tint=(color : Color)
       LibSDL3.set_texture_color_mod(to_unsafe, color.r, color.g, color.b)
       LibSDL3.set_texture_alpha_mod(to_unsafe, color.a)
     end
 
-    def color_mod : Color
+    def tint : Color
       r = 0
       g = 0
       b = 0

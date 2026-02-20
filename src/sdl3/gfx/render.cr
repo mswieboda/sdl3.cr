@@ -73,6 +73,7 @@ struct LibSDL3::Vertex
 end
 
 module SDL3
+  alias TextureAccess = LibSDL3::TextureAccess
   alias LogicalPresentation = LibSDL3::RendererLogicalPresentation
   alias Vertex = LibSDL3::Vertex
 
@@ -87,7 +88,7 @@ module SDL3
     end
 
     def destroy
-      LibSDL3.destroy_renderer(@ptr)
+      LibSDL3.destroy_renderer(to_unsafe)
     end
 
     def to_unsafe
@@ -110,7 +111,7 @@ module SDL3
     end
 
     def clear
-      LibSDL3.render_clear(@ptr)
+      LibSDL3.render_clear(to_unsafe)
     end
 
     def scale=(val : Tuple(Float32, Float32))
@@ -125,43 +126,43 @@ module SDL3
     end
 
     def present
-      LibSDL3.render_present(@ptr)
+      LibSDL3.render_present(to_unsafe)
     end
 
     def draw_point(x : Float32, y : Float32)
-      LibSDL3.render_point(@ptr, x, y)
+      LibSDL3.render_point(to_unsafe, x, y)
     end
 
     def draw_points(points : Slice(LibSDL3::FPoint))
-      LibSDL3.render_points(@ptr, points.to_unsafe, points.size)
+      LibSDL3.render_points(to_unsafe, points.to_unsafe, points.size)
     end
 
     def draw_line(x1 : Float32, y1 : Float32, x2 : Float32, y2 : Float32)
-      LibSDL3.render_line(@ptr, x1, y1, x2, y2)
+      LibSDL3.render_line(to_unsafe, x1, y1, x2, y2)
     end
 
     def draw_lines(points : Slice(LibSDL3::FPoint))
-      LibSDL3.render_lines(@ptr, points.to_unsafe, points.size)
+      LibSDL3.render_lines(to_unsafe, points.to_unsafe, points.size)
     end
 
     def draw_rect(rect : LibSDL3::FRect)
-      LibSDL3.render_rect(@ptr, pointerof(rect))
+      LibSDL3.render_rect(to_unsafe, pointerof(rect))
     end
 
     def draw_rects(rects : Slice(LibSDL3::FRect))
-      LibSDL3.render_rects(@ptr, rects.to_unsafe, rects.size)
+      LibSDL3.render_rects(to_unsafe, rects.to_unsafe, rects.size)
     end
 
     def fill_rect(rect : LibSDL3::FRect)
-      LibSDL3.render_fill_rect(@ptr, pointerof(rect))
+      LibSDL3.render_fill_rect(to_unsafe, pointerof(rect))
     end
 
     def fill_rects(rects : Slice(LibSDL3::FRect))
-      LibSDL3.render_fill_rects(@ptr, rects.to_unsafe, rects.size)
+      LibSDL3.render_fill_rects(to_unsafe, rects.to_unsafe, rects.size)
     end
 
     def create_texture(format : LibSDL3::PixelFormat, access : Int32, w : Int32, h : Int32)
-      ptr = LibSDL3.create_texture(@ptr, format, access, w, h)
+      ptr = LibSDL3.create_texture(to_unsafe, format, access, w, h)
       raise "Failed to create texture" if ptr.null?
       Texture.new(ptr)
     end
@@ -175,11 +176,11 @@ module SDL3
     end
 
     def render_texture(texture : Texture, source_rect : LibSDL3::FRect, dest_rect : LibSDL3::FRect)
-      LibSDL3.render_texture(@ptr, texture.to_unsafe, pointerof(source_rect), pointerof(dest_rect))
+      LibSDL3.render_texture(to_unsafe, texture.to_unsafe, pointerof(source_rect), pointerof(dest_rect))
     end
 
     def render_texture(texture : Texture, dest_rect : LibSDL3::FRect)
-      LibSDL3.render_texture(@ptr, texture.to_unsafe, Pointer(LibSDL3::FRect).null, pointerof(dest_rect))
+      LibSDL3.render_texture(to_unsafe, texture.to_unsafe, Pointer(LibSDL3::FRect).null, pointerof(dest_rect))
     end
 
     def render_texture(texture : Texture, x : Float32, y : Float32, source_rect : LibSDL3::FRect? = nil)
@@ -195,7 +196,7 @@ module SDL3
 
     def render_texture_rotated(texture : Texture, source_rect : LibSDL3::FRect, dest_rect : FRect, angle : Float64 = 0.0, flip : Int32 = 0)
       LibSDL3.render_texture_rotated(
-        @ptr,
+        to_unsafe,
         texture.to_unsafe,
         pointerof(source_rect),
         pointerof(dest_rect),
@@ -207,7 +208,7 @@ module SDL3
 
     def render_texture_rotated(texture : Texture, source_rect : LibSDL3::FRect, dest_rect : FRect, angle : Float64 = 0.0, center : FPoint = FPoint.new, flip : Int32 = 0)
       LibSDL3.render_texture_rotated(
-        @ptr,
+        to_unsafe,
         texture.to_unsafe,
         pointerof(source_rect),
         pointerof(dest_rect),
@@ -219,7 +220,7 @@ module SDL3
 
     def render_texture_rotated(texture : Texture, dest_rect : FRect, angle : Float64 = 0.0, flip : Int32 = 0)
       LibSDL3.render_texture_rotated(
-        @ptr,
+        to_unsafe,
         texture.to_unsafe,
         Pointer(LibSDL3::FRect).null,
         pointerof(dest_rect),
@@ -231,7 +232,7 @@ module SDL3
 
     def render_texture_rotated(texture : Texture, dest_rect : FRect, angle : Float64 = 0.0, center : FPoint = FPoint.new, flip : Int32 = 0)
       LibSDL3.render_texture_rotated(
-        @ptr,
+        to_unsafe,
         texture.to_unsafe,
         Pointer(LibSDL3::FRect).null,
         pointerof(dest_rect),
@@ -260,29 +261,29 @@ module SDL3
     end
 
     def render_debug_text(x : Float32, y : Float32, text : String)
-      LibSDL3.render_debug_text(@ptr, x, y, text.to_unsafe)
+      LibSDL3.render_debug_text(to_unsafe, x, y, text.to_unsafe)
     end
 
     def set_vsync(vsync : Int32)
-      LibSDL3.set_render_vsync(@ptr, vsync)
+      LibSDL3.set_render_vsync(to_unsafe, vsync)
     end
 
     def set_render_draw_blend_mode(blend_mode : LibSDL3::BlendMode) : Bool
-      LibSDL3.set_render_draw_blend_mode(@ptr, blend_mode)
+      LibSDL3.set_render_draw_blend_mode(to_unsafe, blend_mode)
     end
 
     def get_render_draw_blend_mode : LibSDL3::BlendMode
       blend_mode_ptr = uninitialized LibSDL3::BlendMode
-      LibSDL3.get_render_draw_blend_mode(@ptr, pointerof(blend_mode_ptr))
+      LibSDL3.get_render_draw_blend_mode(to_unsafe, pointerof(blend_mode_ptr))
       blend_mode_ptr
     end
 
     def set_render_target(texture : Texture?) : Bool
-      LibSDL3.set_render_target(@ptr, texture.try(&.to_unsafe))
+      LibSDL3.set_render_target(to_unsafe, texture ? texture.to_unsafe : Pointer(Void).null)
     end
 
     def get_render_target : Texture?
-      ptr = LibSDL3.get_render_target(@ptr)
+      ptr = LibSDL3.get_render_target(to_unsafe)
       if ptr.null?
         nil
       else
@@ -291,11 +292,11 @@ module SDL3
     end
 
     def set_logical_presentation(w : Int32, h : Int32, mode : LibSDL3::RendererLogicalPresentation)
-      LibSDL3.set_render_logical_presentation(@ptr, w, h, mode)
+      LibSDL3.set_render_logical_presentation(to_unsafe, w, h, mode)
     end
 
     def get_logical_presentation(w : Int32, h : Int32, mode : LibSDL3::RendererLogicalPresentation)
-      ptr = LibSDL3.get_render_logical_presentation(@ptr, pointerof(w), pointerof(h), pointerof(mode))
+      ptr = LibSDL3.get_render_logical_presentation(to_unsafe, pointerof(w), pointerof(h), pointerof(mode))
     end
 
     def create_text_engine : TTF::TextEngine

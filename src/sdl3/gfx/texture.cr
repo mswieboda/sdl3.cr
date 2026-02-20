@@ -25,6 +25,18 @@ module SDL3
       new(ptr)
     end
 
+    def self.create(
+      renderer : Renderer,
+      format : PixelFormat,
+      access : TextureAccess,
+      w : Int32,
+      h : Int32
+    )
+      ptr = LibSDL3.create_texture(renderer.to_unsafe, format, access, w, h)
+      raise "Failed to create texture" if ptr.null?
+      new(ptr)
+    end
+
     def initialize(@ptr : LibSDL3::Texture*); end
 
     def destroy

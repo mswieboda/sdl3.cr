@@ -194,6 +194,7 @@ end
 module SDL3
   alias Color = LibSDL3::Color
   alias FColor = LibSDL3::FColor
+  alias PixelFormat = LibSDL3::PixelFormat
 
   def self.map_rgb(format : LibSDL3::PixelFormatDetails*, r : UInt8, g : UInt8, b : UInt8)
     LibSDL3.map_rgb(format, Pointer(LibSDL3::Palette).null, r, g, b)

@@ -51,6 +51,8 @@ lib LibSDL3
   fun get_render_logical_presentation = SDL_GetRenderLogicalPresentation(renderer : Renderer*, w : Int32*, h : Int32*, mode : RendererLogicalPresentation*) : Bool
   fun set_render_target = SDL_SetRenderTarget(renderer : Renderer*, texture : Texture*) : Bool
   fun get_render_target = SDL_GetRenderTarget(renderer : Renderer*) : Texture*
+  fun set_render_scale = SDL_SetRenderScale(renderer : Renderer*, scale_x : Float32, scale_y : Float32) : Bool
+  fun get_render_scale = SDL_GetRenderScale(renderer : Renderer*, scale_x : Float32*, scale_y : Float32*) : Bool
 
   SDL_RENDERER_VSYNC_DISABLED = 0
   SDL_RENDERER_VSYNC_ADAPTIVE = -1
@@ -109,6 +111,17 @@ module SDL3
 
     def clear
       LibSDL3.render_clear(@ptr)
+    end
+
+    def scale=(val : Tuple(Float32, Float32))
+      LibSDL3.set_render_scale(to_unsafe, val[0], val[1])
+    end
+
+    def scale : Tuple(Float32, Float32)
+      x = 0_f32
+      y = 0_f32
+      LibSDL3.get_render_scale(to_unsafe, pointerof(x), pointerof(y))
+      {x, y}
     end
 
     def present

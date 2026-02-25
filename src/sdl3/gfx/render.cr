@@ -3,9 +3,9 @@ lib LibSDL3
   alias Renderer = Void
 
   struct Vertex
-    position : LibSDL3::FPoint
-    color : LibSDL3::FColor
-    tex_coord : LibSDL3::FPoint
+    fpoint : LibSDL3::FPoint
+    fcolor : LibSDL3::FColor
+    texture_fpoint : LibSDL3::FPoint
   end
 
   enum TextureAccess : Int32
@@ -59,16 +59,20 @@ lib LibSDL3
 end
 
 struct LibSDL3::Vertex
-  property position : LibSDL3::FPoint
-  property color : LibSDL3::FColor
-  property tex_coord : LibSDL3::FPoint
+  property fpoint : LibSDL3::FPoint
+  property fcolor : LibSDL3::FColor
+  property texture_fpoint : LibSDL3::FPoint
 
-  def initialize (x : Float32, y : Float32, @color : LibSDL3::FColor)
-    @position = LibSDL3::FPoint.new(x: x, y: y)
-    @tex_coord = LibSDL3::FPoint.new(x: 0_f32, y: 0_f32)
+  def initialize (x : Float32, y : Float32, @fcolor : LibSDL3::FColor)
+    @fpoint = LibSDL3::FPoint.new(x: x, y: y)
+    @texture_fpoint = LibSDL3::FPoint.new
   end
 
-  def initialize (@position : LibSDL3::FPoint, @color : LibSDL3::FColor, @tex_coord : LibSDL3::FColor)
+  def initialize (x : Float32, y : Float32, @fcolor : LibSDL3::FColor, @texture_fpoint : LibSDL3::FPoint)
+    @fpoint = LibSDL3::FPoint.new(x: x, y: y)
+  end
+
+  def initialize (@fpoint : LibSDL3::FPoint, @fcolor : LibSDL3::FColor, @texture_fpoint : LibSDL3::FPoint)
   end
 end
 
@@ -133,7 +137,7 @@ module SDL3
       LibSDL3.render_point(to_unsafe, x, y)
     end
 
-    def draw_points(points : Slice(LibSDL3::FPoint))
+    def draw_points(points : Slice(FPoint))
       LibSDL3.render_points(to_unsafe, points.to_unsafe, points.size)
     end
 
@@ -141,23 +145,23 @@ module SDL3
       LibSDL3.render_line(to_unsafe, x1, y1, x2, y2)
     end
 
-    def draw_lines(points : Slice(LibSDL3::FPoint))
+    def draw_lines(points : Slice(FPoint))
       LibSDL3.render_lines(to_unsafe, points.to_unsafe, points.size)
     end
 
-    def draw_rect(rect : LibSDL3::FRect)
+    def draw_rect(rect : FRect)
       LibSDL3.render_rect(to_unsafe, pointerof(rect))
     end
 
-    def draw_rects(rects : Slice(LibSDL3::FRect))
+    def draw_rects(rects : Slice(FRect))
       LibSDL3.render_rects(to_unsafe, rects.to_unsafe, rects.size)
     end
 
-    def fill_rect(rect : LibSDL3::FRect)
+    def fill_rect(rect : FRect)
       LibSDL3.render_fill_rect(to_unsafe, pointerof(rect))
     end
 
-    def fill_rects(rects : Slice(LibSDL3::FRect))
+    def fill_rects(rects : Slice(FRect))
       LibSDL3.render_fill_rects(to_unsafe, rects.to_unsafe, rects.size)
     end
 
@@ -175,15 +179,15 @@ module SDL3
       LibSDL3.render_geometry(to_unsafe, Pointer(Texture).null, vertices.to_unsafe, vertices.size, indices.to_unsafe, indices.size)
     end
 
-    def render_texture(texture : Texture, source_rect : LibSDL3::FRect, dest_rect : LibSDL3::FRect)
+    def render_texture(texture : Texture, source_rect : FRect, dest_rect : FRect)
       LibSDL3.render_texture(to_unsafe, texture.to_unsafe, pointerof(source_rect), pointerof(dest_rect))
     end
 
-    def render_texture(texture : Texture, dest_rect : LibSDL3::FRect)
-      LibSDL3.render_texture(to_unsafe, texture.to_unsafe, Pointer(LibSDL3::FRect).null, pointerof(dest_rect))
+    def render_texture(texture : Texture, dest_rect : FRect)
+      LibSDL3.render_texture(to_unsafe, texture.to_unsafe, Pointer(FRect).null, pointerof(dest_rect))
     end
 
-    def render_texture(texture : Texture, x : Float32, y : Float32, source_rect : LibSDL3::FRect? = nil)
+    def render_texture(texture : Texture, x : Float32, y : Float32, source_rect : FRect? = nil)
       w, h = texture.size
       dest_rect = SDL3::FRect.new(x: x, y: y, w: w, h: h)
 
@@ -194,19 +198,19 @@ module SDL3
       end
     end
 
-    def render_texture_rotated(texture : Texture, source_rect : LibSDL3::FRect, dest_rect : FRect, angle : Float64 = 0.0, flip : Int32 = 0)
+    def render_texture_rotated(texture : Texture, source_rect : FRect, dest_rect : FRect, angle : Float64 = 0.0, flip : Int32 = 0)
       LibSDL3.render_texture_rotated(
         to_unsafe,
         texture.to_unsafe,
         pointerof(source_rect),
         pointerof(dest_rect),
         angle,
-        Pointer(LibSDL3::FPoint).null,
+        Pointer(FPoint).null,
         flip
       )
     end
 
-    def render_texture_rotated(texture : Texture, source_rect : LibSDL3::FRect, dest_rect : FRect, angle : Float64 = 0.0, center : FPoint = FPoint.new, flip : Int32 = 0)
+    def render_texture_rotated(texture : Texture, source_rect : FRect, dest_rect : FRect, angle : Float64 = 0.0, center : FPoint = FPoint.new, flip : Int32 = 0)
       LibSDL3.render_texture_rotated(
         to_unsafe,
         texture.to_unsafe,
@@ -222,10 +226,10 @@ module SDL3
       LibSDL3.render_texture_rotated(
         to_unsafe,
         texture.to_unsafe,
-        Pointer(LibSDL3::FRect).null,
+        Pointer(FRect).null,
         pointerof(dest_rect),
         angle,
-        Pointer(LibSDL3::FPoint).null,
+        Pointer(FPoint).null,
         flip
       )
     end
@@ -234,7 +238,7 @@ module SDL3
       LibSDL3.render_texture_rotated(
         to_unsafe,
         texture.to_unsafe,
-        Pointer(LibSDL3::FRect).null,
+        Pointer(FRect).null,
         pointerof(dest_rect),
         angle,
         pointerof(center),
@@ -242,7 +246,7 @@ module SDL3
       )
     end
 
-    def render_texture_rotated(texture : Texture, x : Float32, y : Float32, source_rect : LibSDL3::FRect?, angle : Float64, center : FPoint, flip : Int32)
+    def render_texture_rotated(texture : Texture, x : Float32, y : Float32, source_rect : FRect?, angle : Float64, center : FPoint, flip : Int32)
       w, h = texture.size
       dest_rect = SDL3::FRect.new(x: x, y: y, w: w, h: h)
 

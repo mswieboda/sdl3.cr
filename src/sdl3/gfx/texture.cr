@@ -64,6 +64,14 @@ module SDL3
       blend_mode_ptr
     end
 
+    def color_mod=(color : Color)
+      LibSDL3.set_texture_color_mod(to_unsafe, color.r, color.g, color.b)
+    end
+
+    def alpha_mod=(alpha : UInt8)
+      LibSDL3.set_texture_alpha_mod(to_unsafe, alpha)
+    end
+
     def tint=(color : Color)
       LibSDL3.set_texture_color_mod(to_unsafe, color.r, color.g, color.b)
       LibSDL3.set_texture_alpha_mod(to_unsafe, color.a)

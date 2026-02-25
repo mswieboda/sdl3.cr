@@ -131,22 +131,24 @@ struct LibSDL3::Color
     )
   end
 
-  def self.random(a : UInt8 = 255)
+  def self.random(a : UInt8 = 255_u8)
     Color.new(
-      r: rand(256),
-      g: rand(256),
-      b: rand(256),
+      r: rand(0_u8..255_u8),
+      g: rand(0_u8..255_u8),
+      b: rand(0_u8..255_u8),
       a: a
     )
   end
 
-  def self.random_chunks(size : UInt8 = 8, a : UInt8 = 255)
-    rand_max = (256 // size) + 1
+  # NOTE: size cannot be > 15_u8
+  def self.random_chunks(size : UInt8 = 8_u8, a : UInt8 = 255_u8)
+    size = size.clamp(0_u8, 15_u8)
+    rand_max = (255_u8 // size)
 
     Color.new(
-      r: rand(rand_max) * size,
-      g: rand(rand_max) * size,
-      b: rand(rand_max) * size,
+      r: rand(0_u8..rand_max) * size,
+      g: rand(0_u8..rand_max) * size,
+      b: rand(0_u8..rand_max) * size,
       a: a
     )
   end
@@ -162,31 +164,34 @@ struct LibSDL3::FColor
   end
 
   def to_color : Color
+    # NOTE: clamp in case users accidentally use > 1_f32, like 50_f32 etc
     Color.new(
-      r: (r * 255).to_u8,
-      g: (g * 255).to_u8,
-      b: (b * 255).to_u8,
-      a: (a * 255).to_u8
+      r: (r * 255).clamp(0, 255).to_u8,
+      g: (g * 255).clamp(0, 255).to_u8,
+      b: (b * 255).clamp(0, 255).to_u8,
+      a: (a * 255).clamp(0, 255).to_u8
     )
   end
 
   def self.random(a : Float32 = 1_f32) : FColor
     FColor.new(
-      r: rand(1_f32),
-      g: rand(1_f32),
-      b: rand(1_f32),
+      r: rng.rand(0_f32..1_f32),
+      g: rng.rand(0_f32..1_f32),
+      b: rng.rand(0_f32..1_f32),
       a: a
     )
   end
 
-  def self.random_chunks(size : UInt8 = 8, a : Float32 = 1_f32) : FColor
-    rand_max = (1_f32 // size) + 1
+  # NOTE: size cannot be > 15_u8
+  def self.random_chunks(size : UInt8 = 8, a : Num = 1_f32) : FColor
+    size = size.clamp(0_u8, 15_u8)
+    rand_max = 1_f32 / size
 
     FColor.new(
-      r: rand(rand_max) * size,
-      g: rand(rand_max) * size,
-      b: rand(rand_max) * size,
-      a: a
+      r: (rand(0_f32..rand_max) * size).to_f32.clamp(0_f32, 1_f32),
+      g: (rand(0_f32..rand_max) * size).to_f32.clamp(0_f32, 1_f32),
+      b: (rand(0_f32..rand_max) * size).to_f32.clamp(0_f32, 1_f32),
+      a: a.to_f32
     )
   end
 end

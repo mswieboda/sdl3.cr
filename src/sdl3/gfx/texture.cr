@@ -54,11 +54,11 @@ module SDL3
       {w, h}
     end
 
-    def set_blend_mode(blend_mode : LibSDL3::BlendMode) : Bool
+    def blend_mode=(blend_mode : LibSDL3::BlendMode)
       LibSDL3.set_texture_blend_mode(@ptr, blend_mode)
     end
 
-    def get_blend_mode : LibSDL3::BlendMode
+    def blend_mode : LibSDL3::BlendMode
       blend_mode_ptr = uninitialized LibSDL3::BlendMode
       LibSDL3.get_texture_blend_mode(@ptr, pointerof(blend_mode_ptr))
       blend_mode_ptr
@@ -89,21 +89,21 @@ module SDL3
       Color.new(r: r, g: g, b: b, a: a)
     end
 
-    def set_scale_mode(scale_mode : LibSDL3::ScaleMode) : Bool
+    def scale_mode=(scale_mode : LibSDL3::ScaleMode) : Bool
       LibSDL3.set_texture_scale_mode(@ptr, scale_mode)
     end
 
-    def get_scale_mode : LibSDL3::ScaleMode
+    def scale_mode : LibSDL3::ScaleMode
       scale_mode_ptr = uninitialized LibSDL3::ScaleMode
       LibSDL3.get_texture_scale_mode(@ptr, pointerof(scale_mode_ptr))
       scale_mode_ptr
     end
 
-    def update_texture(rect : LibSDL3::Rect?, pixels : Pointer(Void), pitch : Int32) : Bool
+    def update(rect : LibSDL3::Rect?, pixels : Pointer(Void), pitch : Int32) : Bool
       LibSDL3.update_texture(@ptr, rect.try(&.pointerof), pixels, pitch)
     end
 
-    def lock_texture(rect : LibSDL3::Rect?) : Tuple(Pointer(Void), Int32)
+    def lock(rect : LibSDL3::Rect?) : Tuple(Pointer(Void), Int32)
       pixels_ptr = uninitialized Pointer(Void)
       pitch = uninitialized Int32
       success = LibSDL3.lock_texture(@ptr, rect.try(&.pointerof), pointerof(pixels_ptr), pointerof(pitch))
@@ -111,7 +111,7 @@ module SDL3
       {pixels_ptr, pitch}
     end
 
-    def unlock_texture : Void
+    def unlock : Void
       LibSDL3.unlock_texture(@ptr)
     end
   end

@@ -79,7 +79,7 @@ module SDL3
     end
 
     def self.create_text_engine : TTF::TextEngine
-      TTF::TextEngine.create(Type::Surface)
+      TTF::TextEngine.create_surface_text_engine
     end
 
     def draw_text(text : TTF::Text, x : Float32, y : Float32) : Bool

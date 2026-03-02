@@ -38,7 +38,7 @@ struct LibSDL3::FRect
   end
 
   def height
-    w
+    h
   end
 
   def height=(height : Float32)
@@ -63,7 +63,7 @@ struct LibSDL3::Rect
   end
 
   def height
-    w
+    h
   end
 
   def height=(height : Int32)

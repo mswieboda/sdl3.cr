@@ -98,6 +98,11 @@ lib LibSDL3
   UNDERSCORE = 0x0000005f_u32
   GRAVE = 0x00000060_u32
 
+  # modifier keys
+  # TODO: we still need all the others (see list in Keymod)
+  LSHIFT = 0x400000e1_u32
+  RSHIFT = 0x400000e5_u32
+
   # Function keys
   F1 = 0x4000003a_u32
   F2 = 0x4000003b_u32

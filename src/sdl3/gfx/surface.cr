@@ -70,7 +70,7 @@ module SDL3
    def blit(source_rect : LibSDL3::Rect?, dest_rect : LibSDL3::Rect?, dest_surface : Surface) : Bool
      source_rect_ptr = source_rect ? pointerof(source_rect) : Pointer(LibSDL3::Rect).null
      dest_rect_ptr = dest_rect ? pointerof(dest_rect) : Pointer(LibSDL3::Rect).null
-     LibSDL3.blit_surface(@ptr, src_rect_ptr, dest_surface.to_unsafe, dst_rect_ptr)
+     LibSDL3.blit_surface(@ptr, source_rect_ptr, dest_surface.to_unsafe, dest_rect_ptr)
    end
 
     def destroy

@@ -64,14 +64,40 @@ module SDL3
     def initialize(@ptr : LibSDL3::Surface*); end
 
     def format
-     @ptr.value.format
-   end
+      @ptr.value.format
+    end
 
-   def blit(source_rect : LibSDL3::Rect?, dest_rect : LibSDL3::Rect?, dest_surface : Surface) : Bool
-     source_rect_ptr = source_rect ? pointerof(source_rect) : Pointer(LibSDL3::Rect).null
-     dest_rect_ptr = dest_rect ? pointerof(dest_rect) : Pointer(LibSDL3::Rect).null
-     LibSDL3.blit_surface(@ptr, source_rect_ptr, dest_surface.to_unsafe, dest_rect_ptr)
-   end
+    def w
+      @ptr.value.w
+    end
+
+    def width
+      w
+    end
+
+    def h
+      @ptr.value.h
+    end
+
+    def height
+      h
+    end
+
+    def blit(source_rect : LibSDL3::Rect?, dest_rect : LibSDL3::Rect?, dest_surface : Surface) : Bool
+      if source_rect.is_a?(LibSDL3::Rect) && dest_rect.is_a?(LibSDL3::Rect)
+        src = source_rect.as(LibSDL3::Rect)
+        dst = dest_rect.as(LibSDL3::Rect)
+        LibSDL3.blit_surface(@ptr, pointerof(src), dest_surface.to_unsafe, pointerof(dst))
+      elsif source_rect.is_a?(LibSDL3::Rect)
+        src = source_rect.as(LibSDL3::Rect)
+        LibSDL3.blit_surface(@ptr, pointerof(src), dest_surface.to_unsafe, Pointer(LibSDL3::Rect).null)
+      elsif dest_rect.is_a?(LibSDL3::Rect)
+        dst = dest_rect.as(LibSDL3::Rect)
+        LibSDL3.blit_surface(@ptr, Pointer(LibSDL3::Rect).null, dest_surface.to_unsafe, pointerof(dst))
+      else
+        LibSDL3.blit_surface(@ptr, Pointer(LibSDL3::Rect).null, dest_surface.to_unsafe, Pointer(LibSDL3::Rect).null)
+      end
+    end
 
     def destroy
       LibSDL3.destroy_surface(@ptr)

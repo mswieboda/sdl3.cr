@@ -16,6 +16,7 @@ lib LibSDL3
     reserved : Void*
   end
 
+  fun blit_surface = SDL_BlitSurface(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : Bool
   fun create_surface = SDL_CreateSurface(width : Int32, height : Int32, format : PixelFormat) : Surface*
   fun destroy_surface = SDL_DestroySurface(surface : Surface*)
   fun load_bmp = SDL_LoadBMP(file : UInt8*) : Surface*
@@ -61,6 +62,16 @@ module SDL3
     end
 
     def initialize(@ptr : LibSDL3::Surface*); end
+
+    def format
+     @ptr.value.format
+   end
+
+   def blit(source_rect : LibSDL3::Rect?, dest_rect : LibSDL3::Rect?, dest_surface : Surface) : Bool
+     source_rect_ptr = source_rect ? pointerof(source_rect) : Pointer(LibSDL3::Rect).null
+     dest_rect_ptr = dest_rect ? pointerof(dest_rect) : Pointer(LibSDL3::Rect).null
+     LibSDL3.blit_surface(@ptr, src_rect_ptr, dest_surface.to_unsafe, dst_rect_ptr)
+   end
 
     def destroy
       LibSDL3.destroy_surface(@ptr)

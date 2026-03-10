@@ -10,11 +10,16 @@ Install SDL3 and other external libs SDL3_tty, SDL3_image
 
 (You can see the exact versions in the `shard.yml` file in this repo)
 
-On a Mac:
+### macOS:
 
 ```
 brew install sdl3 sdl3_image sdl3_ttf
 ```
+
+### linux
+
+see the [SDL3 wiki Linux](https://wiki.libsdl.org/SDL3/README-linux) instructions
+
 ### SDL3_mixer installation
 
 you'll also need to separately install / unzip [SDL3_Mixer](https://wiki.libsdl.org/SDL3_mixer)([release](https://github.com/libsdl-org/SDL_mixer/releases))

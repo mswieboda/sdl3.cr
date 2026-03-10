@@ -49,7 +49,7 @@ so it lines up with where you unzipped SDL3_mixer
    ```yaml
    dependencies:
      sdl3:
-       github: mswieboda/sdl3
+       github: mswieboda/sdl3.cr
    ```
 
 2. Run `shards install`

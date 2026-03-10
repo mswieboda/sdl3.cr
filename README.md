@@ -18,7 +18,9 @@ brew install sdl3 sdl3_image sdl3_ttf
 
 ### linux
 
-see the [SDL3 wiki Linux](https://wiki.libsdl.org/SDL3/README-linux) instructions
+most likely follow this user created Gist guide: https://gist.github.com/NoxFly/1067c9fc24024d26b51a6825de5cff74
+
+or see the [SDL3 wiki Linux](https://wiki.libsdl.org/SDL3/README-linux) instructions, if they update it later but right now it just looks like dependencies, not instructions
 
 ### windows
 

@@ -1,4 +1,4 @@
-@[Link("SDL3_ttf")]
+@[Link(lib: "SDL3_ttf", dll: "SDL3_ttf.dll")]
 lib LibSDL3TTF
   alias Font = Void
   alias TextEngine = Void

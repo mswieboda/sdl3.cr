@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-@[Link(ldflags: "-lSDL3_mixer")]
+@[Link(dll: "SDL3_mixer.dll", ldflags: "-lSDL3_mixer")]
 lib LibSDL3Mixer
   alias Mixer = Void
   alias Audio = Void

@@ -1,4 +1,4 @@
-@[Link("SDL3")]
+@[Link(lib: "SDL3", dll: "SDL3.dll")]
 lib LibSDL3
 end
 

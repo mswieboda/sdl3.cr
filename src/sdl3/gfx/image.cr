@@ -1,4 +1,4 @@
-@[Link("SDL3_image")]
+@[Link(lib: "SDL3_image", dll: "SDL3_image.dll")]
 lib LibSDL3Image
   fun version = IMG_Version() : Int32
   fun load = IMG_Load(file : LibC::Char*) : LibSDL3::Surface*

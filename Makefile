@@ -2,10 +2,6 @@ CRYSTAL_COMPILER := crystal
 SOURCE_DIR := src
 BUILD_DIR := bin
 LIB_DIR := lib
-SDL3_MIXER_LIB_DIR := /usr/local/lib
-LINKFLAGS := -L$(SDL3_MIXER_LIB_DIR) -Wl,-rpath,$(SDL3_MIXER_LIB_DIR)
-# SDL3_IMAGE_LIB_PATH := /opt/homebrew/Cellar/sdl3_image/3.4.0/lib
-# SDL3_TTF_LIB_PATH := /opt/homebrew/Cellar/sdl3_ttf/3.2.2/lib
 LIB_NAME := libsdl3.a
 RM_CMD := rm -rf
 MKDIR_CMD := mkdir -p
@@ -19,12 +15,12 @@ all: build
 build:
 	@echo "Building release library..."
 	$(MKDIR_CMD) $(LIB_DIR)
-	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/sdl3.cr -o $(LIB_DIR)/$(LIB_NAME) --release --no-debug
+	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/sdl3.cr -o $(LIB_DIR)/$(LIB_NAME) --release --no-debug -p
 
 build-debug:
 	@echo "Building debug library..."
 	$(MKDIR_CMD) $(LIB_DIR)
-	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/sdl3.cr -o $(LIB_DIR)/$(LIB_NAME) --no-debug --error-trace
+	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/sdl3.cr -o $(LIB_DIR)/$(LIB_NAME) --no-debug --error-trace -p
 
 clean:
 	@echo "Executing clean..."
@@ -51,16 +47,16 @@ examples:
 
 spec:
 	@echo "Running specs..."
-	$(CRYSTAL_COMPILER) spec --no-color --link-flags "$(LINKFLAGS)"
+	$(CRYSTAL_COMPILER) spec
 
 run:
 	@echo "Building and running example: $(EXAMPLE)"
 	$(MKDIR_CMD) $(BUILD_DIR)
-	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE) --link-flags "$(LINKFLAGS)" --no-debug
+	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE) --no-debug -p
 	./$(BUILD_DIR)/$(EXAMPLE)
 
 debug:
 	@echo "Building and running example in debug mode: $(EXAMPLE)"
 	$(MKDIR_CMD) $(BUILD_DIR)
-	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE)_debug --link-flags "$(LINKFLAGS)" --error-trace
+	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE)_debug --error-trace -p
 	./$(BUILD_DIR)/$(EXAMPLE)_debug

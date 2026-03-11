@@ -110,8 +110,8 @@ while running
 
   # Render foregrounds with current blend mode
   current_blend_mode = blend_modes[current_blend_mode_index]
-  foreground1_texture.set_blend_mode(current_blend_mode)
-  foreground2_texture.set_blend_mode(current_blend_mode)
+  foreground1_texture.blend_mode = current_blend_mode
+  foreground2_texture.blend_mode = current_blend_mode
 
   # First foreground element (e.g., red square)
   fg1_dst_rect = SDL3::FRect.new(x: 100.0, y: 100.0, w: 100.0, h: 100.0)

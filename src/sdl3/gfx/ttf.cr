@@ -6,14 +6,14 @@ lib LibSDL3TTF
   alias TextData = Void
   alias TextLayout = Void
 
-  enum Alignment : Int8
+  enum Alignment
     Invalid = -1
     Left
     Center
     Right
   end
 
-  enum FontStyleFlags : UInt8
+  enum FontStyleFlags
     Normal        = 0x00
     Bold          = 0x01
     Italic        = 0x02
@@ -21,7 +21,7 @@ lib LibSDL3TTF
     StrikeThrough = 0x08
   end
 
-  enum HintingFlags : Int8
+  enum HintingFlags
     Invalid = -1
     Normal
     Light
@@ -30,7 +30,7 @@ lib LibSDL3TTF
     LightSubPixel
   end
 
-  enum Direction : UInt8
+  enum Direction
     Invalid = 0
     LTR = 4
     RTL
@@ -38,7 +38,7 @@ lib LibSDL3TTF
     BTT
   end
 
-  enum ImageType : UInt8
+  enum ImageType
     TTF_IMAGE_INVALID
     TTF_IMAGE_ALPHA
     TTF_IMAGE_COLOR

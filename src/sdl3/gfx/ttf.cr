@@ -600,6 +600,10 @@ module SDL3
         size[1]
       end
 
+      def update : Bool
+        LibSDL3TTF.update_text(to_unsafe)
+      end
+
       def destroy
         LibSDL3TTF.destroy_text(to_unsafe)
       end

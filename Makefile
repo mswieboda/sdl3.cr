@@ -2,6 +2,8 @@ CRYSTAL_COMPILER := crystal
 SOURCE_DIR := src
 BUILD_DIR := bin
 LIB_DIR := lib
+EXT_LIB_DIR := /usr/local/lib
+LINKFLAGS := -L$(EXT_LIB_DIR) -Wl,-rpath,$(EXT_LIB_DIR)
 LIB_NAME := libsdl3.a
 RM_CMD := rm -rf
 MKDIR_CMD := mkdir -p
@@ -52,11 +54,11 @@ spec:
 run:
 	@echo "Building and running example: $(EXAMPLE)"
 	$(MKDIR_CMD) $(BUILD_DIR)
-	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE) --no-debug -p
+	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE) --link-flags "$(LINKFLAGS)" --no-debug -p
 	./$(BUILD_DIR)/$(EXAMPLE)
 
 debug:
 	@echo "Building and running example in debug mode: $(EXAMPLE)"
 	$(MKDIR_CMD) $(BUILD_DIR)
-	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE)_debug --error-trace -p
+	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE)_debug --link-flags "$(LINKFLAGS)" --error-trace -p
 	./$(BUILD_DIR)/$(EXAMPLE)_debug

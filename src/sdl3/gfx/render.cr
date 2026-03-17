@@ -53,6 +53,8 @@ lib LibSDL3
   fun get_render_target = SDL_GetRenderTarget(renderer : Renderer*) : Texture*
   fun set_render_scale = SDL_SetRenderScale(renderer : Renderer*, scale_x : Float32, scale_y : Float32) : Bool
   fun get_render_scale = SDL_GetRenderScale(renderer : Renderer*, scale_x : Float32*, scale_y : Float32*) : Bool
+  fun set_render_clip_rect = SDL_SetRenderClipRect(renderer : Renderer*, rect : Rect*) : Bool
+  fun get_render_clip_rect = SDL_GetRenderClipRect(renderer : Renderer*, rect : Rect*) : Bool
 
   SDL_RENDERER_VSYNC_DISABLED = 0
   SDL_RENDERER_VSYNC_ADAPTIVE = -1
@@ -116,6 +118,24 @@ module SDL3
 
     def clear
       LibSDL3.render_clear(to_unsafe)
+    end
+
+    def clip_rect=(rect : Rect)
+      LibSDL3.set_render_clip_rect(to_unsafe, pointerof(rect))
+    end
+
+    def clip_rect=(rect : Nil)
+      LibSDL3.set_render_clip_rect(to_unsafe, Pointer(LibSDL3::Rect).null)
+    end
+
+    def clip_rect : Rect?
+      rect = LibSDL3::Rect.new
+
+      if LibSDL3.get_render_clip_rect(to_unsafe, pointerof(rect))
+        rect
+      else
+        nil
+      end
     end
 
     def scale=(val : Tuple(Float32, Float32))

@@ -288,8 +288,16 @@ module SDL3
       LibSDL3.render_debug_text(to_unsafe, x, y, text.to_unsafe)
     end
 
-    def set_vsync(vsync : Int32)
+    def vsync=(vsync : Int32)
       LibSDL3.set_render_vsync(to_unsafe, vsync)
+    end
+
+    def blend_mode=(blend_mode : LibSDL3::BlendMode)
+      set_render_draw_blend_mode(blend_mode)
+    end
+
+    def blend_mode
+      get_render_draw_blend_mode
     end
 
     def set_render_draw_blend_mode(blend_mode : LibSDL3::BlendMode) : Bool
@@ -302,8 +310,16 @@ module SDL3
       blend_mode_ptr
     end
 
+    def render_target=(texture : Texture?)
+      set_render_target(texture)
+    end
+
     def set_render_target(texture : Texture?) : Bool
       LibSDL3.set_render_target(to_unsafe, texture ? texture.to_unsafe : Pointer(Void).null)
+    end
+
+    def render_target : Texture?
+      get_render_target
     end
 
     def get_render_target : Texture?
@@ -315,8 +331,22 @@ module SDL3
       end
     end
 
+    def logical_presentation=(data : Tuple(Int32, Int32, LibSDL3::RendererLogicalPresentation))
+      set_logical_presentation(w: data[0], h: data[1], mode: data[2])
+    end
+
     def set_logical_presentation(w : Int32, h : Int32, mode : LibSDL3::RendererLogicalPresentation)
       LibSDL3.set_render_logical_presentation(to_unsafe, w, h, mode)
+    end
+
+    def logical_presentation : Tuple(Int32, Int32, LibSDL3::RendererLogicalPresentation)
+      w = 0
+      h = 0
+      mode = LibSDL3::RendererLogicalPresentation::Disabled
+
+      get_logical_presentation(w: w, h: h, mode: mode)
+
+      {w, h, mode}
     end
 
     def get_logical_presentation(w : Int32, h : Int32, mode : LibSDL3::RendererLogicalPresentation)

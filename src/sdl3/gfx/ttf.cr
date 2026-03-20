@@ -455,7 +455,9 @@ module SDL3
       {% end %}
 
       def create_text(engine : TextEngine, text : String) : Text
-        LibSDL3TTF.create_text(engine.to_unsafe, to_unsafe, text, text.bytesize)
+        ptr = LibSDL3TTF.create_text(engine.to_unsafe, to_unsafe, text, text.bytesize)
+        raise "Failed to create text" if ptr.null?
+        Text.new(ptr)
       end
     end
 

@@ -32,7 +32,7 @@ you'll also need to separately install / unzip [SDL3_Mixer](https://wiki.libsdl.
 
 currently only from the Github releases, hopefully package managers will pick it up when it's out of prerelease
 
-1. unzip it to a local folder like `~/ext_libs` 
+1. unzip it to a local folder like `~/ext_libs`
 2. modify `~/.zshrc` or bash shell to include it to some env vars:
 
 ```

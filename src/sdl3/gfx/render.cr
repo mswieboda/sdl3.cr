@@ -21,7 +21,7 @@ lib LibSDL3
     Overscan = 3
     IntegerScale = 4
   end
-  
+
   fun create_renderer = SDL_CreateRenderer(window : Window*, name : UInt8*) : Renderer*
   fun destroy_renderer = SDL_DestroyRenderer(renderer : Renderer*)
   fun get_render_draw_color = SDL_GetRenderDrawColor(renderer : Renderer*, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : Bool

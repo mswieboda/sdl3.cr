@@ -40,4 +40,3 @@ require "./sdl3/input/mouse"
 require "./sdl3/input/game_pad"
 require "./sdl3/audio/audio"
 require "./sdl3/audio/mixer"
-

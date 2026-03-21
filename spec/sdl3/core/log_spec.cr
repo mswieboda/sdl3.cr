@@ -7,7 +7,7 @@ describe "SDL3 log" do
 
     SDL3.set_log_priority(LibSDL3::LogCategory::APPLICATION, LibSDL3::LogPriority::INFO)
     SDL3.log("This is a test log message")
-    
+
     SDL3.set_log_priority(LibSDL3::LogCategory::APPLICATION, LibSDL3::LogPriority::CRITICAL)
     SDL3.log("This message should not be visible")
 

@@ -13,7 +13,7 @@ logical_height = 240
 
 window = SDL3::Window.new("Logical Presentation Example", window_width, window_height, 0)
 renderer = SDL3::Renderer.new(window)
-renderer.set_vsync(1)
+renderer.vsync = 1
 
 font = SDL3::TTF::Font.open("./assets/fonts/PressStart2P.ttf", 16.0)
 

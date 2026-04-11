@@ -8,7 +8,7 @@ SDL3::TTF.init
 # Create a window and renderer
 window = SDL3::Window.new("Mixer Example", 640, 480, 0)
 renderer = SDL3::Renderer.new(window)
-renderer.set_vsync(1)
+renderer.vsync = 1
 
 font = SDL3::TTF::Font.open("./assets/fonts/PressStart2P.ttf", 16.0)
 

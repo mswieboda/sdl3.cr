@@ -9,7 +9,7 @@ RM_CMD := rm -rf
 MKDIR_CMD := mkdir -p
 
 # Phony targets don't represent files
-.PHONY: all build build-debug clean examples spec run
+.PHONY: all build build-debug clean examples spec run run-release
 
 # The default target, executed when you just run `make`
 all: build
@@ -55,6 +55,12 @@ run:
 	@echo "Building and running example: $(EXAMPLE)"
 	$(MKDIR_CMD) $(BUILD_DIR)
 	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE) --link-flags "$(LINKFLAGS)" --no-debug -p
+	./$(BUILD_DIR)/$(EXAMPLE)
+
+run-release:
+	@echo "Building and running example: $(EXAMPLE)"
+	$(MKDIR_CMD) $(BUILD_DIR)
+	$(CRYSTAL_COMPILER) build examples/$(EXAMPLE).cr -o $(BUILD_DIR)/$(EXAMPLE) --link-flags "$(LINKFLAGS)" --release --no-debug -p
 	./$(BUILD_DIR)/$(EXAMPLE)
 
 debug:

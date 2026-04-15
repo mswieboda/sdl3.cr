@@ -38,43 +38,43 @@ lib LibSDL3
 end
 
 module SDL3
-  @[Flags]
-  enum WindowFlags : LibSDL3::WindowFlags
-    None              = 0
-    Fullscreen        = LibSDL3::SDL_WINDOW_FULLSCREEN
-    OpenGL            = LibSDL3::SDL_WINDOW_OPENGL
-    Occluded          = LibSDL3::SDL_WINDOW_OCCLUDED
-    Hidden            = LibSDL3::SDL_WINDOW_HIDDEN
-    Borderless        = LibSDL3::SDL_WINDOW_BORDERLESS
-    Resizable         = LibSDL3::SDL_WINDOW_RESIZABLE
-    Minimized         = LibSDL3::SDL_WINDOW_MINIMIZED
-    Maximized         = LibSDL3::SDL_WINDOW_MAXIMIZED
-    MouseGrabbed      = LibSDL3::SDL_WINDOW_MOUSE_GRABBED
-    InputFocus        = LibSDL3::SDL_WINDOW_INPUT_FOCUS
-    MouseFocus        = LibSDL3::SDL_WINDOW_MOUSE_FOCUS
-    External          = LibSDL3::SDL_WINDOW_EXTERNAL
-    Modal             = LibSDL3::SDL_WINDOW_MODAL
-    HighPixelDensity  = LibSDL3::SDL_WINDOW_HIGH_PIXEL_DENSITY
-    MouseCapture      = LibSDL3::SDL_WINDOW_MOUSE_CAPTURE
-    MouseRelativeMode = LibSDL3::SDL_WINDOW_MOUSE_RELATIVE_MODE
-    AlwaysOnTop       = LibSDL3::SDL_WINDOW_ALWAYS_ON_TOP
-    Utility           = LibSDL3::SDL_WINDOW_UTILITY
-    Tooltip           = LibSDL3::SDL_WINDOW_TOOLTIP
-    PopupMenu         = LibSDL3::SDL_WINDOW_POPUP_MENU
-    KeyboardGrabbed   = LibSDL3::SDL_WINDOW_KEYBOARD_GRABBED
-    FillDocument      = LibSDL3::SDL_WINDOW_FILL_DOCUMENT
-    Vulkan            = LibSDL3::SDL_WINDOW_VULKAN
-    Metal             = LibSDL3::SDL_WINDOW_METAL
-    Transparent       = LibSDL3::SDL_WINDOW_TRANSPARENT
-    NotFocusable      = LibSDL3::SDL_WINDOW_NOT_FOCUSABLE
-  end
-
   class Window
     @ptr : LibSDL3::Window*
 
-    def initialize(title : String, w : Int32, h : Int32, flags : WindowFlags | LibSDL3::WindowFlags | Int = WindowFlags::None)
+    @[Flags]
+    enum Flags : LibSDL3::WindowFlags
+      None              = 0
+      Fullscreen        = LibSDL3::SDL_WINDOW_FULLSCREEN
+      OpenGL            = LibSDL3::SDL_WINDOW_OPENGL
+      Occluded          = LibSDL3::SDL_WINDOW_OCCLUDED
+      Hidden            = LibSDL3::SDL_WINDOW_HIDDEN
+      Borderless        = LibSDL3::SDL_WINDOW_BORDERLESS
+      Resizable         = LibSDL3::SDL_WINDOW_RESIZABLE
+      Minimized         = LibSDL3::SDL_WINDOW_MINIMIZED
+      Maximized         = LibSDL3::SDL_WINDOW_MAXIMIZED
+      MouseGrabbed      = LibSDL3::SDL_WINDOW_MOUSE_GRABBED
+      InputFocus        = LibSDL3::SDL_WINDOW_INPUT_FOCUS
+      MouseFocus        = LibSDL3::SDL_WINDOW_MOUSE_FOCUS
+      External          = LibSDL3::SDL_WINDOW_EXTERNAL
+      Modal             = LibSDL3::SDL_WINDOW_MODAL
+      HighPixelDensity  = LibSDL3::SDL_WINDOW_HIGH_PIXEL_DENSITY
+      MouseCapture      = LibSDL3::SDL_WINDOW_MOUSE_CAPTURE
+      MouseRelativeMode = LibSDL3::SDL_WINDOW_MOUSE_RELATIVE_MODE
+      AlwaysOnTop       = LibSDL3::SDL_WINDOW_ALWAYS_ON_TOP
+      Utility           = LibSDL3::SDL_WINDOW_UTILITY
+      Tooltip           = LibSDL3::SDL_WINDOW_TOOLTIP
+      PopupMenu         = LibSDL3::SDL_WINDOW_POPUP_MENU
+      KeyboardGrabbed   = LibSDL3::SDL_WINDOW_KEYBOARD_GRABBED
+      FillDocument      = LibSDL3::SDL_WINDOW_FILL_DOCUMENT
+      Vulkan            = LibSDL3::SDL_WINDOW_VULKAN
+      Metal             = LibSDL3::SDL_WINDOW_METAL
+      Transparent       = LibSDL3::SDL_WINDOW_TRANSPARENT
+      NotFocusable      = LibSDL3::SDL_WINDOW_NOT_FOCUSABLE
+    end
+
+    def initialize(title : String, w : Int32, h : Int32, flags : Flags | LibSDL3::WindowFlags | Int = WindowFlags::None)
       f = case flags
-          when WindowFlags then flags.value
+          when Flags then flags.value
           else flags.to_u64
           end
       ptr = LibSDL3.create_window(title.to_unsafe, w, h, f)
@@ -82,8 +82,8 @@ module SDL3
       @ptr = ptr
     end
 
-    def self.new(title : String, w : Int32, h : Int32, flags : Array(WindowFlags))
-      merged_flags = WindowFlags::None
+    def self.new(title : String, w : Int32, h : Int32, flags : Array(Flags))
+      merged_flags = Flags::None
       flags.each { |flag| merged_flags |= flag }
       new(title, w, h, merged_flags)
     end

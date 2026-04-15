@@ -78,10 +78,10 @@ module SDL3
     end
 
     def tint : Color
-      r = 0_u8
-      g = 0_u8
-      b = 0_u8
-      a = 0_u8
+      r = uninitialized UInt8
+      g = uninitialized UInt8
+      b = uninitialized UInt8
+      a = uninitialized UInt8
 
       LibSDL3.get_texture_color_mod(@ptr, pointerof(r), pointerof(g), pointerof(b))
       LibSDL3.get_texture_alpha_mod(@ptr, pointerof(a))

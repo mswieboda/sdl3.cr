@@ -1,4 +1,4 @@
-describe "SDL3 render" do
+describe "SDL3 renderer" do
   before_each do
     SDL3.init(LibSDL3::SDL_INIT_VIDEO)
   end

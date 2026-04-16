@@ -1,8 +1,8 @@
 require "./spec_helper"
 
 require "./sdl3/core/init_spec"
-require "./sdl3/gfx/video_spec"
-require "./sdl3/gfx/render_spec"
+require "./sdl3/gfx/window_spec"
+require "./sdl3/gfx/renderer_spec"
 require "./sdl3/input/events_spec"
 require "./sdl3/input/keyboard_spec"
 require "./sdl3/core/error_spec"

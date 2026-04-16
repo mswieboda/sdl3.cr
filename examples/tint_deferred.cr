@@ -98,14 +98,14 @@ while running && frame_count < 10
 
     commands = layer.commands
     cursor = 0
-    
+
     while cursor < commands.size
       command = commands[cursor]
-      
+
       case command
       when DrawTextureCommand
         tr, tg, tb, ta = command.tint_r, command.tint_g, command.tint_b, command.tint_a
-        
+
         renderer.blend_mode = LibSDL3::SDL_BLENDMODE_BLEND
         command.texture.blend_mode = LibSDL3::SDL_BLENDMODE_BLEND
 
@@ -124,7 +124,7 @@ while running && frame_count < 10
           check_r, check_g, check_b, check_a = 0_u8, 0_u8, 0_u8, 0_u8
           LibSDL3.get_texture_color_mod(command.texture.to_unsafe, pointerof(check_r), pointerof(check_g), pointerof(check_b))
           LibSDL3.get_texture_alpha_mod(command.texture.to_unsafe, pointerof(check_a))
-          
+
           if check_r != tr || check_g != tg || check_b != tb || check_a != ta
             error_count += 1
             puts "ERROR [deferred loop]: Frame #{frame_count}, Command #{cursor} tint mismatch!"
@@ -143,7 +143,7 @@ while running && frame_count < 10
           _render_texture_rotated(renderer, command.texture, command.dest_rect)
         end
       end
-      
+
       cursor += 1
     end
     layer.clear

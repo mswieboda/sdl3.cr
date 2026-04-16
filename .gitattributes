@@ -1,0 +1,15 @@
+# Set default behavior to handle line endings automatically.
+* text=auto eol=lf
+
+# Explicitly set LF for Crystal and configuration files
+*.cr text eol=lf
+*.yml text eol=lf
+*.lock text eol=lf
+Makefile text eol=lf
+*.md text eol=lf
+
+# Denotate binary files
+*.png binary
+*.wav binary
+*.ttf binary
+*.json text eol=lf

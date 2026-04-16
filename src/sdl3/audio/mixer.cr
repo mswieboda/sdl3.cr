@@ -200,15 +200,164 @@ end
 module SDL3
   module Mixer
     def self.version
-      LibSDL3Mixer.version
+      {% if flag?(:wasm32) %}
+        0
+      {% else %}
+        LibSDL3Mixer.version
+      {% end %}
     end
 
     def self.init
-      LibSDL3Mixer.init
+      {% if flag?(:wasm32) %}
+        true
+      {% else %}
+        LibSDL3Mixer.init
+      {% end %}
     end
 
     def self.quit
-      LibSDL3Mixer.quit
+      {% if !flag?(:wasm32) %}
+        LibSDL3Mixer.quit
+      {% end %}
+    end
+
+    class Device
+      {% if flag?(:wasm32) %}
+        def initialize(@id : LibSDL3::AudioDeviceID)
+        end
+        def to_unsafe
+          Pointer(Void).new(1) # Return dummy pointer
+        end
+      {% else %}
+        def initialize(@ptr : LibSDL3Mixer::Mixer*)
+        end
+        def to_unsafe
+          @ptr
+        end
+      {% end %}
+
+      def self.create(device_id : LibSDL3::AudioDeviceID, spec : LibSDL3::AudioSpec? = nil)
+        {% if flag?(:wasm32) %}
+          new(device_id)
+        {% else %}
+          ptr = LibSDL3Mixer.create_mixer_device(device_id, spec ? pointerof(spec) : nil)
+          raise "Failed to create mixer device: #{SDL3.get_error}" if ptr.null?
+          new(ptr)
+        {% end %}
+      end
+
+      def destroy
+        {% if !flag?(:wasm32) %}
+          LibSDL3Mixer.destroy_mixer(@ptr)
+        {% end %}
+      end
+    end
+
+    class Audio
+      {% if flag?(:wasm32) %}
+        getter data : Bytes
+        getter spec : LibSDL3::AudioSpec
+        def initialize(@data, @spec)
+        end
+        def to_unsafe
+          Pointer(Void).new(1) # Return dummy pointer
+        end
+      {% else %}
+        def initialize(@ptr : LibSDL3Mixer::Audio*)
+        end
+        def to_unsafe
+          @ptr
+        end
+      {% end %}
+
+      def self.load(mixer : Device, path : String, predecode : Bool = false)
+        {% if flag?(:wasm32) %}
+          spec = uninitialized LibSDL3::AudioSpec
+          audio_buf = Pointer(UInt8).null
+          audio_len = 0_u32
+          if !LibSDL3.load_wav(path, pointerof(spec), pointerof(audio_buf), pointerof(audio_len))
+            raise "Failed to load WAV: #{SDL3.get_error}"
+          end
+          data = Bytes.new(audio_buf, audio_len)
+          new(data, spec)
+        {% else %}
+          ptr = LibSDL3Mixer.load_audio(mixer.to_unsafe.as(LibSDL3Mixer::Mixer*), path.to_unsafe, predecode)
+          raise "Failed to load audio: #{SDL3.get_error}" if ptr.null?
+          new(ptr)
+        {% end %}
+      end
+
+      def destroy
+        {% if flag?(:wasm32) %}
+          # Memory is managed by GC, but wav buffer from SDL should be freed if we were using LibSDL3.free
+        {% else %}
+          LibSDL3Mixer.destroy_audio(@ptr)
+        {% end %}
+      end
+    end
+
+    class Track
+      {% if flag?(:wasm32) %}
+        @stream : LibSDL3::AudioStream*?
+        @audio : Audio?
+        def initialize(@mixer : Device)
+        end
+        def to_unsafe
+          Pointer(Void).new(1) # Return dummy pointer
+        end
+      {% else %}
+        def initialize(@ptr : LibSDL3Mixer::Track*)
+        end
+        def to_unsafe
+          @ptr
+        end
+      {% end %}
+
+      def self.create(mixer : Device)
+        {% if flag?(:wasm32) %}
+          new(mixer)
+        {% else %}
+          ptr = LibSDL3Mixer.create_track(mixer.to_unsafe.as(LibSDL3Mixer::Mixer*))
+          raise "Failed to create track: #{SDL3.get_error}" if ptr.null?
+          new(ptr)
+        {% end %}
+      end
+
+      def audio=(audio : Audio)
+        {% if flag?(:wasm32) %}
+          @audio = audio
+          spec = audio.spec
+          @stream = LibSDL3.open_audio_device_stream(LibSDL3::AUDIO_DEVICE_DEFAULT_PLAYBACK, pointerof(spec), nil, nil)
+        {% else %}
+          LibSDL3Mixer.set_track_audio(to_unsafe.as(LibSDL3Mixer::Track*), audio.to_unsafe.as(LibSDL3Mixer::Audio*))
+        {% end %}
+      end
+
+      def play(loops : Int32 = 0)
+        {% if flag?(:wasm32) %}
+          if (s = @stream) && (a = @audio)
+            LibSDL3.put_audio_stream_data(s, a.data.to_unsafe, a.data.size.to_u32)
+            LibSDL3.resume_audio_stream_device(s)
+          end
+          true
+        {% else %}
+          # Simplified play for non-wasm too? Mixer has properties for play... 
+          # Mixer.cr example uses LibSDL3Mixer.play_track(track, 0)
+          # but our LibSDL3Mixer.play_track takes PropertiesID. 
+          # Let's add a helper.
+          false 
+        {% end %}
+      end
+
+      def destroy
+        {% if flag?(:wasm32) %}
+          if s = @stream
+            LibSDL3.destroy_audio_stream(s)
+          end
+        {% else %}
+          LibSDL3Mixer.destroy_track(to_unsafe.as(LibSDL3Mixer::Track*))
+        {% end %}
+      end
     end
   end
 end

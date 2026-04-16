@@ -12,34 +12,22 @@ renderer.vsync = 1
 
 font = SDL3::TTF::Font.open("./assets/fonts/PressStart2P.ttf", 16.0)
 
-# Create a mixer
-mixer = LibSDL3Mixer.create_mixer_device(LibSDL3::AUDIO_DEVICE_DEFAULT_PLAYBACK, nil)
-if mixer.null?
-  puts "Failed to create mixer: #{SDL3.get_error}"
-  exit(1)
-end
+# Create a mixer using high-level wrapper
+mixer = SDL3::Mixer::Device.create(LibSDL3::AUDIO_DEVICE_DEFAULT_PLAYBACK)
 
-# Load the sound using SDL_mixer
-audio = LibSDL3Mixer.load_audio(mixer, "assets/sfx/sample.wav", false)
-if audio.null?
-  puts "Failed to load audio: #{SDL3.get_error}"
-  exit(1)
-end
+# Load the sound using high-level wrapper
+audio = SDL3::Mixer::Audio.load(mixer, "assets/sfx/sample.wav", false)
 
-# Create a track
-track = LibSDL3Mixer.create_track(mixer)
-if track.null?
-    puts "Failed to create track: #{SDL3.get_error}"
-    exit(1)
-end
-
-LibSDL3Mixer.set_track_audio(track, audio)
+# Create a track using high-level wrapper
+track = SDL3::Mixer::Track.create(mixer)
+track.audio = audio
 
 # Button state
 button_rect = LibSDL3::FRect.new(x: 50.0, y: 50.0, w: 200.0, h: 50.0)
 button_text_state = "Play Sound"
 
 running = true
+frame_count = 0
 while running
   event = uninitialized LibSDL3::Event
   while SDL3.poll_event(pointerof(event))
@@ -58,10 +46,15 @@ while running
          mouse_x >= button_rect.x && mouse_x <= (button_rect.x + button_rect.w) &&
          mouse_y >= button_rect.y && mouse_y <= (button_rect.y + button_rect.h)
         # Play the sound on the track
-        LibSDL3Mixer.play_track(track, 0)
+        track.play(0)
       end
     end
   end
+
+  if frame_count < 15
+    puts "Crystal: Frame #{frame_count}"
+  end
+  frame_count += 1
 
   renderer.draw_color = {0_u8, 0_u8, 0_u8, 255_u8}
   renderer.clear
@@ -84,9 +77,9 @@ while running
 end
 
 # Cleanup
-LibSDL3Mixer.destroy_audio(audio)
-LibSDL3Mixer.destroy_track(track)
-LibSDL3Mixer.destroy_mixer(mixer)
+audio.destroy
+track.destroy
+mixer.destroy
 font.close
 SDL3::TTF.quit
 SDL3::Mixer.quit

@@ -35,6 +35,7 @@ lib LibSDL3
 
   fun create_window = SDL_CreateWindow(title : UInt8*, w : Int32, h : Int32, flags : WindowFlags) : Window*
   fun destroy_window = SDL_DestroyWindow(window : Window*)
+  fun get_window_size = SDL_GetWindowSize(window : Window*, w : Int32*, h : Int32*) : Bool
 end
 
 module SDL3
@@ -90,6 +91,13 @@ module SDL3
 
     def destroy
       LibSDL3.destroy_window(@ptr)
+    end
+
+    def size : Tuple(Int32, Int32)
+      w = 0
+      h = 0
+      LibSDL3.get_window_size(@ptr, pointerof(w), pointerof(h))
+      {w, h}
     end
 
     def to_unsafe

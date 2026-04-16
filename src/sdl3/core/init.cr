@@ -6,9 +6,12 @@ lib LibSDL3
   SDL_INIT_AUDIO = 0x00000010_u32
   SDL_INIT_GAMEPAD = 0x00002000_u32
 
+  HINT_BORDERLESS_WINDOW_MAXIMIZED_FULLSCREEN = "SDL_BORDERLESS_WINDOW_MAXIMIZED_FULLSCREEN"
+
   fun init = SDL_Init(flags : InitFlags) : Bool
   fun quit = SDL_Quit
   fun was_init = SDL_WasInit(flags : InitFlags) : InitFlags
+  fun set_hint = SDL_SetHint(name : LibC::Char*, value : LibC::Char*) : Bool
 end
 
 module SDL3

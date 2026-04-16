@@ -46,7 +46,7 @@ build-example-wasm:
 	@echo "Linking final HTML bundle..."
 	emcc $(BUILD_DIR)/$(EXAMPLE).o $(BUILD_DIR)/wasi_bridge.o -o $(BUILD_DIR)/$(EXAMPLE).html \
 		-s USE_SDL=3 -s USE_SDL_MIXER=3 -s USE_SDL_TTF=3 -s USE_SDL_IMAGE=3 \
-		-s ASYNCIFY -s ALLOW_MEMORY_GROWTH=1 -s ERROR_ON_UNDEFINED_SYMBOLS=0
+		-s ASYNCIFY -s ALLOW_MEMORY_GROWTH=1 -s ERROR_ON_UNDEFINED_SYMBOLS=1 -s STACK_SIZE=1048576 --preload-file assets/
 
 build-example-wasm-docker:
 	@echo "Building example $(EXAMPLE) inside Docker..."
@@ -55,13 +55,11 @@ build-example-wasm-docker:
 test-wasm-docker:
 	@echo "Automated Test: Building $(EXAMPLE)..."
 	$(MAKE) build-example-wasm-docker EXAMPLE=$(EXAMPLE)
-	@echo "Automated Test: Starting local server..."
-	# Start server in background
-	python3 -m http.server 8000 & PID=$$!; \
-	echo "Automated Test: Server started with PID $$PID. Running Puppeteer..."; \
-	node scripts/wasm_runner.js http://localhost:8000/build/$(EXAMPLE).html; \
-	echo "Automated Test: Cleaning up server..."; \
-	kill $$PID
+	@echo "Automated Test: Ensuring local server is running on port 8000..."
+	@lsof -i :8000 > /dev/null || (python3 -m http.server 8000 &)
+	@sleep 1
+	@echo "Automated Test: Running Puppeteer..."
+	node scripts/wasm_runner.js http://localhost:8000/build/$(EXAMPLE).html
 
 serve-wasm:
 	@echo "Serving Wasm at http://localhost:8000/build/$(EXAMPLE).html"

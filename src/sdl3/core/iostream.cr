@@ -52,6 +52,10 @@ module SDL3
       LibSDL3.close_io(@ptr)
     end
 
+    def size : Int64
+      LibSDL3.get_io_size(@ptr)
+    end
+
     def to_unsafe
       @ptr
     end

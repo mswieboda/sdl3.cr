@@ -7,7 +7,8 @@ window = SDL3::Window.new("Text Test", 640, 480, 0)
 renderer = SDL3::Renderer.new(window)
 
 # Open the font
-font = SDL3::TTF::Font.open("./assets/fonts/PressStart2P.ttf", 24.0)
+font_path = "assets/fonts/PressStart2P.ttf"
+font = SDL3::TTF::Font.open(font_path, 24.0)
 
 # Render text to a surface
 text_surface = font.render_text_blended("Hello, SDL3 TTF!", SDL3.color(255, 255, 255, 255))
@@ -15,11 +16,8 @@ text_surface = font.render_text_blended("Hello, SDL3 TTF!", SDL3.color(255, 255,
 # Create a texture from the surface
 text_texture = SDL3::Texture.from_surface(renderer, text_surface)
 
-# Create an IOStream from the font file
-font_file_path = "./assets/fonts/PressStart2P.ttf"
-font_iostream = SDL3::IOStream.from_file(font_file_path, "rb")
-
-# Open the font from IOStream
+# Open the font via IOStream to test the abstraction
+font_iostream = SDL3::IOStream.from_file(font_path, "rb")
 font_io = SDL3::TTF::Font.open_io(font_iostream, 18.0, true) # `true` to close the iostream when font is closed
 
 # Render second text to a surface

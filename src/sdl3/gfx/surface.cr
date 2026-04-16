@@ -43,6 +43,13 @@ module SDL3
       new(ptr)
     end
 
+    def self.load_png(file : String)
+      iostream = IOStream.from_file(file, "rb")
+      ptr = LibSDL3.load_png_io(iostream.to_unsafe, true)
+      raise "Failed to load PNG: #{SDL3.get_error}" if ptr.null?
+      new(ptr)
+    end
+
     def self.load_io(io_stream : IOStream, close_io : Bool = false)
       ptr = LibSDL3.load_surface_io(io_stream.to_unsafe, close_io)
       raise "Failed to load surface from IO stream" if ptr.null?

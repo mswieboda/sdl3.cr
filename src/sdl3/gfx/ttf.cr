@@ -235,7 +235,7 @@ module SDL3
 
       def self.open(file : String, ptsize : Float32)
         ptr = LibSDL3TTF.open_font(file.to_unsafe, ptsize)
-        raise "Failed to open font" if ptr.null?
+        raise "Failed to open font: #{SDL3.get_error}" if ptr.null?
         new(ptr)
       end
 

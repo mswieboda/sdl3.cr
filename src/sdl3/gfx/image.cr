@@ -37,21 +37,39 @@ module SDL3
     end
 
     def load_texture_io(renderer : Renderer, io_stream : IOStream, close_io : Bool = false) : Texture
-      ptr = LibSDL3Image.load_texture_io(renderer.to_unsafe, io_stream.to_unsafe, close_io)
-      raise "Failed to load texture from IO stream" if ptr.null?
-      Texture.new(ptr)
+      {% if flag?(:wasm32) %}
+        surface = Surface.load_png_io(io_stream, close_io)
+        texture = Texture.from_surface(renderer, surface)
+        surface.destroy
+        texture
+      {% else %}
+        ptr = LibSDL3Image.load_texture_io(renderer.to_unsafe, io_stream.to_unsafe, close_io)
+        raise "Failed to load texture from IO stream" if ptr.null?
+        Texture.new(ptr)
+      {% end %}
     end
 
     def load_texture_typed_io(renderer : Renderer, io_stream : IOStream, type : String, close_io : Bool = false) : Texture
-      ptr = LibSDL3Image.load_texture_typed_io(renderer.to_unsafe, io_stream.to_unsafe, close_io, type.to_unsafe)
-      raise "Failed to load typed texture from IO stream" if ptr.null?
-      Texture.new(ptr)
+      {% if flag?(:wasm32) %}
+        load_texture_io(renderer, io_stream, close_io)
+      {% else %}
+        ptr = LibSDL3Image.load_texture_typed_io(renderer.to_unsafe, io_stream.to_unsafe, close_io, type.to_unsafe)
+        raise "Failed to load typed texture from IO stream" if ptr.null?
+        Texture.new(ptr)
+      {% end %}
     end
 
     def load_texture(renderer : Renderer, file : String) : Texture
-      ptr = LibSDL3Image.load_texture(renderer.to_unsafe, file.to_unsafe)
-      raise "Failed to load texture: #{file}" if ptr.null?
-      Texture.new(ptr)
+      {% if flag?(:wasm32) %}
+        surface = Surface.load_png(file)
+        texture = Texture.from_surface(renderer, surface)
+        surface.destroy
+        texture
+      {% else %}
+        ptr = LibSDL3Image.load_texture(renderer.to_unsafe, file.to_unsafe)
+        raise "Failed to load texture: #{file}" if ptr.null?
+        Texture.new(ptr)
+      {% end %}
     end
   end
 end

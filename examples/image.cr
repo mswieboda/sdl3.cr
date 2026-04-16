@@ -19,6 +19,7 @@ texture_io = SDL3::Image.load_texture_io(renderer, image_iostream, true) # `true
 w_io, h_io = texture_io.size
 
 running = true
+frame_count = 0
 while running
   event = uninitialized LibSDL3::Event
   while SDL3.poll_event(pointerof(event))
@@ -31,6 +32,11 @@ while running
       end
     end
   end
+
+  if frame_count < 15
+    puts "Crystal: Frame #{frame_count}"
+  end
+  frame_count += 1
 
   renderer.draw_color = {0_u8, 0_u8, 0_u8, 255_u8}
   renderer.clear

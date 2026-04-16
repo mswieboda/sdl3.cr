@@ -6,7 +6,7 @@ lib LibSDL3
   SDL_INIT_AUDIO = 0x00000010_u32
   SDL_INIT_GAMEPAD = 0x00002000_u32
 
-  HINT_BORDERLESS_WINDOW_MAXIMIZED_FULLSCREEN = "SDL_BORDERLESS_WINDOW_MAXIMIZED_FULLSCREEN"
+  HINT_VIDEO_MAC_FULLSCREEN_SPACES = "SDL_VIDEO_MAC_FULLSCREEN_SPACES"
 
   fun init = SDL_Init(flags : InitFlags) : Bool
   fun quit = SDL_Quit
@@ -48,5 +48,9 @@ module SDL3
 
   def init?(flags : LibSDL3::InitFlags)
     LibSDL3.was_init(flags)
+  end
+
+  def set_hint(name : String, value : String)
+    LibSDL3.set_hint(name, value)
   end
 end

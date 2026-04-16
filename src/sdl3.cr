@@ -15,6 +15,7 @@ module SDL3
 end
 
 require "./sdl3/core/init"
+require "./sdl3/core/app"
 require "./sdl3/core/error"
 require "./sdl3/core/log"
 require "./sdl3/core/timer"

@@ -1,0 +1,45 @@
+# Use the official Crystal image
+FROM crystallang/crystal:latest
+
+# Install dependencies for Emscripten and general build tools
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    python3 \
+    cmake \
+    build-essential \
+    lld \
+    wabt \
+    openjdk-17-jre-headless \
+    xz-utils \
+    libxml2-dev \
+    libyaml-dev \
+    libgmp-dev \
+    libssl-dev \
+    zlib1g-dev \
+    pkg-config
+
+# Install Emscripten SDK
+WORKDIR /opt
+RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git && \
+    cd emsdk && \
+    ./emsdk install latest && \
+    ./emsdk activate latest
+
+# Add WASI-SDK (for pure Wasm/WASI builds if needed)
+WORKDIR /opt
+RUN curl -L -O https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-25/wasi-sdk-25.0-arm64-linux.tar.gz && \
+    tar xf wasi-sdk-25.0-arm64-linux.tar.gz && \
+    rm wasi-sdk-25.0-arm64-linux.tar.gz
+ENV WASI_SDK_PATH="/opt/wasi-sdk-25.0-arm64-linux"
+
+# Add Emscripten to the path and set environment variables
+ENV PATH="/opt/emsdk:/opt/emsdk/upstream/emscripten:${WASI_SDK_PATH}/bin:${PATH}"
+ENV EMSDK="/opt/emsdk"
+
+# Default directory for mounting your project
+WORKDIR /src
+
+# Pre-run emcc to trigger the download of internal ports (like SDL3)
+# This keeps the 'make' step faster later.
+RUN emcc --version

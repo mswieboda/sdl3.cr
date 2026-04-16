@@ -9,7 +9,7 @@ RM_CMD := rm -rf
 MKDIR_CMD := mkdir -p
 
 # Phony targets don't represent files
-.PHONY: all build build-debug clean examples spec run run-release init-wasm build-wasm-docker build-example-wasm build-example-wasm-docker
+.PHONY: all build build-debug clean examples spec run run-release init-wasm build-wasm-docker build-example-wasm build-example-wasm-docker test-wasm-docker
 
 # The default target, executed when you just run `make`
 all: build
@@ -51,6 +51,17 @@ build-example-wasm:
 build-example-wasm-docker:
 	@echo "Building example $(EXAMPLE) inside Docker..."
 	docker run --rm -v $(CURDIR):/src sdl3-wasm make build-example-wasm EXAMPLE=$(EXAMPLE)
+
+test-wasm-docker:
+	@echo "Automated Test: Building $(EXAMPLE)..."
+	$(MAKE) build-example-wasm-docker EXAMPLE=$(EXAMPLE)
+	@echo "Automated Test: Starting local server..."
+	# Start server in background
+	python3 -m http.server 8000 & PID=$$!; \
+	echo "Automated Test: Server started with PID $$PID. Running Puppeteer..."; \
+	node scripts/wasm_runner.js http://localhost:8000/build/$(EXAMPLE).html; \
+	echo "Automated Test: Cleaning up server..."; \
+	kill $$PID
 
 serve-wasm:
 	@echo "Serving Wasm at http://localhost:8000/build/$(EXAMPLE).html"

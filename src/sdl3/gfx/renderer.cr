@@ -56,6 +56,7 @@ lib LibSDL3
   fun set_render_clip_rect = SDL_SetRenderClipRect(renderer : Renderer*, rect : Rect*) : Bool
   fun get_render_clip_rect = SDL_GetRenderClipRect(renderer : Renderer*, rect : Rect*) : Bool
   fun get_render_coordinates_from_window_coordinates = SDL_GetRenderCoordinatesFromWindowCoordinates(renderer : Renderer*, window_x : Float32, window_y : Float32, x : Float32*, y : Float32*) : Bool
+  fun render_coordinates_from_window = SDL_RenderCoordinatesFromWindow(renderer : Renderer*, window_x : Float32, window_y : Float32, x : Float32*, y : Float32*) : Bool
 
   SDL_RENDERER_VSYNC_DISABLED = 0
   SDL_RENDERER_VSYNC_ADAPTIVE = -1

@@ -341,11 +341,11 @@ module SDL3
           end
           true
         {% else %}
-          # Simplified play for non-wasm too? Mixer has properties for play... 
+          # Simplified play for non-wasm too? Mixer has properties for play...
           # Mixer.cr example uses LibSDL3Mixer.play_track(track, 0)
-          # but our LibSDL3Mixer.play_track takes PropertiesID. 
+          # but our LibSDL3Mixer.play_track takes PropertiesID.
           # Let's add a helper.
-          false 
+          false
         {% end %}
       end
 

@@ -91,7 +91,7 @@ __wasi_errno_t __wasi_path_open(__wasi_fd_t fd, __wasi_lookupflags_t dirflags, c
   int res = MAIN_THREAD_EM_ASM_INT({
     try {
       const path = UTF8ArrayToString(HEAPU8, $0, $1);
-      const flags = ($2 & 1) ? 'a' : 'r'; 
+      const flags = ($2 & 1) ? 'a' : 'r';
       const stream = FS.open(path, flags);
       return stream.fd;
     } catch (e) {

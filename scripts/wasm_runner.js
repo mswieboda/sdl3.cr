@@ -28,11 +28,11 @@ const puppeteer = require('puppeteer');
 
   try {
     await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
-    
+
     // Let it run for 5 seconds to collect logs
     console.log("Automation: Collecting logs for 5 seconds...");
     await new Promise(resolve => setTimeout(resolve, 5000));
-    
+
   } catch (e) {
     console.error(`Automation: Failed to load page: ${e.message}`);
   } finally {

@@ -1,8 +1,9 @@
 lib LibSDL3
   enum ScaleMode : Int32
-    None = 0
-    Linear = 1
-    Best = 2
+    Invalid = -1
+    Nearest =  0
+    Linear  =  1
+    PixelArt = 2
   end
 
   struct Surface

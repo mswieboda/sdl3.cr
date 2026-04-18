@@ -53,6 +53,8 @@ lib LibSDL3
   fun get_render_target = SDL_GetRenderTarget(renderer : Renderer*) : Texture*
   fun set_render_scale = SDL_SetRenderScale(renderer : Renderer*, scale_x : Float32, scale_y : Float32) : Bool
   fun get_render_scale = SDL_GetRenderScale(renderer : Renderer*, scale_x : Float32*, scale_y : Float32*) : Bool
+  fun set_default_texture_scale_mode = SDL_SetDefaultTextureScaleMode(renderer : Renderer*, scale_mode : ScaleMode) : Bool
+  fun get_default_texture_scale_mode = SDL_GetDefaultTextureScaleMode(renderer : Renderer*, scale_mode : ScaleMode*) : Bool
   fun set_render_clip_rect = SDL_SetRenderClipRect(renderer : Renderer*, rect : Rect*) : Bool
   fun get_render_clip_rect = SDL_GetRenderClipRect(renderer : Renderer*, rect : Rect*) : Bool
   fun get_render_coordinates_from_window_coordinates = SDL_GetRenderCoordinatesFromWindowCoordinates(renderer : Renderer*, window_x : Float32, window_y : Float32, x : Float32*, y : Float32*) : Bool
@@ -149,6 +151,16 @@ module SDL3
       y = 0_f32
       LibSDL3.get_render_scale(to_unsafe, pointerof(x), pointerof(y))
       {x, y}
+    end
+
+    def default_texture_scale_mode=(mode : LibSDL3::ScaleMode)
+      LibSDL3.set_default_texture_scale_mode(to_unsafe, mode)
+    end
+
+    def default_texture_scale_mode : LibSDL3::ScaleMode
+      mode = uninitialized LibSDL3::ScaleMode
+      LibSDL3.get_default_texture_scale_mode(to_unsafe, pointerof(mode))
+      mode
     end
 
     def present

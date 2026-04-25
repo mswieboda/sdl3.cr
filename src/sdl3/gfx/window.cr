@@ -37,6 +37,7 @@ lib LibSDL3
   fun destroy_window = SDL_DestroyWindow(window : Window*)
   fun get_window_size = SDL_GetWindowSize(window : Window*, w : Int32*, h : Int32*) : Bool
   fun set_window_resizable = SDL_SetWindowResizable(window : Window*, resizable : Bool) : Bool
+  fun raise_window = SDL_RaiseWindow(window : Window*) : Bool
 end
 
 module SDL3
@@ -92,6 +93,10 @@ module SDL3
 
     def destroy
       LibSDL3.destroy_window(@ptr)
+    end
+
+    def raise_window
+      LibSDL3.raise_window(@ptr)
     end
 
     def resizable=(resizable : Bool)

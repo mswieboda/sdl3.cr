@@ -462,6 +462,7 @@ lib LibSDL3
 
   fun poll_event = SDL_PollEvent(event : Event*) : Bool
   fun push_event = SDL_PushEvent(event : Event*) : Bool
+  fun pump_events = SDL_PumpEvents() : Bool
 end
 
 module SDL3
@@ -471,5 +472,9 @@ module SDL3
 
   def self.push_event(event : LibSDL3::Event*)
     LibSDL3.push_event(event)
+  end
+
+  def self.pump_events
+    LibSDL3.pump_events
   end
 end

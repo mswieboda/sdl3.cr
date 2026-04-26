@@ -10,6 +10,7 @@ lib LibSDL3
   fun get_texture_alpha_mod = SDL_GetTextureAlphaMod(texture : Texture*, alpha : UInt8*) : Bool
   fun set_texture_scale_mode = SDL_SetTextureScaleMode(texture : Texture*, scaleMode : ScaleMode) : Bool
   fun get_texture_scale_mode = SDL_GetTextureScaleMode(texture : Texture*, scaleMode : ScaleMode*) : Bool
+  fun get_texture_properties = SDL_GetTextureProperties(texture : Texture*) : PropertiesID
   fun update_texture = SDL_UpdateTexture(texture : Texture*, rect : Rect*, pixels : Void*, pitch : Int32) : Bool
   fun lock_texture = SDL_LockTexture(texture : Texture*, rect : Rect*, pixels : Void**, pitch : Int32*) : Bool
   fun unlock_texture = SDL_UnlockTexture(texture : Texture*)
@@ -97,6 +98,10 @@ module SDL3
       scale_mode_ptr = uninitialized LibSDL3::ScaleMode
       LibSDL3.get_texture_scale_mode(@ptr, pointerof(scale_mode_ptr))
       scale_mode_ptr
+    end
+
+    def properties : SDL3::Properties
+      SDL3::Properties.new(LibSDL3.get_texture_properties(@ptr))
     end
 
     def update(rect : LibSDL3::Rect?, pixels : Pointer(Void), pitch : Int32) : Bool

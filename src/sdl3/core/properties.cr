@@ -39,3 +39,53 @@ lib LibSDL3
   fun enumerate_properties = SDL_EnumerateProperties(props : PropertiesID, callback : EnumeratePropertiesCallback, userdata : Void*) : Bool
   fun destroy_properties = SDL_DestroyProperties(props : PropertiesID) : Void
 end
+
+module SDL3
+  struct Properties
+    getter id : LibSDL3::PropertiesID
+
+    def initialize(@id : LibSDL3::PropertiesID)
+    end
+
+    def to_unsafe
+      @id
+    end
+
+    def has?(name : String) : Bool
+      LibSDL3.has_property(@id, name)
+    end
+
+    def type(name : String) : LibSDL3::PropertyType
+      LibSDL3.get_property_type(@id, name)
+    end
+
+    def get_boolean(name : String, default_value : Bool = false) : Bool
+      LibSDL3.get_boolean_property(@id, name, default_value)
+    end
+
+    def get_string(name : String, default_value : String? = nil) : String?
+      ptr = LibSDL3.get_string_property(@id, name, default_value ? default_value.to_unsafe : Pointer(UInt8).null)
+      ptr ? String.new(ptr) : nil
+    end
+
+    def get_number(name : String, default_value : Int64 = 0) : Int64
+      LibSDL3.get_number_property(@id, name, default_value)
+    end
+
+    def get_float(name : String, default_value : Float32 = 0.0_f32) : Float32
+      LibSDL3.get_float_property(@id, name, default_value)
+    end
+
+    def get_pointer(name : String, default_value : Void* = Pointer(Void).null) : Void*
+      LibSDL3.get_pointer_property(@id, name, default_value)
+    end
+
+    def clear(name : String) : Bool
+      LibSDL3.clear_property(@id, name)
+    end
+
+    def enumerate(callback : LibSDL3::EnumeratePropertiesCallback, userdata : Void*) : Bool
+      LibSDL3.enumerate_properties(@id, callback, userdata)
+    end
+  end
+end

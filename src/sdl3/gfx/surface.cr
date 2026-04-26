@@ -26,6 +26,8 @@ lib LibSDL3
   fun load_surface_io = SDL_LoadSurface_IO(src : IOStream*, closeio : Bool) : Surface*
   fun load_bmp_io = SDL_LoadBMP_IO(src : IOStream*, closeio : Bool) : Surface*
   fun load_png_io = SDL_LoadPNG_IO(src : IOStream*, closeio : Bool) : Surface*
+
+  fun get_surface_properties = SDL_GetSurfaceProperties(surface : Surface*) : PropertiesID
 end
 
 module SDL3
@@ -70,6 +72,10 @@ module SDL3
     end
 
     def initialize(@ptr : LibSDL3::Surface*); end
+
+    def properties : SDL3::Properties
+      SDL3::Properties.new(LibSDL3.get_surface_properties(@ptr))
+    end
 
     def format
       @ptr.value.format
@@ -117,6 +123,10 @@ module SDL3
 
     def fill_rect(rect : LibSDL3::Rect, color : Color)
       LibSDL3.fill_surface_rect(@ptr, pointerof(rect), color.to_u32)
+    end
+
+    def find_property(name : String) : Bool
+      properties.has?(name)
     end
 
     def fill(color : Color)

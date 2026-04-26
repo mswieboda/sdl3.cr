@@ -23,6 +23,12 @@ lib LibSDL3
   end
 
   fun create_renderer = SDL_CreateRenderer(window : Window*, name : UInt8*) : Renderer*
+  fun get_renderer = SDL_GetRenderer(window : Window*) : Renderer*
+  fun get_num_render_drivers = SDL_GetNumRenderDrivers : Int32
+  fun get_render_driver = SDL_GetRenderDriver(index : Int32) : UInt8*
+  fun get_renderer_name = SDL_GetRendererName(renderer : Renderer*) : UInt8*
+  fun get_renderer_properties = SDL_GetRendererProperties(renderer : Renderer*) : PropertiesID
+  fun get_gpu_renderer_device = SDL_GetGPURendererDevice(renderer : Renderer*) : GPUDevice*
   fun destroy_renderer = SDL_DestroyRenderer(renderer : Renderer*)
   fun get_render_draw_color = SDL_GetRenderDrawColor(renderer : Renderer*, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : Bool
   fun set_render_draw_color = SDL_SetRenderDrawColor(renderer : Renderer*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : Bool
@@ -60,8 +66,43 @@ lib LibSDL3
   fun get_render_coordinates_from_window_coordinates = SDL_GetRenderCoordinatesFromWindowCoordinates(renderer : Renderer*, window_x : Float32, window_y : Float32, x : Float32*, y : Float32*) : Bool
   fun render_coordinates_from_window = SDL_RenderCoordinatesFromWindow(renderer : Renderer*, window_x : Float32, window_y : Float32, x : Float32*, y : Float32*) : Bool
 
+  alias GPURenderState = Void
+
+  struct GPURenderStateCreateInfo
+    fragment_shader : GPUShader*
+    num_sampler_bindings : Int32
+    sampler_bindings : GPUTextureSamplerBinding*
+    num_storage_textures : Int32
+    storage_textures : GPUTexture**
+    num_storage_buffers : Int32
+    storage_buffers : GPUBuffer**
+    props : PropertiesID
+  end
+
+  fun create_gpu_render_state = SDL_CreateGPURenderState(renderer : Renderer*, createinfo : GPURenderStateCreateInfo*) : GPURenderState*
+  fun set_gpu_render_state_fragment_uniforms = SDL_SetGPURenderStateFragmentUniforms(state : GPURenderState*, slot_index : UInt32, data : Void*, length : UInt32) : Bool
+  fun set_gpu_render_state = SDL_SetGPURenderState(renderer : Renderer*, state : GPURenderState*) : Bool
+  fun destroy_gpu_render_state = SDL_DestroyGPURenderState(state : GPURenderState*)
+
   SDL_RENDERER_VSYNC_DISABLED = 0
   SDL_RENDERER_VSYNC_ADAPTIVE = -1
+
+  SDL_PROP_RENDERER_NAME_STRING                               = "SDL.renderer.name"
+  SDL_PROP_RENDERER_WINDOW_POINTER                            = "SDL.renderer.window"
+  SDL_PROP_RENDERER_SURFACE_POINTER                           = "SDL.renderer.surface"
+  SDL_PROP_RENDERER_VSYNC_NUMBER                              = "SDL.renderer.vsync"
+  SDL_PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER                   = "SDL.renderer.max_texture_size"
+  SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER                   = "SDL.renderer.texture_formats"
+  SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN                  = "SDL.renderer.texture_wrapping"
+  SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER                  = "SDL.renderer.output_colorspace"
+  SDL_PROP_RENDERER_HDR_ENABLED_BOOLEAN                       = "SDL.renderer.HDR_enabled"
+  SDL_PROP_RENDERER_SDR_WHITE_POINT_FLOAT                     = "SDL.renderer.SDR_white_point"
+  SDL_PROP_RENDERER_HDR_HEADROOM_FLOAT                        = "SDL.renderer.HDR_headroom"
+  SDL_PROP_RENDERER_GPU_DEVICE_POINTER                        = "SDL.renderer.gpu.device"
+
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN          = "SDL.renderer.create.gpu.shaders_spirv"
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN           = "SDL.renderer.create.gpu.shaders_dxil"
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN            = "SDL.renderer.create.gpu.shaders_msl"
 end
 
 struct LibSDL3::Vertex
@@ -87,6 +128,17 @@ module SDL3
   alias LogicalPresentation = LibSDL3::RendererLogicalPresentation
   alias Vertex = LibSDL3::Vertex
 
+  def self.render_drivers : Array(String)
+    count = LibSDL3.get_num_render_drivers
+    Array.new(count) do |i|
+      String.new(LibSDL3.get_render_driver(i))
+    end
+  end
+
+  def self.get_renderer_info : Array(String)
+    render_drivers
+  end
+
   class Renderer
     @ptr : LibSDL3::Renderer*
 
@@ -95,6 +147,14 @@ module SDL3
       ptr = LibSDL3.create_renderer(window.to_unsafe, name_ptr)
       raise "Failed to create renderer" if ptr.null?
       @ptr = ptr
+    end
+
+    def name : String
+      properties.get_string(LibSDL3::SDL_PROP_RENDERER_NAME_STRING) || "unknown"
+    end
+
+    def properties : SDL3::Properties
+      SDL3::Properties.new(LibSDL3.get_renderer_properties(to_unsafe))
     end
 
     def destroy
@@ -369,6 +429,39 @@ module SDL3
 
     def create_text_engine : TTF::TextEngine
       TTF::TextEngine.create(self)
+    end
+
+    def gpu_device : LibSDL3::GPUDevice*
+      LibSDL3.get_gpu_renderer_device(to_unsafe)
+    end
+
+    def create_gpu_render_state(create_info : LibSDL3::GPURenderStateCreateInfo) : GPURenderState
+      ptr = LibSDL3.create_gpu_render_state(to_unsafe, pointerof(create_info))
+      raise "Failed to create GPU render state" if ptr.null?
+      GPURenderState.new(ptr)
+    end
+
+    def gpu_render_state=(state : GPURenderState?)
+      LibSDL3.set_gpu_render_state(to_unsafe, state ? state.to_unsafe : Pointer(LibSDL3::GPURenderState).null)
+    end
+  end
+
+  class GPURenderState
+    @ptr : LibSDL3::GPURenderState*
+
+    def initialize(@ptr)
+    end
+
+    def set_fragment_uniforms(slot_index : UInt32, data : Slice(UInt8))
+      LibSDL3.set_gpu_render_state_fragment_uniforms(@ptr, slot_index, data.to_unsafe.as(Void*), data.size.to_u32)
+    end
+
+    def destroy
+      LibSDL3.destroy_gpu_render_state(@ptr)
+    end
+
+    def to_unsafe
+      @ptr
     end
   end
 end

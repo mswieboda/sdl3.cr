@@ -418,13 +418,13 @@ module SDL3
       h = 0
       mode = LibSDL3::RendererLogicalPresentation::Disabled
 
-      get_logical_presentation(w: w, h: h, mode: mode)
+      LibSDL3.get_render_logical_presentation(to_unsafe, pointerof(w), pointerof(h), pointerof(mode))
 
       {w, h, mode}
     end
 
-    def get_logical_presentation(w : Int32, h : Int32, mode : LibSDL3::RendererLogicalPresentation)
-      ptr = LibSDL3.get_render_logical_presentation(to_unsafe, pointerof(w), pointerof(h), pointerof(mode))
+    def get_logical_presentation(w : Int32*, h : Int32*, mode : LibSDL3::RendererLogicalPresentation*)
+      LibSDL3.get_render_logical_presentation(to_unsafe, w, h, mode)
     end
 
     def create_text_engine : TTF::TextEngine

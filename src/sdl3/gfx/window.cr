@@ -75,7 +75,7 @@ module SDL3
       NotFocusable      = LibSDL3::SDL_WINDOW_NOT_FOCUSABLE
     end
 
-    def initialize(title : String, w : Int32, h : Int32, flags : Flags | LibSDL3::WindowFlags | Int = WindowFlags::None)
+    def initialize(title : String, w : Int32, h : Int32, flags : Flags | LibSDL3::WindowFlags | Int = Flags::None)
       f = case flags
           when Flags then flags.value
           else flags.to_u64

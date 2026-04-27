@@ -444,6 +444,10 @@ module SDL3
     def gpu_render_state=(state : GPURenderState?)
       LibSDL3.set_gpu_render_state(to_unsafe, state ? state.to_unsafe : Pointer(LibSDL3::GPURenderState).null)
     end
+
+    def max_texture_size : Int64
+      properties.get_number(LibSDL3::SDL_PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER)
+    end
   end
 
   class GPURenderState

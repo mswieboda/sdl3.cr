@@ -36,6 +36,7 @@ lib LibSDL3
   fun create_window = SDL_CreateWindow(title : UInt8*, w : Int32, h : Int32, flags : WindowFlags) : Window*
   fun destroy_window = SDL_DestroyWindow(window : Window*)
   fun get_window_size = SDL_GetWindowSize(window : Window*, w : Int32*, h : Int32*) : Bool
+  fun get_window_size_in_pixels = SDL_GetWindowSizeInPixels(window : Window*, w : Int32*, h : Int32*) : Bool
   fun set_window_resizable = SDL_SetWindowResizable(window : Window*, resizable : Bool) : Bool
   fun raise_window = SDL_RaiseWindow(window : Window*) : Bool
 end
@@ -107,6 +108,13 @@ module SDL3
       w = 0
       h = 0
       LibSDL3.get_window_size(@ptr, pointerof(w), pointerof(h))
+      {w, h}
+    end
+
+    def pixel_size : Tuple(Int32, Int32)
+      w = 0
+      h = 0
+      LibSDL3.get_window_size_in_pixels(@ptr, pointerof(w), pointerof(h))
       {w, h}
     end
 

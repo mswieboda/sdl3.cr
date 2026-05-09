@@ -28,7 +28,7 @@ module SDL3
 
     def self.create(
       renderer : Renderer,
-      format : PixelFormat,
+      format : PixelFormat = PixelFormat::RGBA8888,
       access : TextureAccess,
       w : Int32,
       h : Int32

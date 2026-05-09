@@ -2,6 +2,7 @@ lib LibSDL3
   # SDL_video.h
   alias Window = Void
   alias WindowFlags = UInt64
+  alias DisplayID = UInt32
 
   SDL_WINDOWPOS_UNDEFINED = 0x1FFF0000_u32
   SDL_WINDOWPOS_CENTERED  = 0x2FFF0000_u32
@@ -35,6 +36,8 @@ lib LibSDL3
 
   fun create_window = SDL_CreateWindow(title : UInt8*, w : Int32, h : Int32, flags : WindowFlags) : Window*
   fun destroy_window = SDL_DestroyWindow(window : Window*)
+  fun get_display_for_window = SDL_GetDisplayForWindow(window : Window*) : DisplayID
+  fun get_display_content_scale = SDL_GetDisplayContentScale(display_id : DisplayID) : Float32
   fun get_window_size = SDL_GetWindowSize(window : Window*, w : Int32*, h : Int32*) : Bool
   fun get_window_size_in_pixels = SDL_GetWindowSizeInPixels(window : Window*, w : Int32*, h : Int32*) : Bool
   fun set_window_resizable = SDL_SetWindowResizable(window : Window*, resizable : Bool) : Bool

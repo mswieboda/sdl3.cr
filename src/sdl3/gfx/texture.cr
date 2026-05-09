@@ -29,9 +29,9 @@ module SDL3
     def self.create(
       renderer : Renderer,
       format : PixelFormat = PixelFormat::RGBA8888,
-      access : TextureAccess,
-      w : Int32,
-      h : Int32
+      access : TextureAccess = TextureAccess::Static,
+      w : Int32 = 1,
+      h : Int32 = 1
     )
       ptr = LibSDL3.create_texture(renderer.to_unsafe, format, access, w, h)
       raise "Failed to create texture" if ptr.null?

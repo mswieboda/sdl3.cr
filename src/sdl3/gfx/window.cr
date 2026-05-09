@@ -40,6 +40,7 @@ lib LibSDL3
   fun get_display_content_scale = SDL_GetDisplayContentScale(display_id : DisplayID) : Float32
   fun get_window_size = SDL_GetWindowSize(window : Window*, w : Int32*, h : Int32*) : Bool
   fun get_window_size_in_pixels = SDL_GetWindowSizeInPixels(window : Window*, w : Int32*, h : Int32*) : Bool
+  fun get_window_pixel_density = SDL_GetWindowPixelDensity(window : Window*) : Float32
   fun set_window_resizable = SDL_SetWindowResizable(window : Window*, resizable : Bool) : Bool
   fun raise_window = SDL_RaiseWindow(window : Window*) : Bool
 end

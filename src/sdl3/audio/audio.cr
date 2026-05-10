@@ -38,6 +38,7 @@ lib LibSDL3
   end
 
   # Structs
+  @[Packed]
   struct AudioSpec
     format : AudioFormat
     channels : LibC::Int

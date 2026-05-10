@@ -1,9 +1,11 @@
 lib LibSDL3
+  @[Packed]
   struct FPoint
     x : Float32
     y : Float32
   end
 
+  @[Packed]
   struct FRect
     x : Float32
     y : Float32
@@ -11,6 +13,7 @@ lib LibSDL3
     h : Float32
   end
 
+  @[Packed]
   struct Rect
     x : Int32
     y : Int32
@@ -29,24 +32,24 @@ struct LibSDL3::FRect
   def initialize(@x : Float32 = 0_f32, @y : Float32 = 0_f32, @w : Float32 = 0_f32, @h : Float32 = 0_f32)
   end
 
-  def width
+  def width : Float32
     w
   end
 
   def width=(width : Float32)
-    self.w = width
+    @w = width
   end
 
-  def height
+  def height : Float32
     h
   end
 
   def height=(height : Float32)
-    self.h = height
+    @h = height
   end
 
-  def to_rect
-    LibSDL3::Rect.new(x: x.to_i, y: y.to_i, w: w.to_i, h: h.to_i)
+  def to_rect : LibSDL3::Rect
+    LibSDL3::Rect.new(x: @x.to_i, y: @y.to_i, w: @w.to_i, h: @h.to_i)
   end
 end
 
@@ -54,24 +57,24 @@ struct LibSDL3::Rect
   def initialize(@x : Int32 = 0, @y : Int32 = 0, @w : Int32 = 0, @h : Int32 = 0)
   end
 
-  def width
+  def width : Int32
     w
   end
 
   def width=(width : Int32)
-    self.w = width
+    @w = width
   end
 
-  def height
+  def height : Int32
     h
   end
 
   def height=(height : Int32)
-    self.h = height
+    @h = height
   end
 
-  def to_frect
-    LibSDL3::FRect.new(x: x.to_f32, y: y.to_f32, w: w.to_f32, h: h.to_f32)
+  def to_frect : LibSDL3::FRect
+    LibSDL3::FRect.new(x: @x.to_f32, y: @y.to_f32, w: @w.to_f32, h: @h.to_f32)
   end
 end
 

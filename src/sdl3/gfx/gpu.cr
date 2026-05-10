@@ -33,6 +33,7 @@ lib LibSDL3
   SDL_GPU_SHADERFORMAT_MSL      = GPUShaderFormat::MSL
   SDL_GPU_SHADERFORMAT_METALLIB = GPUShaderFormat::MetalLib
 
+  @[Packed]
   struct GPUShaderCreateInfo
     code_size : LibC::SizeT
     code : UInt8*
@@ -46,6 +47,7 @@ lib LibSDL3
     props : PropertiesID
   end
 
+  @[Packed]
   struct GPUTextureSamplerBinding
     texture : GPUTexture*
     sampler : GPUSampler*

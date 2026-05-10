@@ -2,6 +2,7 @@ lib LibSDL3
   # SDL_render.h
   alias Renderer = Void
 
+  @[Packed]
   struct Vertex
     fpoint : LibSDL3::FPoint
     fcolor : LibSDL3::FColor
@@ -68,6 +69,7 @@ lib LibSDL3
 
   alias GPURenderState = Void
 
+  @[Packed]
   struct GPURenderStateCreateInfo
     fragment_shader : GPUShader*
     num_sampler_bindings : Int32
@@ -106,10 +108,6 @@ lib LibSDL3
 end
 
 struct LibSDL3::Vertex
-  property fpoint : LibSDL3::FPoint
-  property fcolor : LibSDL3::FColor
-  property texture_fpoint : LibSDL3::FPoint
-
   def initialize (x : Float32, y : Float32, @fcolor : LibSDL3::FColor)
     @fpoint = LibSDL3::FPoint.new(x: x, y: y)
     @texture_fpoint = LibSDL3::FPoint.new
@@ -120,6 +118,30 @@ struct LibSDL3::Vertex
   end
 
   def initialize (@fpoint : LibSDL3::FPoint, @fcolor : LibSDL3::FColor, @texture_fpoint : LibSDL3::FPoint)
+  end
+
+  def fpoint : LibSDL3::FPoint
+    @fpoint
+  end
+
+  def fpoint=(fpoint : LibSDL3::FPoint)
+    @fpoint = fpoint
+  end
+
+  def fcolor : LibSDL3::FColor
+    @fcolor
+  end
+
+  def fcolor=(fcolor : LibSDL3::FColor)
+    @fcolor = fcolor
+  end
+
+  def texture_fpoint : LibSDL3::FPoint
+    @texture_fpoint
+  end
+
+  def texture_fpoint=(texture_fpoint : LibSDL3::FPoint)
+    @texture_fpoint = texture_fpoint
   end
 end
 

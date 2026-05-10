@@ -6,6 +6,7 @@ lib LibSDL3
     PixelArt = 2
   end
 
+  @[Packed]
   struct Surface
     flags : UInt32
     format : LibSDL3::PixelFormat

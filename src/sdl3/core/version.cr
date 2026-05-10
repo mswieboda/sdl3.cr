@@ -1,5 +1,6 @@
 lib LibSDL3
   # SDL_version.h
+  @[Packed]
   struct Version
     major : UInt8
     minor : UInt8

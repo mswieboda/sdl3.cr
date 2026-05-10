@@ -5,6 +5,7 @@ lib LibSDL3
   alias Gamepad = Void
   alias Joystick = Void # From SDL_joystick.h, used in SDL_GetGamepadJoystick
 
+  @[Packed]
   struct GUID
     data : StaticArray(UInt8, 16)
   end

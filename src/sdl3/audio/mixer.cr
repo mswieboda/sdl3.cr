@@ -20,11 +20,13 @@ lib LibSDL3Mixer
   alias Group = Void
   alias AudioDecoder = Void
 
+  @[Packed]
   struct StereoGains
     left : Float32
     right : Float32
   end
 
+  @[Packed]
   struct Point3D
     x : Float32
     y : Float32

@@ -34,12 +34,14 @@ lib LibSDL3
   SDL_EVENT_GAMEPAD_REMOVED = 0x654_u32
   SDL_EVENT_GAMEPAD_REMAPPED = 0x655_u32
 
+  @[Packed]
   struct CommonEvent
     type : EventType
     reserved : UInt32
     timestamp : UInt64
   end
 
+  @[Packed]
   struct DisplayEvent
     type : EventType
     reserved : UInt32
@@ -49,6 +51,7 @@ lib LibSDL3
     data2 : Int32
   end
 
+  @[Packed]
   struct WindowEvent
     type : EventType
     reserved : UInt32
@@ -58,6 +61,7 @@ lib LibSDL3
     data2 : Int32
   end
 
+  @[Packed]
   struct KeyboardDeviceEvent
     type : EventType
     reserved : UInt32
@@ -65,6 +69,7 @@ lib LibSDL3
     which : UInt32
   end
 
+  @[Packed]
   struct KeyboardEvent
     type : EventType
     reserved : UInt32
@@ -79,6 +84,7 @@ lib LibSDL3
     repeat : Bool
   end
 
+  @[Packed]
   struct TextEditingEvent
     type : EventType
     reserved : UInt32
@@ -89,6 +95,7 @@ lib LibSDL3
     length : Int32
   end
 
+  @[Packed]
   struct TextEditingCandidatesEvent
     type : EventType
     reserved : UInt32
@@ -103,6 +110,7 @@ lib LibSDL3
     padding3 : UInt8
   end
 
+  @[Packed]
   struct TextInputEvent
     type : EventType
     reserved : UInt32
@@ -111,6 +119,7 @@ lib LibSDL3
     text : UInt8*
   end
 
+  @[Packed]
   struct MouseDeviceEvent
     type : EventType
     reserved : UInt32
@@ -118,6 +127,7 @@ lib LibSDL3
     which : UInt32
   end
 
+  @[Packed]
   struct MouseMotionEvent
     type : EventType
     reserved : UInt32
@@ -131,6 +141,7 @@ lib LibSDL3
     yrel : Float32
   end
 
+  @[Packed]
   struct MouseButtonEvent
     type : EventType
     reserved : UInt32
@@ -145,6 +156,7 @@ lib LibSDL3
     y : Float32
   end
 
+  @[Packed]
   struct MouseWheelEvent
     type : EventType
     reserved : UInt32
@@ -160,6 +172,7 @@ lib LibSDL3
     integer_y : Int32
   end
 
+  @[Packed]
   struct JoyDeviceEvent
     type : EventType
     reserved : UInt32
@@ -167,6 +180,7 @@ lib LibSDL3
     which : JoystickID
   end
 
+  @[Packed]
   struct JoyAxisEvent
     type : EventType
     reserved : UInt32
@@ -180,6 +194,7 @@ lib LibSDL3
     padding4 : UInt16
   end
 
+  @[Packed]
   struct JoyBallEvent
     type : EventType
     reserved : UInt32
@@ -193,6 +208,7 @@ lib LibSDL3
     yrel : Int16
   end
 
+  @[Packed]
   struct JoyHatEvent
     type : EventType
     reserved : UInt32
@@ -204,6 +220,7 @@ lib LibSDL3
     padding2 : UInt8
   end
 
+  @[Packed]
   struct JoyButtonEvent
     type : EventType
     reserved : UInt32
@@ -215,6 +232,7 @@ lib LibSDL3
     padding2 : UInt8
   end
 
+  @[Packed]
   struct JoyBatteryEvent
     type : EventType
     reserved : UInt32
@@ -224,6 +242,7 @@ lib LibSDL3
     percent : Int32
   end
 
+  @[Packed]
   struct GamepadDeviceEvent
     type : EventType
     reserved : UInt32
@@ -231,6 +250,7 @@ lib LibSDL3
     which : JoystickID
   end
 
+  @[Packed]
   struct GamepadAxisEvent
     type : EventType
     reserved : UInt32
@@ -244,6 +264,7 @@ lib LibSDL3
     padding4 : UInt16
   end
 
+  @[Packed]
   struct GamepadButtonEvent
     type : EventType
     reserved : UInt32
@@ -255,6 +276,7 @@ lib LibSDL3
     padding2 : UInt8
   end
 
+  @[Packed]
   struct GamepadTouchpadEvent
     type : EventType
     reserved : UInt32
@@ -267,6 +289,7 @@ lib LibSDL3
     pressure : Float32
   end
 
+  @[Packed]
   struct GamepadSensorEvent
     type : EventType
     reserved : UInt32
@@ -277,6 +300,7 @@ lib LibSDL3
     sensor_timestamp : UInt64
   end
 
+  @[Packed]
   struct AudioDeviceEvent
     type : EventType
     reserved : UInt32
@@ -288,6 +312,7 @@ lib LibSDL3
     padding3 : UInt8
   end
 
+  @[Packed]
   struct CameraDeviceEvent
     type : EventType
     reserved : UInt32
@@ -295,6 +320,7 @@ lib LibSDL3
     which : UInt32
   end
 
+  @[Packed]
   struct SensorEvent
     type : EventType
     reserved : UInt32
@@ -304,12 +330,14 @@ lib LibSDL3
     sensor_timestamp : UInt64
   end
 
+  @[Packed]
   struct QuitEvent
     type : EventType
     reserved : UInt32
     timestamp : UInt64
   end
 
+  @[Packed]
   struct UserEvent
     type : UInt32
     reserved : UInt32
@@ -320,6 +348,7 @@ lib LibSDL3
     data2 : Void*
   end
 
+  @[Packed]
   struct TouchFingerEvent
     type : EventType
     reserved : UInt32
@@ -334,6 +363,7 @@ lib LibSDL3
     window_id : UInt32
   end
 
+  @[Packed]
   struct PinchFingerEvent
     type : EventType
     reserved : UInt32
@@ -342,6 +372,7 @@ lib LibSDL3
     window_id : UInt32
   end
 
+  @[Packed]
   struct PenProximityEvent
     type : EventType
     reserved : UInt32
@@ -350,6 +381,7 @@ lib LibSDL3
     which : UInt32
   end
 
+  @[Packed]
   struct PenTouchEvent
     type : EventType
     reserved : UInt32
@@ -363,6 +395,7 @@ lib LibSDL3
     down : Bool
   end
 
+  @[Packed]
   struct PenMotionEvent
     type : EventType
     reserved : UInt32
@@ -374,6 +407,7 @@ lib LibSDL3
     y : Float32
   end
 
+  @[Packed]
   struct PenButtonEvent
     type : EventType
     reserved : UInt32
@@ -387,6 +421,7 @@ lib LibSDL3
     down : Bool
   end
 
+  @[Packed]
   struct PenAxisEvent
     type : EventType
     reserved : UInt32
@@ -400,6 +435,7 @@ lib LibSDL3
     value : Float32
   end
 
+  @[Packed]
   struct RenderEvent
     type : EventType
     reserved : UInt32
@@ -407,6 +443,7 @@ lib LibSDL3
     window_id : UInt32
   end
 
+  @[Packed]
   struct DropEvent
     type : EventType
     reserved : UInt32
@@ -418,6 +455,7 @@ lib LibSDL3
     data : UInt8*
   end
 
+  @[Packed]
   struct ClipboardEvent
     type : EventType
     reserved : UInt32
@@ -427,6 +465,7 @@ lib LibSDL3
     mime_types : UInt8**
   end
 
+  @[Packed]
   union Event
     type : UInt32
     common : CommonEvent

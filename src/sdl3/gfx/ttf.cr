@@ -53,6 +53,7 @@ lib LibSDL3TTF
   # end
 
   # TODO: need to add LibSDL3::GPUTexture first
+  # @[Packed]
   # struct GPUAtlasDrawSequence
   #   atlas_texture : LibSDL3::GPUTexture*
   #   xy : LibSDL3::FPoint*
@@ -64,6 +65,7 @@ lib LibSDL3TTF
   #   next : GPUAtlasDrawSequence*
   # end
 
+  @[Packed]
   struct SubString
     flags : UInt32
     offset : LibC::Int

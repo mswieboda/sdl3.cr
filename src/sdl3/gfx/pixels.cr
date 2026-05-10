@@ -45,6 +45,7 @@ lib LibSDL3
     EXTERNAL_OES = 0x2053454f
   end
 
+  @[Packed]
   struct PixelFormatDetails
     format : PixelFormat
     bits_per_pixel : UInt8
@@ -64,6 +65,7 @@ lib LibSDL3
     a_shift : UInt8
   end
 
+  @[Packed]
   struct Color
     r : UInt8
     g : UInt8
@@ -71,6 +73,7 @@ lib LibSDL3
     a : UInt8
   end
 
+  @[Packed]
   struct FColor
     r : Float32
     g : Float32
@@ -78,6 +81,7 @@ lib LibSDL3
     a : Float32
   end
 
+  @[Packed]
   struct Palette
     ncolors : Int32
     colors : Color*
@@ -94,36 +98,63 @@ lib LibSDL3
 end
 
 struct LibSDL3::Color
-  property r : UInt8
-  property g : UInt8
-  property b : UInt8
-  property a : UInt8
-
   def initialize(@r : UInt8 = 0_u8, @g : UInt8 = 0_u8, @b : UInt8 = 0_u8, @a : UInt8 = 255_u8)
   end
 
-  def to_u32
-    (r.to_u32 << 24) | (g.to_u32 << 16) | (b.to_u32 << 8) | a.to_u32
+  def r : UInt8
+    @r
   end
 
-  def to_fcolor
-    FColor.new(r: r / 255, g: g / 255, b: b / 255, a: a / 255)
+  def r=(r : UInt8)
+    @r = r
   end
 
-  def to_hex(with_alpha = false)
+  def g : UInt8
+    @g
+  end
+
+  def g=(g : UInt8)
+    @g = g
+  end
+
+  def b : UInt8
+    @b
+  end
+
+  def b=(b : UInt8)
+    @b = b
+  end
+
+  def a : UInt8
+    @a
+  end
+
+  def a=(a : UInt8)
+    @a = a
+  end
+
+  def to_u32 : UInt32
+    (@r.to_u32 << 24) | (@g.to_u32 << 16) | (@b.to_u32 << 8) | @a.to_u32
+  end
+
+  def to_fcolor : LibSDL3::FColor
+    LibSDL3::FColor.new(r: @r / 255, g: @g / 255, b: @b / 255, a: @a / 255)
+  end
+
+  def to_hex(with_alpha = false) : String
     hex = "#"
-    hex += r.to_s(base: 16, upcase: true)
-    hex += g.to_s(base: 16, upcase: true)
-    hex += b.to_s(base: 16, upcase: true)
-    hex += a.to_s(base: 16, upcase: true) if with_alpha
+    hex += @r.to_s(base: 16, upcase: true)
+    hex += @g.to_s(base: 16, upcase: true)
+    hex += @b.to_s(base: 16, upcase: true)
+    hex += @a.to_s(base: 16, upcase: true) if with_alpha
     hex
   end
 
-  def self.from_hex(hex : String)
+  def self.from_hex(hex : String) : LibSDL3::Color
     code = hex.lchop('#').lchop("0x")
     alpha = code[6..7].empty? ? "ff" : code[6..7]
 
-    Color.new(
+    LibSDL3::Color.new(
       r: code[0..1].to_u8(base: 16),
       g: code[2..3].to_u8(base: 16),
       b: code[4..5].to_u8(base: 16),
@@ -131,8 +162,8 @@ struct LibSDL3::Color
     )
   end
 
-  def self.random(a : UInt8 = 255_u8)
-    Color.new(
+  def self.random(a : UInt8 = 255_u8) : LibSDL3::Color
+    LibSDL3::Color.new(
       r: rand(0_u8..255_u8),
       g: rand(0_u8..255_u8),
       b: rand(0_u8..255_u8),
@@ -141,11 +172,11 @@ struct LibSDL3::Color
   end
 
   # NOTE: size cannot be > 15_u8
-  def self.random_chunks(size : UInt8 = 8_u8, a : UInt8 = 255_u8)
+  def self.random_chunks(size : UInt8 = 8_u8, a : UInt8 = 255_u8) : LibSDL3::Color
     size = size.clamp(0_u8, 15_u8)
     rand_max = (255_u8 // size)
 
-    Color.new(
+    LibSDL3::Color.new(
       r: rand(0_u8..rand_max) * size,
       g: rand(0_u8..rand_max) * size,
       b: rand(0_u8..rand_max) * size,
@@ -155,26 +186,53 @@ struct LibSDL3::Color
 end
 
 struct LibSDL3::FColor
-  property r : Float32
-  property g : Float32
-  property b : Float32
-  property a : Float32
-
   def initialize(@r : Float32 = 0_f32, @g : Float32 = 0_f32, @b : Float32 = 0_f32, @a : Float32 = 1_f32)
   end
 
-  def to_color : Color
+  def r : Float32
+    @r
+  end
+
+  def r=(r : Float32)
+    @r = r
+  end
+
+  def g : Float32
+    @g
+  end
+
+  def g=(g : Float32)
+    @g = g
+  end
+
+  def b : Float32
+    @b
+  end
+
+  def b=(b : Float32)
+    @b = b
+  end
+
+  def a : Float32
+    @a
+  end
+
+  def a=(a : Float32)
+    @a = a
+  end
+
+  def to_color : LibSDL3::Color
     # NOTE: clamp in case users accidentally use > 1_f32, like 50_f32 etc
-    Color.new(
-      r: (r * 255).clamp(0, 255).to_u8,
-      g: (g * 255).clamp(0, 255).to_u8,
-      b: (b * 255).clamp(0, 255).to_u8,
-      a: (a * 255).clamp(0, 255).to_u8
+    LibSDL3::Color.new(
+      r: (@r * 255).clamp(0, 255).to_u8,
+      g: (@g * 255).clamp(0, 255).to_u8,
+      b: (@b * 255).clamp(0, 255).to_u8,
+      a: (@a * 255).clamp(0, 255).to_u8
     )
   end
 
-  def self.random(a : Float32 = 1_f32) : FColor
-    FColor.new(
+  def self.random(a : Float32 = 1_f32) : LibSDL3::FColor
+    LibSDL3::FColor.new(
       r: rng.rand(0_f32..1_f32),
       g: rng.rand(0_f32..1_f32),
       b: rng.rand(0_f32..1_f32),
@@ -183,11 +241,11 @@ struct LibSDL3::FColor
   end
 
   # NOTE: size cannot be > 15_u8
-  def self.random_chunks(size : UInt8 = 8, a : Num = 1_f32) : FColor
+  def self.random_chunks(size : UInt8 = 8, a : Num = 1_f32) : LibSDL3::FColor
     size = size.clamp(0_u8, 15_u8)
     rand_max = 1_f32 / size
 
-    FColor.new(
+    LibSDL3::FColor.new(
       r: (rand(0_f32..rand_max) * size).to_f32.clamp(0_f32, 1_f32),
       g: (rand(0_f32..rand_max) * size).to_f32.clamp(0_f32, 1_f32),
       b: (rand(0_f32..rand_max) * size).to_f32.clamp(0_f32, 1_f32),

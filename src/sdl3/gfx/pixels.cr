@@ -142,12 +142,11 @@ struct LibSDL3::Color
   end
 
   def to_hex(with_alpha = false) : String
-    hex = "#"
-    hex += @r.to_s(base: 16, upcase: true)
-    hex += @g.to_s(base: 16, upcase: true)
-    hex += @b.to_s(base: 16, upcase: true)
-    hex += @a.to_s(base: 16, upcase: true) if with_alpha
-    hex
+    if with_alpha
+      "#%02X%02X%02X%02X" % {@r, @g, @b, @a}
+    else
+      "#%02X%02X%02X" % {@r, @g, @b}
+    end
   end
 
   def self.from_hex(hex : String) : LibSDL3::Color
@@ -174,12 +173,11 @@ struct LibSDL3::Color
   # NOTE: size cannot be > 15_u8
   def self.random_chunks(size : UInt8 = 8_u8, a : UInt8 = 255_u8) : LibSDL3::Color
     size = size.clamp(0_u8, 15_u8)
-    rand_max = (255_u8 // size)
 
     LibSDL3::Color.new(
-      r: rand(0_u8..rand_max) * size,
-      g: rand(0_u8..rand_max) * size,
-      b: rand(0_u8..rand_max) * size,
+      r: (rand(0_u8..size).to_f32 * (255.0 / size)).to_u8,
+      g: (rand(0_u8..size).to_f32 * (255.0 / size)).to_u8,
+      b: (rand(0_u8..size).to_f32 * (255.0 / size)).to_u8,
       a: a
     )
   end
@@ -241,15 +239,20 @@ struct LibSDL3::FColor
   end
 
   # NOTE: size cannot be > 15_u8
-  def self.random_chunks(size : UInt8 = 8, a : Num = 1_f32) : LibSDL3::FColor
-    size = size.clamp(0_u8, 15_u8)
-    rand_max = 1_f32 / size
+  def self.random_chunks(size : UInt8 = 8, a : Float32 = 1_f32) : LibSDL3::FColor
+    size = size.clamp(1_u8, 255_u8) # Avoid division by zero
+
+    # Pick a random integer step, then convert to 0.0..1.0 range
+    # If size is 4, it picks 0, 1, 2, 3, or 4.
+    r_step = rand(0_u8..size).to_f32 / size
+    g_step = rand(0_u8..size).to_f32 / size
+    b_step = rand(0_u8..size).to_f32 / size
 
     LibSDL3::FColor.new(
-      r: (rand(0_f32..rand_max) * size).to_f32.clamp(0_f32, 1_f32),
-      g: (rand(0_f32..rand_max) * size).to_f32.clamp(0_f32, 1_f32),
-      b: (rand(0_f32..rand_max) * size).to_f32.clamp(0_f32, 1_f32),
-      a: a.to_f32
+      r: r_step,
+      g: g_step,
+      b: b_step,
+      a: a
     )
   end
 end

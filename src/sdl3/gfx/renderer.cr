@@ -108,16 +108,11 @@ lib LibSDL3
 end
 
 struct LibSDL3::Vertex
-  def initialize (x : Float32, y : Float32, @fcolor : LibSDL3::FColor)
-    @fpoint = LibSDL3::FPoint.new(x: x, y: y)
+  def initialize(@fpoint : LibSDL3::FPoint, @fcolor : LibSDL3::FColor, @texture_fpoint : LibSDL3::FPoint)
+  end
+
+  def initialize(@fpoint : LibSDL3::FPoint, @fcolor : LibSDL3::FColor)
     @texture_fpoint = LibSDL3::FPoint.new
-  end
-
-  def initialize (x : Float32, y : Float32, @fcolor : LibSDL3::FColor, @texture_fpoint : LibSDL3::FPoint)
-    @fpoint = LibSDL3::FPoint.new(x: x, y: y)
-  end
-
-  def initialize (@fpoint : LibSDL3::FPoint, @fcolor : LibSDL3::FColor, @texture_fpoint : LibSDL3::FPoint)
   end
 
   def fpoint : LibSDL3::FPoint

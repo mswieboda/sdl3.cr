@@ -18,6 +18,9 @@ end
 
 module SDL3
   class Texture
+    getter width : Float32
+    getter height : Float32
+
     @ptr : LibSDL3::Texture*
 
     def self.from_surface(renderer : Renderer, surface : Surface)
@@ -38,7 +41,13 @@ module SDL3
       new(ptr)
     end
 
-    def initialize(@ptr : LibSDL3::Texture*); end
+    def initialize(@ptr : LibSDL3::Texture*)
+      w = 0_f32
+      h = 0_f32
+      LibSDL3.get_texture_size(@ptr, pointerof(w), pointerof(h))
+      @width = w
+      @height = h
+    end
 
     def destroy
       LibSDL3.destroy_texture(@ptr)
@@ -49,10 +58,7 @@ module SDL3
     end
 
     def size : Tuple(Float32, Float32)
-      w = 0.0_f32
-      h = 0.0_f32
-      LibSDL3.get_texture_size(@ptr, pointerof(w), pointerof(h))
-      {w, h}
+      {@width, @height}
     end
 
     def blend_mode=(blend_mode : LibSDL3::BlendMode)

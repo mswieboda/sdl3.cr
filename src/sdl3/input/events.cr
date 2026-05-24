@@ -470,9 +470,13 @@ lib LibSDL3
     padding : UInt8[128]
   end
 
+  alias SDL_EventFilter = (Void*, LibSDL3::Event*) -> Bool
+
   fun poll_event = SDL_PollEvent(event : Event*) : Bool
   fun push_event = SDL_PushEvent(event : Event*) : Bool
   fun pump_events = SDL_PumpEvents() : Bool
+  fun add_event_watch = SDL_AddEventWatch(filter : SDL_EventFilter, userdata : Void*) : Bool
+  fun remove_event_watch = SDL_RemoveEventWatch(filter : SDL_EventFilter, userdata : Void*)
 end
 
 module SDL3
@@ -486,5 +490,13 @@ module SDL3
 
   def self.pump_events
     LibSDL3.pump_events
+  end
+
+  def self.add_event_watch(filter : LibSDL3::SDL_EventFilter, userdata : Void* | Nil) : Bool
+    LibSDL3.add_event_watch(filter, userdata)
+  end
+
+  def self.remove_event_watch(filter : LibSDL3::SDL_EventFilter, userdata : Void* | Nil)
+    LibSDL3.remove_event_watch(filter, userdata)
   end
 end

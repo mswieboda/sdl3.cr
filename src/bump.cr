@@ -8,6 +8,12 @@ module SDL3
     @version = ""
     @action = ""
 
+    def git_clean? : Bool
+      stdout = IO::Memory.new
+      status = Process.run("git", ["status", "--porcelain"], output: stdout)
+      status.success? && stdout.to_s.strip.empty?
+    end
+
     def get_current_version
       file = File.read(ShardFile)
       find = "\nversion: "
@@ -67,7 +73,24 @@ module SDL3
       Process.run("git", ["tag", "v#{@version}"], output: STDOUT)
     end
 
+    def parse_args
+      OptionParser.parse do |parser|
+        parser.banner = "Usage: bump [patch | minor | major | <version>] [options]"
+        parser.on("-h", "--help", "Show this help") do
+          puts parser
+          exit
+        end
+      end
+    end
+
     def run
+      parse_args
+
+      unless git_clean?
+        STDERR.puts "Error: Working directory is not clean. Commit or stash your changes before bumping."
+        exit 1
+      end
+
       @prev_version = get_current_version
       @version = new_version
 

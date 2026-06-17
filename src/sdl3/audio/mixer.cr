@@ -238,11 +238,13 @@ module SDL3
         end
       {% end %}
 
-      def self.create(device_id : LibSDL3::AudioDeviceID, spec : LibSDL3::AudioSpec? = nil)
+      def self.create(device_id : LibSDL3::AudioDeviceID? = nil, spec : LibSDL3::AudioSpec? = nil)
+        dev_id = device_id.nil? ? LibSDL3::AUDIO_DEVICE_DEFAULT_PLAYBACK : device_id.not_nil!
+
         {% if flag?(:wasm32) %}
-          new(device_id)
+          new(dev_id)
         {% else %}
-          ptr = LibSDL3Mixer.create_mixer_device(device_id, spec ? spec : Pointer(LibSDL3::AudioSpec).null)
+          ptr = LibSDL3Mixer.create_mixer_device(dev_id, spec ? spec : Pointer(LibSDL3::AudioSpec).null)
           raise "Failed to create mixer device: #{SDL3.get_error}" if ptr.null?
           new(ptr)
         {% end %}

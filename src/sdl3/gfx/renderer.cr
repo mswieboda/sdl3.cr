@@ -151,6 +151,15 @@ module SDL3
       SDL3::Properties.new(LibSDL3.get_renderer_properties(to_unsafe))
     end
 
+    def output_size : Tuple(Int32, Int32)
+      w = 0
+      h = 0
+
+      LibSDL3.get_render_output_size(to_unsafe, pointerof(w), pointerof(h))
+
+      {w, h}
+    end
+
     def destroy
       LibSDL3.destroy_renderer(to_unsafe)
     end

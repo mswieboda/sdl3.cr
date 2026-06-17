@@ -242,7 +242,7 @@ module SDL3
         {% if flag?(:wasm32) %}
           new(device_id)
         {% else %}
-          ptr = LibSDL3Mixer.create_mixer_device(device_id, spec ? pointerof(spec) : nil)
+          ptr = LibSDL3Mixer.create_mixer_device(device_id, spec ? spec : Pointer(LibSDL3::AudioSpec).null)
           raise "Failed to create mixer device: #{SDL3.get_error}" if ptr.null?
           new(ptr)
         {% end %}

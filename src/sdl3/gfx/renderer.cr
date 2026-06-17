@@ -30,6 +30,7 @@ lib LibSDL3
   fun get_renderer_name = SDL_GetRendererName(renderer : Renderer*) : UInt8*
   fun get_renderer_properties = SDL_GetRendererProperties(renderer : Renderer*) : PropertiesID
   fun get_gpu_renderer_device = SDL_GetGPURendererDevice(renderer : Renderer*) : GPUDevice*
+  fun get_render_output_size = SDL_GetRenderOutputSize(renderer : Renderer*, w : Int32*, h : Int32*) : Bool
   fun destroy_renderer = SDL_DestroyRenderer(renderer : Renderer*)
   fun get_render_draw_color = SDL_GetRenderDrawColor(renderer : Renderer*, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : Bool
   fun set_render_draw_color = SDL_SetRenderDrawColor(renderer : Renderer*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : Bool

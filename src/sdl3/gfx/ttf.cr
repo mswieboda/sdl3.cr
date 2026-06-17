@@ -211,9 +211,7 @@ module SDL3
     alias Direction = LibSDL3TTF::Direction
 
     def init
-      unless LibSDL3TTF.init
-        raise "Failed to initialize SDL3_ttf"
-      end
+      LibSDL3TTF.init
     end
 
     def quit

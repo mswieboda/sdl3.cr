@@ -2,6 +2,7 @@ lib LibSDL3
   # SDL_init.h
   alias InitFlags = UInt32
 
+  SDL_INIT_NONE = 0_u32
   SDL_INIT_VIDEO = 0x00000020_u32
   SDL_INIT_AUDIO = 0x00000010_u32
   SDL_INIT_GAMEPAD = 0x00002000_u32
@@ -16,6 +17,7 @@ end
 
 module SDL3
   module InitFlags
+    None = LibSDL3::SDL_INIT_NONE
     Video = LibSDL3::SDL_INIT_VIDEO
     Audio = LibSDL3::SDL_INIT_AUDIO
     GamePad = LibSDL3::SDL_INIT_GAMEPAD
@@ -43,11 +45,11 @@ module SDL3
   end
 
   def init?
-    init?(InitFlags::Video | InitFlags::Audio | InitFlags::GamePad)
+    LibSDL3.was_init(InitFlags::None) > 0
   end
 
   def init?(flags : LibSDL3::InitFlags)
-    LibSDL3.was_init(flags)
+    (LibSDL3.was_init(flags) & flags) == flags
   end
 
   def set_hint(name : String, value : String)

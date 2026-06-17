@@ -30,9 +30,7 @@ module SDL3
   end
 
   def init(flags : LibSDL3::InitFlags)
-    unless LibSDL3.init(flags)
-      raise "Failed to initialize SDL"
-    end
+    LibSDL3.init(flags)
   end
 
   def quit
